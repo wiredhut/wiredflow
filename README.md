@@ -71,6 +71,10 @@ pip install git+https://github.com/wiredhut/wiredflow.git
 
 ## Usage examples
 
+NB: All examples should start in your virtual environment without any problems. 
+The wiredflow-based services do not require any configuration beyond Python and
+library's dependencies.
+
 First, check [examples](examples) folder: 
 * In progress
 * In progress
