@@ -1,6 +1,7 @@
 <img src="./docs/media/wiredflow.png" width="800"/>
 
-Lightweight Python library combining the ideas of ETL pipelines and workflow management systems.
+Lightweight Python library for configuring ETL (Extract, Transform, Load) pipelines. 
+Designed to create services with multi-step data processing using just Python and nothing more.
 
 ## Why you should try wiredflow
 
@@ -20,45 +21,51 @@ pure Python.
 Below is a Q&A section to make it clearer 
 to you how this library differs from other more well-known analogues.
 
-> Question: What does "lightweight" mean?
->> Response: That means that the library only uses native Python to run. 
->> Thus for basic usage there is no need to install **docker** or deal with **docker-compose**, you do 
->> not need to deploy the **database** locally (or non-locally) or figuring out how perform desired actions 
->> on **AWS** with full production infrastructure - you can just use your laptop and run 
->> the python script as "hello_world.py". The only thing you need to know to work 
->> with wiredflow is Python.
+> **Question**: What does "lightweight" mean?
+> 
+> **Response**: That means that the library only uses native Python to run. 
+> Thus for basic usage there is no need to install **docker** or deal with **docker-compose**, you do 
+> not need to deploy the **database** locally (or non-locally) or figuring out how perform desired actions 
+> on **AWS** with full production infrastructure - you can just use your laptop and run 
+> the python script as "hello_world.py". The only thing you need to know to work 
+> with wiredflow is Python.
 
 ---
 
-> Question: What is the advantage of such a lightweight?
->> Response: 1) Prototyping - you can quickly start listening to your MQTT 
->> queues or start collecting data using HTTP requests, etc. 2) Python code 
->> would be easy to build into larger projects because using wiredflow has 
->> pretty low overhead.
+> **Question**: What is the advantage of such a lightweight?
+> 
+> **Response**: 1) Prototyping - you can quickly start listening to your MQTT 
+> queues or start collecting data using HTTP requests, etc. 2) Python code 
+> would be easy to build into larger projects because using wiredflow has 
+> pretty low overhead.
 
 ---
 
-> Question: If wiredflow does not use a database, where is the data saved?
->> Response: In csv files or in JSON files. Yes, this is not a production solution, 
->> but it is very convenient to deal with data you unfamiliar with.
+> **Question**: If wiredflow does not use a database, where is the data saved?
+> 
+> **Response**: In csv files or in JSON files. Yes, this is not a production solution, 
+> but it is very convenient to deal with data you unfamiliar with.
 
 ---
 
-> Question: What if I want to use the database?
->> Response: Sure you can use a database, for example you can use a local one 
->> or save (and retrieve) the data to the already configured remote one.
+> **Question**: What if I want to use the database?
+> 
+> **Response**: Sure you can use a database, for example you can use a local one 
+> or save (and retrieve) the data to the already configured remote one.
 
 ---
 
-> Question: Can I create Python scripts that will combine data from multiple 
+> **Question**: Can I create Python scripts that will combine data from multiple 
 > sources (APIs) and store data in a storage?
->> Response: Sure! That's exactly what wiredflow is for.
+>
+> **Response**: Sure! That's exactly what wiredflow is for.
 
 ---
 
-> Question: I saw in the documentation that the service can be subscribed to 
+> **Question**: I saw in the documentation that the service can be subscribed to 
 > multiple MQTT queues at the same time. How does it work?
->> Response: wiredflow uses the multithreading Python module. 
+> 
+> **Response**: wiredflow uses the multithreading Python module. 
 
 ---
 
@@ -76,14 +83,14 @@ The wiredflow-based services do not require any configuration beyond Python and
 library's dependencies.
 
 First, check [examples](examples) folder: 
-* In progress
-* In progress
-* In progress
+* [simple HTTP case](examples/simple_http.py) - single data source which can be reached via simple HTTP GET request
+* [advanced HTTP case](examples/advanced_http.py) - several data sources (receive data via HTTP) with custom data processing
+* [simple MQTT case](examples/simple_mqtt.py) - single data source which send messages using MQTT
+* [advanced MQTT case](examples/advanced_mqtt.py) - several data sources (receive data via MQTT) with custom data processing
+* [complex multi-source case](examples/complex_flow.py) - complex flow example with custom multi-step data processing and several notificators
 
 Or investigate jupyter notebooks with examples: 
 * In progress
-* In progress
-* In progress 
 
 ## Description
 
