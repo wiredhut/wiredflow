@@ -21,7 +21,7 @@ class RandomIntegersHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         """ Generate random number and send it by request """
         data_to_send = json.dumps({'Generated random number': random.randint(0, 100)})
-        logger.debug(f'HTTP server send data: {data_to_send} by request')
+        logger.trace(f'HTTP server send data: {data_to_send} by request')
 
         jsonbytes = self._prepare_json_response(data_to_send)
         self.wfile.write(jsonbytes)
@@ -45,7 +45,7 @@ class RandomStringHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         """ Generate random number and send it by request """
         data_to_send = json.dumps({'Generated random letter': random.choice(string.ascii_letters)})
-        logger.debug(f'HTTP server send data: {data_to_send} by request')
+        logger.trace(f'HTTP server send data: {data_to_send} by request')
 
         jsonbytes = self._prepare_json_response(data_to_send)
         self.wfile.write(jsonbytes)

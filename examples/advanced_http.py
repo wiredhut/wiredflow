@@ -56,7 +56,7 @@ def launch_advanced_http_demo():
     """
     flow_builder = FlowBuilder()
 
-    # Launch pipeline every 2 minutes
+    # Launch pipeline every 10 seconds
     flow_builder.add_pipeline('integers_processing', timedelta_seconds=10) \
         .with_http_connector(source='http://localhost:8027') \
         .with_storage('json', preprocessing=['add_datetime'])

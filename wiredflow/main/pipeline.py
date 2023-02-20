@@ -5,6 +5,7 @@ from loguru import logger
 
 from wiredflow.main.actions.assimilation.core_staging import CoreStageProxy
 from wiredflow.main.actions.assimilation.http_staging import HTTPStageProxy
+from wiredflow.main.actions.assimilation.mqtt_staging import MQTTStageProxy
 from wiredflow.main.actions.assimilation.send_staging import SendStageProxy
 from wiredflow.main.actions.assimilation.store_staging import StoreStageProxy
 from wiredflow.main.template import PipelineActionTemplate
@@ -45,6 +46,23 @@ class Pipeline:
         self.with_get_request_action = True
 
         self.stages.append(HTTPStageProxy(name, source, headers, **kwargs))
+        return self
+
+    def with_mqtt_connector(self,
+                            source: Union[str, None] = None,
+                            port: int = 1883,
+                            topic: str = None,
+                            **kwargs):
+        """
+        Add new client into processing pipeline to get data via MQTT
+
+        :param source: endpoint to subscribe to MQTT broker
+        :param port: port for connection
+        :param topic: topic for subscription
+        """
+        self.with_mqtt_connection = True
+
+        self.stages.append(MQTTStageProxy(source, port, topic, **kwargs))
         return self
 
     def with_storage(self, storage_name: Union[str, Callable], **kwargs):

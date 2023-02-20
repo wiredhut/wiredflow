@@ -5,12 +5,14 @@ import paho.mqtt.client as mqtt
 
 from wiredflow.main.actions.action_interface import Action
 from wiredflow.main.actions.assimilation.interface import ProxyStage
+from wiredflow.main.actions.stages.mqtt_stage import StageMQTTConnectorInterface
 
 
 class MQTTMessagesProcessingSybAction:
     """ MQTT message processing with defined stages """
-    def __init__(self, db_saver: Any):
+    def __init__(self, db_saver: Any, topic: str):
         self.db_saver = db_saver
+        self.topic = topic
         self.messages = []
 
         # If flow with messages too frequent - it is possible to use small stack
@@ -43,18 +45,18 @@ class InputActionMQTT(Action):
         # Get connector object and saver
         connector = self.init_stages[0]
         db_saver = self.init_stages[1]
-        mqtt_processing = MQTTMessagesProcessingSybAction(db_saver)
+        mqtt_processing = MQTTMessagesProcessingSybAction(db_saver, connector.topic)
 
         self.subscribe_to_broker(connector, mqtt_processing)
 
         # Launch as loop
         self.client.loop_forever()
 
-    def subscribe_to_broker(self, connector: Any,
+    def subscribe_to_broker(self, connector: StageMQTTConnectorInterface,
                             mqtt_processing: MQTTMessagesProcessingSybAction):
         """ Launch subscribe method for MQTT broker """
         self.client = mqtt.Client(userdata=mqtt_processing)
         # Authorization process
-        self.client.username_pw_set(username='',
-                                    password='')
+        self.client.username_pw_set(username=connector.username,
+                                    password=connector.password)
         self.client = connector.configure_client(self.client)
