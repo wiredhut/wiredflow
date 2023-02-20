@@ -1,9 +1,10 @@
 from abc import abstractmethod
-from typing import List, Any, Optional
+from typing import List, Any
 
 from loguru import logger
 
 from wiredflow.main.actions.stages.http_stage import StageHTTPConnector
+from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
 
 
 class Action:
@@ -68,17 +69,17 @@ class Action:
             if isinstance(current_stage, StageHTTPConnector):
                 self.connector = current_stage
                 relevant_info = current_stage.get()
+                return relevant_info
+
         return relevant_info
 
-    def launch_saver(self, relevant_info: Any):
+    def launch_storage(self, relevant_info: Any):
         """
-        Find saver stage in the action and execute it
+        Find saver (storage) stage in the action and execute it
         If there is no such a stage - skip this step
 
         :param relevant_info: information obtained from previous stage to save
         """
-        if self.connector is None:
-            raise ValueError('To launch saver connector is required')
         for current_stage in self.init_stages:
-            if isinstance(current_stage, str):
+            if isinstance(current_stage, StageStorageInterface):
                 current_stage.save(relevant_info)

@@ -3,6 +3,7 @@ import json
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import random
 from typing import Union
+import string
 
 from attrs import asdict
 from loguru import logger
@@ -43,7 +44,7 @@ class RandomStringHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """ Generate random number and send it by request """
-        data_to_send = json.dumps({'Generated random letter': 'a'})
+        data_to_send = json.dumps({'Generated random letter': random.choice(string.ascii_letters)})
         logger.debug(f'HTTP server send data: {data_to_send} by request')
 
         jsonbytes = self._prepare_json_response(data_to_send)
@@ -69,7 +70,7 @@ def start_mock_int_http_server():
 
 
 def start_mock_str_http_server():
-    server = HTTPServer((HTTP_LOCALHOST, STR_PORT), RandomIntegersHandler)
+    server = HTTPServer((HTTP_LOCALHOST, STR_PORT), RandomStringHandler)
     logger.debug(f'Started mock HTTP server in separate process: {HTTP_LOCALHOST},'
                  f' port {STR_PORT}')
     server.serve_forever()

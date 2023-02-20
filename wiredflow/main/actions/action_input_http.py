@@ -35,10 +35,10 @@ class InputActionHttps(Action):
         Launch defined stages execution in current action
         """
         # Get data via client connection
-        for relevant_info in self.launch_http_connector():
-            if relevant_info is None:
-                # Skip further steps
-                continue
+        relevant_info = self.launch_http_connector()
+        if relevant_info is None:
+            # Skip further steps
+            return None
 
-            # Store into database or into other source
-            self.launch_saver(relevant_info)
+        # Store into database or into other source
+        self.launch_storage(relevant_info)

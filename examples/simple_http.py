@@ -18,10 +18,11 @@ def launch_simple_http_demo():
     flow_builder = FlowBuilder()
 
     # Launch pipeline every 2 minutes
-    flow_builder.add_pipeline('my_custom_name', timedelta_minutes=2).\
-        with_http_connector(source='http://localhost:8027',
-                            headers={'accept': 'application/json',
-                                     'apikey': 'my_custom_key'}).with_storage('json')
+    flow_builder.add_pipeline('my_custom_name', timedelta_minutes=2)\
+        .with_http_connector(source='http://localhost:8027',
+                             headers={'accept': 'application/json',
+                                      'apikey': 'my_custom_key'})\
+        .with_storage('json', preprocessing=['add_datetime'])
 
     # Configure service and launch it
     flow = flow_builder.build()

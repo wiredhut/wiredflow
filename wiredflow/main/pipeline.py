@@ -4,6 +4,7 @@ from typing import Union, Dict
 from loguru import logger
 
 from wiredflow.main.actions.stages.http_stage import StageHTTPConnector
+from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
 from wiredflow.main.template import PipelineActionTemplate
 
 
@@ -29,7 +30,7 @@ class Pipeline:
         self.action = None
         self.db_connectors = []
 
-    def with_http_connector(self, source: str, headers: Dict, **kwargs):
+    def with_http_connector(self, source: str, headers: Union[Dict, None] = None, **kwargs):
         """
         Add new client into processing pipeline to get data via HTTPS requests
 
@@ -41,20 +42,29 @@ class Pipeline:
         self.stages.append(StageHTTPConnector(source, headers, **kwargs))
         return self
 
-    def with_storage(self, configuration_name: str, **kwargs):
+    def with_storage(self, storage_name: str, **kwargs):
         """ Add data storing functionality into processing pipeline
 
-        :param configuration_name: name of saver to use.
+        :param storage_name: name of saver to use.
         Possible options:
             - 'json' - save results into json file
             - 'mongo' - save results into mongo DB
 
-        Additional parameters for 'json' saver:
+        Additional parameters for 'json' storage:
             - folder_to_save - path to the folder where to save json files
+            - preprocessing - name of preprocessor(s) for JSON storage engine.
+            Possible variants:
+                - 'update' - update dictionary with new kye-values pairs
+                - 'overwrite' - create file from scratch
+                - 'extend' - if the structure list-related - then just add new
+                dictionaries to existing ones
+                - 'add_datetime' - add datetime label to obtained dictionary
         """
         self.with_save_action = True
 
-        self.stages.append({'storage': configuration_name, 'params': kwargs})
+        # Define unique name for storage stage
+        stage_id = f'{storage_name} in {self.pipeline_name}'
+        self.stages.append(StageStorageInterface(storage_name, stage_id, **kwargs))
         return self
 
     def run(self):
