@@ -1,9 +1,12 @@
 from abc import abstractmethod
-from typing import List, Any
+from typing import List, Any, Dict
 
 from loguru import logger
 
+from wiredflow.main.actions.assimilation.interface import ProxyStage
+from wiredflow.main.actions.stages.core_stage import CoreLogicInterface
 from wiredflow.main.actions.stages.http_stage import StageHTTPConnector
+from wiredflow.main.actions.stages.send_stage import StageSendInterface
 from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
 
 
@@ -21,7 +24,7 @@ class Action:
     :param is_single_execution: is there a need to launch all stages without loop
     """
 
-    def __init__(self, pipeline_name: str, stages: List[dict],
+    def __init__(self, pipeline_name: str, stages: List[ProxyStage],
                  **params):
         self.pipeline_name = pipeline_name
         self.stages = stages
@@ -36,13 +39,13 @@ class Action:
         self.db_connectors: dict = {}
 
         # Set regime of requests - default value is None
-        self.timedelta_minutes = 1440
+        self.timedelta_seconds = 120
         if params is not None and len(params) > 0:
-            self.timedelta_minutes = params.get('timedelta_minutes')
+            self.timedelta_seconds = params.get('timedelta_seconds')
 
-        self.timedelta_minutes = round(self.timedelta_minutes)
-        if self.timedelta_minutes < 1:
-            self.timedelta_minutes = 1
+        self.timedelta_seconds = round(self.timedelta_seconds)
+        if self.timedelta_seconds < 1:
+            self.timedelta_seconds = 1
 
     def _init_stages_objects(self):
         """ Sequentially launch stages initialization """
@@ -51,12 +54,25 @@ class Action:
                          f' configured. Skip stage')
             return None
 
-        self.init_stages = self.stages
+        for stage_proxy in self.stages:
+            self.init_stages.append(stage_proxy.compile())
 
     @abstractmethod
     def execute_action(self):
         """ Launch all internally defined stages """
         raise NotImplementedError()
+
+    @property
+    def get_db_connector_object(self):
+        """
+        Return identified database connector object from the action (pipeline)
+        if it exists
+        """
+        for i, stage in enumerate(self.init_stages):
+            if isinstance(stage, StageStorageInterface):
+                return stage
+
+        return None
 
     def launch_http_connector(self):
         """
@@ -83,3 +99,23 @@ class Action:
         for current_stage in self.init_stages:
             if isinstance(current_stage, StageStorageInterface):
                 current_stage.save(relevant_info)
+
+    def launch_core(self, relevant_info: Any):
+        """
+        Launch core logic with all data
+
+        :param relevant_info: data which were directly obtained
+        from connectors or loaded with extractors
+        """
+        core_output = None
+        for current_stage in self.init_stages:
+            if isinstance(current_stage, CoreLogicInterface):
+                core_output = current_stage.launch(relevant_info, self.db_connectors)
+
+        return core_output
+
+    def launch_senders(self, data_to_send: Dict):
+        """ Send desired data to suitable endpoints. Launch all senders in the pipeline """
+        for current_stage in self.init_stages:
+            if isinstance(current_stage, StageSendInterface):
+                current_stage.send(data_to_send)

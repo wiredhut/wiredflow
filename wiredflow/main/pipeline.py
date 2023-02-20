@@ -1,10 +1,12 @@
 import uuid
-from typing import Union, Dict
+from typing import Union, Dict, Callable
 
 from loguru import logger
 
-from wiredflow.main.actions.stages.http_stage import StageHTTPConnector
-from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
+from wiredflow.main.actions.assimilation.core_staging import CoreStageProxy
+from wiredflow.main.actions.assimilation.http_staging import HTTPStageProxy
+from wiredflow.main.actions.assimilation.send_staging import SendStageProxy
+from wiredflow.main.actions.assimilation.store_staging import StoreStageProxy
 from wiredflow.main.template import PipelineActionTemplate
 
 
@@ -21,8 +23,7 @@ class Pipeline:
         # Info about actions in the pipeline
         self.with_get_request_action = False
         self.with_mqtt_connection = False
-        self.with_save_action = False
-        self.with_db_connector_action = False
+        self.with_storage_action = False
         self.with_core_action = False
         self.with_sender = False
 
@@ -30,22 +31,26 @@ class Pipeline:
         self.action = None
         self.db_connectors = []
 
-    def with_http_connector(self, source: str, headers: Union[Dict, None] = None, **kwargs):
+    def with_http_connector(self,
+                            name: Union[str, Callable] = 'default',
+                            source: Union[str, None] = None,
+                            headers: Union[Dict, None] = None, **kwargs):
         """
         Add new client into processing pipeline to get data via HTTPS requests
 
+        :param name: name of HTTP client realization to use or custom realization
         :param source: endpoint to apply get method
         :param headers: dictionary with headers for request
         """
         self.with_get_request_action = True
 
-        self.stages.append(StageHTTPConnector(source, headers, **kwargs))
+        self.stages.append(HTTPStageProxy(name, source, headers, **kwargs))
         return self
 
-    def with_storage(self, storage_name: str, **kwargs):
+    def with_storage(self, storage_name: Union[str, Callable], **kwargs):
         """ Add data storing functionality into processing pipeline
 
-        :param storage_name: name of saver to use.
+        :param storage_name: name of storage to use or custom realization
         Possible options:
             - 'json' - save results into json file
             - 'mongo' - save results into mongo DB
@@ -60,11 +65,37 @@ class Pipeline:
                 dictionaries to existing ones
                 - 'add_datetime' - add datetime label to obtained dictionary
         """
-        self.with_save_action = True
+        self.with_storage_action = True
 
         # Define unique name for storage stage
         stage_id = f'{storage_name} in {self.pipeline_name}'
-        self.stages.append(StageStorageInterface(storage_name, stage_id, **kwargs))
+        self.stages.append(StoreStageProxy(storage_name, stage_id, **kwargs))
+        return self
+
+    def with_core_logic(self, core_logic: Callable, **kwargs):
+        """
+        Define custom core logic into processing pipeline and define parameters
+        to it
+        """
+        self.with_core_action = True
+
+        self.stages.append(CoreStageProxy(core_logic, **kwargs))
+        return self
+
+    def send(self, send_name: Union[str, Callable] = 'mqtt',
+             destination: Union[str, None] = None,
+             data_aggregate: Union[str, None] = None, **kwargs):
+        """
+        Configure sender for desired data aggregates
+
+        :param send_name: name of sender to apply or custom implementation
+        :param destination: name of topic to send message to or source
+        :param data_aggregate: name of data aggregation
+        """
+        self.with_sender = True
+        kwargs = {**kwargs, **{'data_aggregate': data_aggregate}}
+
+        self.stages.append(SendStageProxy(send_name, destination, **kwargs))
         return self
 
     def run(self):

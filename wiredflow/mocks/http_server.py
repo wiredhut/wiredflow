@@ -64,13 +64,13 @@ class RandomStringHandler(BaseHTTPRequestHandler):
 
 def start_mock_int_http_server():
     server = HTTPServer((HTTP_LOCALHOST, INT_PORT), RandomIntegersHandler)
-    logger.debug(f'Started mock HTTP server in separate process: {HTTP_LOCALHOST},'
-                 f' port {INT_PORT}')
+    logger.info(f'Start mock HTTP server in separate process: {HTTP_LOCALHOST},'
+                f' port {INT_PORT}')
     server.serve_forever()
 
 
 def start_mock_str_http_server():
     server = HTTPServer((HTTP_LOCALHOST, STR_PORT), RandomStringHandler)
-    logger.debug(f'Started mock HTTP server in separate process: {HTTP_LOCALHOST},'
-                 f' port {STR_PORT}')
+    logger.info(f'Start mock HTTP server in separate process: {HTTP_LOCALHOST},'
+                f' port {STR_PORT}')
     server.serve_forever()

@@ -3,15 +3,19 @@ import threading
 from pathlib import Path
 from typing import Any, Optional, Union, List, Dict
 
+from loguru import logger
+
+from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
 from wiredflow.main.store_engines.preprocessors.preprocessing import \
     Preprocessor
 from wiredflow.paths import get_tmp_folder_path
 
 
-class JSONConnector:
+class JSONStorageStage(StageStorageInterface):
     """ Connector to JSON file """
 
     def __init__(self, stage_id: str, **params):
+        super().__init__(stage_id, **params)
         self.stage_id = stage_id
         # Prepare local folder where there is a need to save json file
         if 'folder_to_save' in list(params.keys()):
@@ -27,8 +31,11 @@ class JSONConnector:
 
     def save(self, relevant_info: Any, **kwargs):
         self._access_to_file('write', info_to_write=relevant_info)
+        logger.debug(f'JSON info. Storage {self.stage_id} successfully save data'
+                     f' in {self.db_path_file}')
 
     def load(self, **kwargs):
+        logger.debug(f'JSON info. Storage {self.stage_id} load data')
         return self._access_to_file('read', **kwargs)
 
     def _access_to_file(self, mode: str, info_to_write: Optional = None, **read_kwargs):
@@ -41,7 +48,7 @@ class JSONConnector:
         """
         # To avoid deadlock - synchronize thread during file storing or reading
         lock = threading.Lock()
-        lock.acquire()
+        lock.acquire(blocking=False)
 
         loaded_files = None
         if mode == 'read':

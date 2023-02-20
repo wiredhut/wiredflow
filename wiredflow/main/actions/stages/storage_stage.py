@@ -1,24 +1,18 @@
+from abc import abstractmethod
 from typing import Any
-
-from loguru import logger
-
-from wiredflow.main.store_engines.json_engine.json_db import JSONConnector
 
 
 class StageStorageInterface:
-    """ Class to store data into file or database """
-    engine_by_name = {'json': JSONConnector,
-                      'mongo': None}
+    """ Base class for defining interface for database stages connectors """
 
-    def __init__(self, storage_name: str, stage_id: str, **params):
+    def __init__(self, stage_id: str, **params):
         self.stage_id = stage_id
-        self.storage_name = storage_name
-        self.connector = self.engine_by_name[storage_name](stage_id, **params)
+        self.params = params
 
+    @abstractmethod
     def save(self, relevant_info: Any, **kwargs):
-        logger.debug(f'{self.storage_name} info. Storage {self.stage_id} save data')
-        return self.connector.save(relevant_info, **kwargs)
+        raise NotImplementedError()
 
+    @abstractmethod
     def load(self, **kwargs):
-        logger.debug(f'{self.storage_name} info. Storage {self.stage_id} load data')
-        return self.connector.load(**kwargs)
+        raise NotImplementedError()

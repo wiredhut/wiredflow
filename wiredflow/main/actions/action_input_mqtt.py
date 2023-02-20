@@ -4,6 +4,7 @@ from typing import List, Optional, Any
 import paho.mqtt.client as mqtt
 
 from wiredflow.main.actions.action_interface import Action
+from wiredflow.main.actions.assimilation.interface import ProxyStage
 
 
 class MQTTMessagesProcessingSybAction:
@@ -33,7 +34,7 @@ class InputActionMQTT(Action):
     input data processing functionality. Launched by schedule
     """
 
-    def __init__(self, pipeline_name: str, stages: List[dict], **params):
+    def __init__(self, pipeline_name: str, stages: List[ProxyStage], **params):
         super().__init__(pipeline_name, stages, **params)
         self.client = None
 

@@ -4,6 +4,7 @@ from typing import List, Optional
 import schedule
 
 from wiredflow.main.actions.action_interface import Action
+from wiredflow.main.actions.assimilation.interface import ProxyStage
 
 
 class FullProcessingAction(Action):
@@ -13,16 +14,16 @@ class FullProcessingAction(Action):
     Apply scheduling for launches
     """
 
-    def __init__(self, pipeline_name: str, stages: List[dict], **params):
+    def __init__(self, pipeline_name: str, stages: List[ProxyStage], **params):
         super().__init__(pipeline_name, stages, **params)
 
     def execute_action(self):
         """ Launch all processes in single flow """
-        number_of_seconds_to_break = (self.timedelta_minutes * 60) / 2
+        number_of_seconds_to_break = self.timedelta_seconds / 2
         if number_of_seconds_to_break < 1:
             number_of_seconds_to_break = 1
 
-        schedule.every(self.timedelta_minutes).minutes.do(self.perform_action)
+        schedule.every(self.timedelta_seconds).seconds.do(self.perform_action)
         while True:
             schedule.run_pending()
             time.sleep(number_of_seconds_to_break)
@@ -35,7 +36,7 @@ class FullProcessingAction(Action):
                 if obtained_data is None:
                     continue
 
-                self.launch_saver(obtained_data)
+                self.launch_storage(obtained_data)
                 core_data = self.launch_core(obtained_data)
                 self.launch_senders(core_data)
         else:

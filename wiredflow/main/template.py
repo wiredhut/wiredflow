@@ -17,8 +17,8 @@ class PipelineActionTemplate:
 
     def compile_action(self):
         """ Compile action based on pipeline """
-        is_http_input = self.p.with_get_request_action is True and self.p.with_save_action is True
-        is_mqtt_input = self.p.with_mqtt_connection is True and self.p.with_save_action is True
+        is_http_input = self.p.with_get_request_action is True and self.p.with_storage_action is True
+        is_mqtt_input = self.p.with_mqtt_connection is True and self.p.with_storage_action is True
 
         if len(self.p.stages) <= 3 and is_http_input:
             # Short pipeline with only input data actions (use https connection)

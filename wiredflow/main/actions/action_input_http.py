@@ -3,6 +3,7 @@ import schedule
 import time
 
 from wiredflow.main.actions.action_interface import Action
+from wiredflow.main.actions.assimilation.interface import ProxyStage
 
 
 class InputActionHttps(Action):
@@ -14,18 +15,18 @@ class InputActionHttps(Action):
     input data processing functionality. Launched by schedule
     """
 
-    def __init__(self, pipeline_name: str, stages: List[dict], **params):
+    def __init__(self, pipeline_name: str, stages: List[ProxyStage], **params):
         super().__init__(pipeline_name, stages, **params)
 
     def execute_action(self):
         """ Launch process with defined parameters """
-        number_of_seconds_to_break = (self.timedelta_minutes * 60) / 2
+        number_of_seconds_to_break = self.timedelta_seconds / 2
         if number_of_seconds_to_break < 1:
             number_of_seconds_to_break = 1
         # Launch once before loop
         self.perform_action()
 
-        schedule.every(self.timedelta_minutes).minutes.do(self.perform_action)
+        schedule.every(self.timedelta_seconds).seconds.do(self.perform_action)
         while True:
             schedule.run_pending()
             time.sleep(number_of_seconds_to_break)
