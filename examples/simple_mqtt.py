@@ -7,6 +7,9 @@ def launch_advanced_mqtt_demo():
     """
     An example of how to launch a flow to collect some data from MQTT queue
     and save it into a file
+
+    NB: Demo will be executed in the loop. This means that the example won't
+    finish calculating until you stop it yourself
     """
     flow_builder = FlowBuilder()
 
