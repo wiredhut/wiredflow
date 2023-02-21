@@ -56,7 +56,7 @@ def launch_complex_demo():
     # Second HTTP source with random letters
     flow_builder.add_pipeline('http_source_str', timedelta_seconds=10) \
         .with_http_connector(source='http://localhost:8026')\
-        .with_storage('json', preprocessing='overwrite')
+        .with_storage('json', mapping='overwrite')
 
     # MQTT source with integers
     flow_builder.add_pipeline('mqtt_source_int') \

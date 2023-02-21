@@ -105,9 +105,13 @@ The library consists of the following key blocks (by combining these blocks it i
 
 To make it clearer, here are some examples of possible service structures that can be built using wiredflow:
 
-<img src="./docs/media/flow_examples.png" width="750"/>
+<img src="./docs/media/flow_examples.png" width="800"/>
+
+The fastest way to understand wiredflow is to think of it as a lightweight builder for services. 
+Protocols, endpoints, notifications, schedulers and storages are our constructor, and we (engineers), can play with it the way we want to
 
 ### Documentation 
+In progress 
 
 ### Available connectors (per protocols)
 

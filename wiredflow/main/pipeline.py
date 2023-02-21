@@ -75,13 +75,17 @@ class Pipeline:
 
         Additional parameters for 'json' storage:
             - folder_to_save - path to the folder where to save json files
-            - preprocessing - name of preprocessor(s) for JSON storage engine.
+            - preprocessing - name of preprocessing to apply or list of
+            preprocessors
+            Possible options:
+                - 'add_datetime' - add datetime label to obtained dictionary
+
+            - mapping - name of mapping procedure to apply during save stage
             Possible variants:
                 - 'update' - update dictionary with new kye-values pairs
                 - 'overwrite' - create file from scratch
                 - 'extend' - if the structure list-related - then just add new
                 dictionaries to existing ones
-                - 'add_datetime' - add datetime label to obtained dictionary
         """
         self.with_storage_action = True
 

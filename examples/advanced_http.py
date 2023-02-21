@@ -60,12 +60,12 @@ def launch_advanced_http_demo():
     # Launch pipeline every 10 seconds
     flow_builder.add_pipeline('integers_processing', timedelta_seconds=10) \
         .with_http_connector(source='http://localhost:8027') \
-        .with_storage('json', preprocessing=['add_datetime'])
+        .with_storage('json', preprocessing='add_datetime')
 
     # Launch pipeline every 1 minute and overwrite all previous recordings
     flow_builder.add_pipeline('letters_processing', timedelta_seconds=60) \
         .with_http_connector(source='http://localhost:8026') \
-        .with_storage('json', preprocessing=['add_datetime', 'overwrite'])
+        .with_storage('json', preprocessing='add_datetime', mapping='overwrite')
 
     # Core logic of our case
     # Configure notification sender: send message based on calculation approach

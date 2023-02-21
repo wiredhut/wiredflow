@@ -35,13 +35,13 @@ def launch_advanced_mqtt_demo():
     flow_builder.add_pipeline('int_subscriber')\
         .with_mqtt_connector(source='localhost', port=1883, topic='/demo/integers',
                              username='wiredflow', password='wiredflow')\
-        .with_storage('json', preprocessing=['add_datetime'])
+        .with_storage('json', preprocessing='add_datetime')
 
     # Get letters via MQTT
     flow_builder.add_pipeline('str_subscriber') \
         .with_mqtt_connector(source='localhost', port=1883, topic='/demo/letters',
                              username='wiredflow', password='wiredflow') \
-        .with_storage('json', preprocessing=['add_datetime'])
+        .with_storage('json', preprocessing='add_datetime')
 
     flow_builder.add_pipeline('custom_core', timedelta_seconds=15) \
         .with_core_logic(custom_logic) \

@@ -17,7 +17,7 @@ def launch_advanced_mqtt_demo():
     flow_builder.add_pipeline('mqtt_subscriber')\
         .with_mqtt_connector(source='localhost', port=1883, topic='/demo/integers',
                              username='wiredflow', password='wiredflow')\
-        .with_storage('json', preprocessing=['add_datetime'])
+        .with_storage('json', preprocessing='add_datetime')
 
     # Configure service and launch it
     flow = flow_builder.build()

@@ -7,6 +7,7 @@ from loguru import logger
 from threading import Event
 
 from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
+from wiredflow.main.store_engines.preprocessors.mapping import DataMapper
 from wiredflow.main.store_engines.preprocessors.preprocessing import \
     Preprocessor
 from wiredflow.paths import get_tmp_folder_path
@@ -29,6 +30,7 @@ class JSONStorageStage(StageStorageInterface):
 
         self.preprocessor = Preprocessor(params.get('preprocessing'),
                                          self.db_path_file)
+        self.mapper = DataMapper(params.get('mapping'), self.db_path_file)
 
         self.event = Event()
         self.event.set()
@@ -65,9 +67,11 @@ class JSONStorageStage(StageStorageInterface):
 
             read_kwargs['data'] = loaded_files
             self.preprocessor.apply_during_load(**read_kwargs)
+            self.mapper.apply_during_load(**read_kwargs)
         else:
             # Save obtained data into the file
             info_to_write = self.preprocessor.apply_during_save(info_to_write)
+            info_to_write = self.mapper.apply_during_save(info_to_write)
             self._save_dict_into_file(info_to_write)
 
         self.event.set()
