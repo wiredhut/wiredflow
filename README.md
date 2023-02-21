@@ -105,7 +105,7 @@ The library consists of the following key blocks (by combining these blocks it i
 
 To make it clearer, here are some examples of possible service structures that can be built using wiredflow:
 
-<img src="./docs/media/flow?examples.png" width="750"/>
+<img src="./docs/media/flow_examples.png" width="750"/>
 
 ### Documentation 
 
