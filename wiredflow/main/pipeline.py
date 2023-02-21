@@ -90,7 +90,7 @@ class Pipeline:
         self.with_storage_action = True
 
         # Define unique name for storage stage
-        stage_id = f'{storage_name} in {self.pipeline_name}'
+        stage_id = f'{storage_name}_in_{self.pipeline_name}'
         self.stages.append(StoreStageProxy(storage_name, stage_id, **kwargs))
         return self
 

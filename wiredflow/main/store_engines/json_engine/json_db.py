@@ -1,5 +1,4 @@
 import json
-import threading
 from pathlib import Path
 from typing import Any, Optional, Union, List, Dict
 
@@ -28,8 +27,7 @@ class JSONStorageStage(StageStorageInterface):
             self.db_path.mkdir(parents=True, exist_ok=True)
         self.db_path_file = Path(self.db_path, f'{self.stage_id}.json')
 
-        self.preprocessor = Preprocessor(params.get('preprocessing'),
-                                         self.db_path_file)
+        self.preprocessor = Preprocessor(params.get('preprocessing'))
         self.mapper = DataMapper(params.get('mapping'), self.db_path_file)
 
         self.event = Event()

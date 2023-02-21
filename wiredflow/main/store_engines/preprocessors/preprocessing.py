@@ -1,5 +1,3 @@
-import json
-from pathlib import Path
 from typing import Union, List, Dict
 
 from wiredflow.main.store_engines.preprocessors.datetime_label import \
@@ -13,15 +11,14 @@ class Preprocessor:
     """
     preprocessor_by_name = {'add_datetime': DatetimeEnrich}
 
-    def __init__(self, name: Union[str, None, List[str]], db_path_file: Path):
+    def __init__(self, name: Union[str, None, List[str]]):
         if name is not None and isinstance(name, list) is False:
             # Wrap in list
             name = [name]
 
         self.preprocessors_to_apply = name
-        self.db_path_file = db_path_file
 
-    def apply_during_save(self, info_to_write: Dict):
+    def apply_during_save(self, info_to_write: Union[Dict, List]):
         """ Apply all defined preprocessors to obtained data """
         if self.preprocessors_to_apply is None:
             # There is no need to apply any preprocessing

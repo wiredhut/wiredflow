@@ -3,6 +3,7 @@ from typing import Union, Callable
 from wiredflow.main.actions.assimilation.interface import ProxyStage
 from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
 from wiredflow.main.store_engines.json_engine.json_db import JSONStorageStage
+from wiredflow.main.store_engines.mongo_engine.mongo_db import MongoStorageStage
 
 
 class StoreStageProxy(ProxyStage):
@@ -12,7 +13,7 @@ class StoreStageProxy(ProxyStage):
     """
 
     storage_by_name = {'json': JSONStorageStage,
-                       'mongo': None}
+                       'mongo': MongoStorageStage}
 
     def __init__(self, storage_name: Union[str, Callable], stage_id: str, **kwargs):
         if isinstance(storage_name, str):
