@@ -94,6 +94,19 @@ Or investigate jupyter notebooks with examples:
 
 ## Description
 
+The library is not a low-code solution, but it's great for developing custom pipelines when you can't avoid writing custom business logic. 
+The library consists of the following key blocks (by combining these blocks it is possible to implement processing pipelines of flexible structure): 
+* **HTTP connector** - Retrieving data using `HTTP` requests, for example using the `GET` method.
+* **MQTT connector** - Retrieving data using `MQTT` protocol, the connector subscribes to the MQTT queue and receives data real-time.
+* **Storage** - File or database where to save data
+* **Core logic** - An abstraction that allows implementing custom business logic using Python function
+* **Send** - An abstraction that sends data received through core logic processing to specified endpoints. 
+  Can use both `MQTT` brokers and standard `POST`/`PUT` `HTTP`/`HTTPS` methods 
+
+To make it clearer, here are some examples of possible service structures that can be built using wiredflow:
+
+<img src="./docs/media/flow?examples.png" width="750"/>
+
 ### Documentation 
 
 ### Available connectors (per protocols)

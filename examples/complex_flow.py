@@ -27,7 +27,7 @@ def custom_core_logic(**parameters_to_use):
         message.update({'uppercase': f'Calculated value is {response}'})
 
     message.update({'calculation_mode': calculation_mode})
-    print(f'For letter {http_letter["Generated random letter"]} response is: {response:.1f}')
+    print(f'For letter "{http_letter["Generated random letter"]}" response is: {response:.1f}')
     return message
 
 
@@ -50,12 +50,12 @@ def launch_complex_demo():
     flow_builder = FlowBuilder()
 
     # Define first data sources with random integers
-    flow_builder.add_pipeline('http_source_int', timedelta_seconds=10). \
-        with_http_connector(source='http://localhost:8027').with_storage('json')
+    flow_builder.add_pipeline('http_source_int', timedelta_seconds=10) \
+        .with_http_connector(source='http://localhost:8027').with_storage('json')
 
     # Second HTTP source with random letters
-    flow_builder.add_pipeline('http_source_str', timedelta_seconds=10). \
-        with_http_connector(source='http://localhost:8026')\
+    flow_builder.add_pipeline('http_source_str', timedelta_seconds=10) \
+        .with_http_connector(source='http://localhost:8026')\
         .with_storage('json', preprocessing='overwrite')
 
     # MQTT source with integers

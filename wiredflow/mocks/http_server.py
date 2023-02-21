@@ -1,3 +1,4 @@
+import cgi
 import json
 
 from http.server import HTTPServer, BaseHTTPRequestHandler
@@ -19,10 +20,22 @@ class RandomIntegersHandler(BaseHTTPRequestHandler):
     """
 
     def do_PUT(self):
+        content_length = int(self.headers['Content-Length'])
+        send_data = self.rfile.read(content_length)
+        send_data = send_data.decode('utf-8')
+
+        print(f'Local HTTP server obtain data via PUT method: {send_data}')
+
         jsonbytes = self._prepare_json_response()
         self.wfile.write(jsonbytes)
 
     def do_POST(self):
+        content_length = int(self.headers['Content-Length'])
+        send_data = self.rfile.read(content_length)
+        send_data = send_data.decode('utf-8')
+
+        print(f'Local HTTP server obtain data via POST method: {send_data}')
+
         jsonbytes = self._prepare_json_response()
         self.wfile.write(jsonbytes)
 
@@ -51,10 +64,22 @@ class RandomStringHandler(BaseHTTPRequestHandler):
     """
 
     def do_PUT(self):
+        content_length = int(self.headers['Content-Length'])
+        send_data = self.rfile.read(content_length)
+        send_data = send_data.decode('utf-8')
+
+        print(f'Local HTTP server obtain data via PUT method: {send_data}')
+
         jsonbytes = self._prepare_json_response()
         self.wfile.write(jsonbytes)
 
     def do_POST(self):
+        content_length = int(self.headers['Content-Length'])
+        send_data = self.rfile.read(content_length)
+        send_data = send_data.decode('utf-8')
+
+        print(f'Local HTTP server obtain data via POST method: {send_data}')
+
         jsonbytes = self._prepare_json_response()
         self.wfile.write(jsonbytes)
 

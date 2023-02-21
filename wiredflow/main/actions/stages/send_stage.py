@@ -1,3 +1,4 @@
+import json
 from abc import abstractmethod
 from typing import Any, List, Dict
 import paho.mqtt.client as mqtt
@@ -72,8 +73,10 @@ class HTTPPUTSendStage(StageSendInterface):
                 continue
 
             if self.label_to_send in output_data.keys():
-                requests.put(self.destination, headers=self.headers,
-                             data=output_data[self.label_to_send])
+                data = output_data[self.label_to_send]
+                if isinstance(data, dict):
+                    data = json.dumps(data)
+                requests.put(self.destination, headers=self.headers, data=data)
 
 
 class HTTPPOSTSendStage(StageSendInterface):
@@ -93,5 +96,7 @@ class HTTPPOSTSendStage(StageSendInterface):
                 continue
 
             if self.label_to_send in output_data.keys():
-                requests.post(self.destination, headers=self.headers,
-                              data=output_data[self.label_to_send])
+                data = output_data[self.label_to_send]
+                if isinstance(data, dict):
+                    data = json.dumps(data)
+                requests.post(self.destination, headers=self.headers, data=data)
