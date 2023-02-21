@@ -78,3 +78,9 @@ def launch_demo_with_several_mqtt_connectors(flow_processor: FlowProcessor):
     with Pool(processes=3) as pool:
         return pool.map(partial(_parallel_launching, flow_processor=flow_processor),
                         ['mqtt_str_demo', 'mqtt_int_demo', 'default'])
+
+
+def launch_demo_for_complex_case(flow_processor: FlowProcessor):
+    with Pool(processes=4) as pool:
+        return pool.map(partial(_parallel_launching, flow_processor=flow_processor),
+                        ['http_str_demo', 'http_int_demo', 'mqtt_int_demo', 'default'])

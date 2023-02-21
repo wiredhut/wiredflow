@@ -102,16 +102,20 @@ class Pipeline:
 
     def send(self, send_name: Union[str, Callable] = 'mqtt',
              destination: Union[str, None] = None,
-             data_aggregate: Union[str, None] = None, **kwargs):
+             label_to_send: Union[str, None] = None, **kwargs):
         """
         Configure sender for desired data aggregates
 
-        :param send_name: name of sender to apply or custom implementation
-        :param destination: name of topic to send message to or source
-        :param data_aggregate: name of data aggregation
+        :param send_name: name of sender to apply or custom implementation.
+        Possible options:
+            - 'mqtt' to send messages via MQTT
+            - 'http_post' to send message via HTTP post request
+            - 'http_put' to send message via HTTP put request
+        :param destination: ip of destination - where to send messages
+        :param label_to_send: name of data aggregation to send
         """
         self.with_sender = True
-        kwargs = {**kwargs, **{'data_aggregate': data_aggregate}}
+        kwargs = {**kwargs, **{'label_to_send': label_to_send}}
 
         self.stages.append(SendStageProxy(send_name, destination, **kwargs))
         return self

@@ -45,9 +45,10 @@ def launch_advanced_http_demo():
         - http://localhost:8026 will return letters (need to request every 1 minute)
 
     Task: if the current letter is uppercase, the service
-    should download all the numbers that were stored in the database.
-    If the letter is lowercase, then you have to calculate mean value.
-    The resulting digits need to be sent by notification via local MQTT broker:
+    should download all the numbers that were stored in the database and
+    calculate sum of all obtained values.
+    If the letter is lowercase, there is a need to calculate mean value.
+    The resulting responses need to be sent by notification via local MQTT broker:
     one message to topic 'uppercase' and another to topic 'lowercase'.
     Calculations must be performed every 30 seconds
 
@@ -68,7 +69,7 @@ def launch_advanced_http_demo():
 
     # Core logic of our case
     # Configure notification sender: send message based on calculation approach
-    flow_builder.add_pipeline('integers_core_matching', timedelta_seconds=30) \
+    flow_builder.add_pipeline('core_matching', timedelta_seconds=30) \
         .with_core_logic(toy_example_logic)\
         .send(destination='localhost', port=1883, topic='demo/uppercase', label_to_send='uppercase')\
         .send(destination='localhost', port=1883, topic='demo/lowercase', label_to_send='lowercase')

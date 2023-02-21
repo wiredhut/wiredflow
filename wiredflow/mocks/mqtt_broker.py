@@ -16,6 +16,7 @@ def configure_int_mqtt_broker():
     # Waiting for successful subscriber initialization
     sleep(5)
 
+    logger.info(f'Start mock MQTT broker in separate process - topic: {topic}')
     for generated_int in range(0, 500):
         payload = {"Generated number": str(generated_int)}
         current_message = {'topic': topic, 'payload': json.dumps(payload)}
@@ -36,6 +37,7 @@ def configure_str_mqtt_broker():
     # Waiting for successful subscriber initialization
     sleep(5)
 
+    logger.info(f'Start mock MQTT broker in separate process - topic: {topic}')
     for generated_str in string.ascii_letters:
         payload = {"Generated letter": generated_str}
         current_message = {'topic': topic, 'payload': json.dumps(payload)}

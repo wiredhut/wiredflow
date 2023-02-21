@@ -2,7 +2,7 @@ from typing import Union, Callable
 
 from wiredflow.main.actions.assimilation.interface import ProxyStage
 from wiredflow.main.actions.stages.send_stage import StageSendInterface, \
-    MQTTSendStage
+    MQTTSendStage, HTTPPUTSendStage, HTTPPOSTSendStage
 
 
 class SendStageProxy(ProxyStage):
@@ -10,7 +10,9 @@ class SendStageProxy(ProxyStage):
     Class for compiling actual sender for data
     """
 
-    sender_by_name = {'mqtt': MQTTSendStage}
+    sender_by_name = {'mqtt': MQTTSendStage,
+                      'http_put': HTTPPUTSendStage,
+                      'http_post': HTTPPOSTSendStage}
 
     def __init__(self, send_name: Union[str, Callable],
                  destination: str, **kwargs):

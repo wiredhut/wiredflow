@@ -18,6 +18,14 @@ class RandomIntegersHandler(BaseHTTPRequestHandler):
     Class for imitating API with GET requests. Return random integers values
     """
 
+    def do_PUT(self):
+        jsonbytes = self._prepare_json_response()
+        self.wfile.write(jsonbytes)
+
+    def do_POST(self):
+        jsonbytes = self._prepare_json_response()
+        self.wfile.write(jsonbytes)
+
     def do_GET(self):
         """ Generate random number and send it by request """
         data_to_send = json.dumps({'Generated random number': random.randint(0, 100)})
@@ -41,6 +49,14 @@ class RandomStringHandler(BaseHTTPRequestHandler):
     """
     Class for imitating API with GET requests. Return random letters
     """
+
+    def do_PUT(self):
+        jsonbytes = self._prepare_json_response()
+        self.wfile.write(jsonbytes)
+
+    def do_POST(self):
+        jsonbytes = self._prepare_json_response()
+        self.wfile.write(jsonbytes)
 
     def do_GET(self):
         """ Generate random number and send it by request """
