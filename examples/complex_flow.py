@@ -10,7 +10,7 @@ def custom_core_logic(**parameters_to_use):
     # Load all currently available integers and current letter
     http_integers = db_connectors['http_source_int'].load()
     http_letter = db_connectors['http_source_str'].load()
-    mqtt_integers = db_connectors['mqtt_source_str'].load()
+    mqtt_integers = db_connectors['mqtt_source_int'].load()
 
     # Get numbers
     http_integers = list(map(lambda x: int(x['Generated random number']), http_integers))
@@ -59,7 +59,7 @@ def launch_complex_demo():
         .with_storage('json', preprocessing='overwrite')
 
     # MQTT source with integers
-    flow_builder.add_pipeline('mqtt_source_str') \
+    flow_builder.add_pipeline('mqtt_source_int') \
         .with_mqtt_connector(source='localhost', port=1883, topic='/demo/integers',
                              username='wiredflow', password='wiredflow') \
         .with_storage('json')

@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any, Optional, Union, List, Dict
 
 from loguru import logger
+from threading import Event
 
 from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
 from wiredflow.main.store_engines.preprocessors.preprocessing import \
@@ -29,6 +30,9 @@ class JSONStorageStage(StageStorageInterface):
         self.preprocessor = Preprocessor(params.get('preprocessing'),
                                          self.db_path_file)
 
+        self.event = Event()
+        self.event.set()
+
     def save(self, relevant_info: Any, **kwargs):
         self._access_to_file('write', info_to_write=relevant_info)
         logger.debug(f'JSON info. Storage {self.stage_id} successfully save data'
@@ -47,8 +51,8 @@ class JSONStorageStage(StageStorageInterface):
         :param read_kwargs: additional parameters to request data
         """
         # To avoid deadlock - synchronize thread during file storing or reading
-        lock = threading.Lock()
-        lock.acquire(blocking=False)
+        self.event.wait()
+        self.event.clear()
 
         loaded_files = None
         if mode == 'read':
@@ -66,7 +70,7 @@ class JSONStorageStage(StageStorageInterface):
             info_to_write = self.preprocessor.apply_during_save(info_to_write)
             self._save_dict_into_file(info_to_write)
 
-        lock.release()
+        self.event.set()
         return loaded_files
 
     def _save_dict_into_file(self, info_to_write: Union[List, Dict]):
