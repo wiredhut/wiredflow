@@ -9,7 +9,7 @@ def custom_core_logic(**parameters_to_use):
 
     # Load all currently available integers and current letter
     http_integers = db_connectors['http_source_int'].load()
-    http_letter = db_connectors['http_source_str'].load()
+    http_letter = db_connectors['http_source_str'].load()[0]
     mqtt_integers = db_connectors['mqtt_source_int'].load()
 
     # Get numbers

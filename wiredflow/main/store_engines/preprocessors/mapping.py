@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import Union, Dict
+from typing import Union, Dict, List
 
 
 class DataMapper:
@@ -19,7 +19,7 @@ class DataMapper:
         self.name = name
         self.db_path_file = db_path_file
 
-    def apply_during_save(self, info_to_write: Dict):
+    def apply_during_save(self, info_to_write: Union[Dict, List]):
         """ Apply all defined mappers to obtained data """
         current_db_exists = self.db_path_file.is_file()
 
@@ -30,16 +30,28 @@ class DataMapper:
 
             if old_data is None:
                 return info_to_write
-            info_to_write = {**old_data, **info_to_write}
+
+            if isinstance(info_to_write, dict):
+                info_to_write = {**old_data, **info_to_write}
+            else:
+                # Information in a form of list - map data iteratively
+                for info_item in info_to_write:
+                    old_data = {**old_data, **info_item}
+                info_to_write = old_data
         elif self.name == 'extend':
-            # Extend JSON with new item
+            # Extend JSON with new item (items)
             if current_db_exists:
                 with open(self.db_path_file, 'r') as fp:
                     old_data = json.load(fp)
-                old_data.append(info_to_write)
+
+                if isinstance(info_to_write, dict):
+                    old_data.append(info_to_write)
+                else:
+                    old_data.extend(info_to_write)
                 info_to_write = old_data
             else:
-                info_to_write = [info_to_write]
+                if isinstance(info_to_write, list) is False:
+                    info_to_write = [info_to_write]
 
         return info_to_write
 

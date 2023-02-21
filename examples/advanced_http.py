@@ -10,7 +10,7 @@ def toy_example_logic(**parameters_to_use):
 
     # Load all currently available integers and current letter
     available_integers = db_connectors['integers_processing'].load()
-    current_letter = db_connectors['letters_processing'].load()
+    current_letter = db_connectors['letters_processing'].load()[0]
 
     if available_integers is None or current_letter is None:
         # Skip current iteration - there are no data to process
