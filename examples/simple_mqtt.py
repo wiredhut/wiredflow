@@ -9,7 +9,8 @@ def launch_advanced_mqtt_demo():
     and save it into a file
 
     NB: Demo will be executed in the loop. This means that the example won't
-    finish calculating until you stop it yourself
+    finish calculating until you stop it yourself. Alternatively - you can assign
+    'execution_seconds' parameter to set the timeout
     """
     flow_builder = FlowBuilder()
 
@@ -24,7 +25,7 @@ def launch_advanced_mqtt_demo():
 
     # Or simply flow.launch_flow()
     # if there is no need to launch local demo http server
-    launch_demo_with_int_mqtt_connector(flow)
+    launch_demo_with_int_mqtt_connector(flow, execution_seconds=10)
 
 
 if __name__ == '__main__':

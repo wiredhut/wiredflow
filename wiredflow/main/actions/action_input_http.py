@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 import schedule
 import time
 
@@ -29,7 +29,15 @@ class InputActionHttps(Action):
         schedule.every(self.timedelta_seconds).seconds.do(self.perform_action)
         while True:
             schedule.run_pending()
+            if self.timeout_timer is not None and self.timeout_timer.is_limit_reached():
+                # Finish execution
+                break
+            elif self.timeout_timer is not None and self.timeout_timer.will_limit_be_reached(number_of_seconds_to_break):
+                break
+
             time.sleep(number_of_seconds_to_break)
+
+        return None
 
     def perform_action(self):
         """

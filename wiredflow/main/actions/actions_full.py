@@ -28,6 +28,12 @@ class FullProcessingAction(Action):
             schedule.run_pending()
             time.sleep(number_of_seconds_to_break)
 
+            if self.timeout_timer is not None and self.timeout_timer.is_limit_reached():
+                # Finish execution
+                break
+            elif self.timeout_timer is not None and self.timeout_timer.will_limit_be_reached(number_of_seconds_to_break):
+                break
+
     def perform_action(self):
         """ Launch all processes for desired launch """
         if self.connector is not None:

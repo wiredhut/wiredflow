@@ -53,7 +53,8 @@ def launch_advanced_http_demo():
     Calculations must be performed every 30 seconds
 
     NB: Demo will be executed in the loop. This means that the example won't
-    finish calculating until you stop it yourself.
+    finish calculating until you stop it yourself. Alternatively - you can assign
+    'execution_seconds' parameter to set the timeout
     """
     flow_builder = FlowBuilder()
 

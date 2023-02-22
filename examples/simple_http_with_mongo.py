@@ -8,7 +8,8 @@ def launch_simple_http_demo_with_mongo_database():
     All data will be saved into configured remote database
 
     NB: Demo will be executed in the loop. This means that the example won't
-    finish calculating until you stop it yourself
+    finish calculating until you stop it yourself. Alternatively - you can assign
+    'execution_seconds' parameter to set the timeout
     """
     flow_builder = FlowBuilder()
 

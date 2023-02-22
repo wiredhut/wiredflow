@@ -1,5 +1,8 @@
 import threading
+from typing import Union
+
 from wiredflow.main.pipeline import Pipeline
+from wiredflow.wiredtimer.timer import WiredTimer
 
 
 class FlowProcessor:
@@ -38,11 +41,17 @@ class FlowProcessor:
 
         self._reassign_db_connectors_to_core_logic_pipeline()
 
-    def launch_flow(self):
-        """ Launch each pipeline in its own thread """
+    def launch_flow(self, execution_seconds: Union[int, None] = None):
+        """
+        Launch each pipeline in its own thread
+
+        :param execution_seconds: timeout for process execution in seconds
+        """
+        timeout_timer = WiredTimer(execution_seconds)
+
         self.initialize_internal_structure()
 
-        threads = [threading.Thread(target=launch_pipeline, args=(pipeline,))
+        threads = [threading.Thread(target=launch_pipeline, args=(pipeline, timeout_timer))
                    for pipeline in self.processing_pool.values()]
 
         # Launch pipelines without core processing
@@ -71,5 +80,5 @@ class FlowProcessor:
                 pipeline.db_connectors = self.extract_objects
 
 
-def launch_pipeline(pipeline):
-    pipeline.run()
+def launch_pipeline(pipeline, timeout_timer: WiredTimer):
+    pipeline.run(timeout_timer)

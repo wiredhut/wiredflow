@@ -46,6 +46,10 @@ def launch_complex_demo():
     is lowercase, the sum of values obtained via MQTT is subtracted from the
     sum of values obtained via HTTP. The calculated values must be sent to
     three places: two MQTT queues and a PUT request to local server
+
+    NB: Demo will be executed in the loop. This means that the example won't
+    finish calculating until you stop it yourself. Alternatively - you can assign
+    'execution_seconds' parameter to set the timeout
     """
     flow_builder = FlowBuilder()
 
@@ -76,7 +80,7 @@ def launch_complex_demo():
 
     # Or simply flow.launch_flow()
     # if there is no need to launch local demo http servers
-    launch_demo_for_complex_case(flow)
+    launch_demo_for_complex_case(flow, execution_seconds=30)
 
 
 if __name__ == '__main__':

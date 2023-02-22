@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import List, Any, Dict
+from typing import List, Any, Dict, Union
 
 from loguru import logger
 
@@ -8,6 +8,7 @@ from wiredflow.main.actions.stages.core_stage import CoreLogicInterface
 from wiredflow.main.actions.stages.http_stage import StageHTTPConnector
 from wiredflow.main.actions.stages.send_stage import StageSendInterface
 from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
+from wiredflow.wiredtimer.timer import WiredTimer
 
 
 class Action:
@@ -46,6 +47,9 @@ class Action:
         self.timedelta_seconds = round(self.timedelta_seconds)
         if self.timedelta_seconds < 1:
             self.timedelta_seconds = 1
+
+        # Field for timer
+        self.timeout_timer: Union[WiredTimer, None] = None
 
     def _init_stages_objects(self):
         """ Sequentially launch stages initialization """

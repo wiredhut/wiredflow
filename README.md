@@ -80,14 +80,16 @@ pip install git+https://github.com/wiredhut/wiredflow.git
 
 NB: All examples should start in your virtual environment without any problems. 
 The wiredflow-based services do not require any configuration beyond Python and
-library's dependencies.
+library's dependencies (unless it is explicitly stated).
 
-First, check [examples](examples) folder: 
+First, check [examples](examples) folder, which can be easily launched locally: 
 * [simple HTTP case](examples/simple_http.py) - single data source which can be reached via simple HTTP GET request
 * [advanced HTTP case](examples/advanced_http.py) - several data sources (receive data via HTTP) with custom data processing
 * [simple MQTT case](examples/simple_mqtt.py) - single data source which send messages using MQTT
 * [advanced MQTT case](examples/advanced_mqtt.py) - several data sources (receive data via MQTT) with custom data processing
 * [complex multi-source case](examples/complex_flow.py) - complex flow example with custom multi-step data processing and several notificators
+
+Examples with pre-configured databases:
 * [simple_http_with_mongo.py](examples/simple_http_with_mongo.py) - single data source which can be reached via simple HTTP GET request and
 saved into MongoDB. Tutorial how to configure free remote MongoDB can be [found here](https://www.mongodb.com/basics/mongodb-atlas-tutorial).
 
@@ -123,13 +125,13 @@ however, there are some main aspects shown below:
 | MQTT      | `with_mqtt_connector()` | Create stage with ability to subscribe to MQTT topic and recieve data      |
 | HTTP      | `with_http_connector()` | Create stage with ability to send GET requests using HTTP / HTTPS protocol |
 
-### Available storages (databases and so on)
+### Available storages (databases and files storages for local usage)
 
-|  Storage  |      Command for adding           | Short description                                                          |
-|-----------|-----------------------------------|----------------------------------------------------------------------------|
-| JSON file | `with_storage('json', **params)`  | Create and use local JSON file and use it as data storage |
-| CSV file  | `with_storage('csv', **params)`   | Create and use local CSV file and use it as data storage |
-| MongoDB   | `with_storage('mongo', **params)` | Create and use MongoDB instance |
+|  Storage  |      Command for adding           | Short description                                             |
+|-----------|-----------------------------------|---------------------------------------------------------------|
+| JSON file | `with_storage('json', **params)`  | Create and use local JSON file and use it as data storage     |
+| CSV file  | `with_storage('csv', **params)`   | Create and use local CSV file and use it as data storage      |
+| MongoDB   | `with_storage('mongo', **params)` | Define connect to already initialized MongoDB instance        |
 
 
 ## Contributing 

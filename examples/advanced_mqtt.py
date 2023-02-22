@@ -27,7 +27,8 @@ def launch_advanced_mqtt_demo():
     a message to topic 'demo/matched'.
 
     NB: Demo will be executed in the loop. This means that the example won't
-    finish calculating until you stop it yourself
+    finish calculating until you stop it yourself. Alternatively - you can assign
+    'execution_seconds' parameter to set the timeout
     """
     flow_builder = FlowBuilder()
 
@@ -53,7 +54,7 @@ def launch_advanced_mqtt_demo():
 
     # Or simply flow.launch_flow()
     # if there is no need to launch local demo http server
-    launch_demo_with_several_mqtt_connectors(flow)
+    launch_demo_with_several_mqtt_connectors(flow, execution_seconds=20)
 
 
 if __name__ == '__main__':

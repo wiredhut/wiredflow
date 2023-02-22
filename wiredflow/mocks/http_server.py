@@ -1,4 +1,3 @@
-import cgi
 import json
 
 from http.server import HTTPServer, BaseHTTPRequestHandler
@@ -103,15 +102,38 @@ class RandomStringHandler(BaseHTTPRequestHandler):
         return data_to_send.encode(encoding='utf_8')
 
 
-def start_mock_int_http_server():
+def _start_mock_http_server(execution_seconds: Union[int, None],
+                            server: HTTPServer):
+    common_message = f'Start mock HTTP server in separate process: {HTTP_LOCALHOST},' \
+                     f' port {server.server_port}'
+    if execution_seconds is None:
+        logger.info(common_message)
+    else:
+        logger.info(
+            f'{common_message}. Execution timeout, seconds: {execution_seconds}')
+
+    # Forever loop
+    if execution_seconds is None:
+        server.serve_forever()
+
+    # Execute server for desired number of seconds
+    # Solution from https://stackoverflow.com/a/61644043/12195438
+    try:
+        server.timeout = execution_seconds
+        server.handle_timeout = lambda: (_ for _ in ()).throw(TimeoutError())
+        while True:
+            server.handle_request()
+    except TimeoutError:
+        logger.info(f'WiredTimer info: timeout was reached')
+
+    return None
+
+
+def start_mock_int_http_server(execution_seconds: Union[int, None] = None):
     server = HTTPServer((HTTP_LOCALHOST, INT_PORT), RandomIntegersHandler)
-    logger.info(f'Start mock HTTP server in separate process: {HTTP_LOCALHOST},'
-                f' port {INT_PORT}')
-    server.serve_forever()
+    return _start_mock_http_server(execution_seconds, server)
 
 
-def start_mock_str_http_server():
+def start_mock_str_http_server(execution_seconds: Union[int, None] = None):
     server = HTTPServer((HTTP_LOCALHOST, STR_PORT), RandomStringHandler)
-    logger.info(f'Start mock HTTP server in separate process: {HTTP_LOCALHOST},'
-                f' port {STR_PORT}')
-    server.serve_forever()
+    return _start_mock_http_server(execution_seconds, server)

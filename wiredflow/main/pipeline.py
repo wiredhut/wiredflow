@@ -9,6 +9,7 @@ from wiredflow.main.actions.assimilation.mqtt_staging import MQTTStageProxy
 from wiredflow.main.actions.assimilation.send_staging import SendStageProxy
 from wiredflow.main.actions.assimilation.store_staging import StoreStageProxy
 from wiredflow.main.template import PipelineActionTemplate
+from wiredflow.wiredtimer.timer import WiredTimer
 
 
 class Pipeline:
@@ -124,11 +125,16 @@ class Pipeline:
         self.stages.append(SendStageProxy(send_name, destination, **kwargs))
         return self
 
-    def run(self):
+    def run(self, timeout_timer: WiredTimer):
         """ Launch compiled action in current pipeline """
-        logger.info(f'Launch pipeline "{self.pipeline_name}"')
+        common_message = f'Launch pipeline "{self.pipeline_name}"'
+        if timeout_timer.execution_seconds is None:
+            logger.info(common_message)
+        else:
+            logger.info(f'{common_message}. Execution timeout, seconds: {timeout_timer.execution_seconds}')
 
         self.action.db_connectors = self.db_connectors
+        self.action.timeout_timer = timeout_timer
         self.action.execute_action()
 
     def create_action(self):

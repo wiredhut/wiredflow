@@ -12,7 +12,8 @@ def launch_simple_http_demo():
     So feel free to check more examples!
 
     NB: Demo will be executed in the loop. This means that the example won't
-    finish calculating until you stop it yourself
+    finish calculating until you stop it yourself. Alternatively - you can assign
+    'execution_seconds' parameter to set the timeout
     """
     flow_builder = FlowBuilder()
 
@@ -28,7 +29,7 @@ def launch_simple_http_demo():
 
     # Or simply flow.launch_flow()
     # if there is no need to launch local demo http server
-    launch_demo_with_int_http_connector(flow)
+    launch_demo_with_int_http_connector(flow, execution_seconds=20)
 
 
 if __name__ == '__main__':

@@ -6,14 +6,17 @@ import paho.mqtt.client as mqtt
 from wiredflow.main.actions.action_interface import Action
 from wiredflow.main.actions.assimilation.interface import ProxyStage
 from wiredflow.main.actions.stages.mqtt_stage import StageMQTTConnectorInterface
+from wiredflow.wiredtimer.timer import WiredTimer
 
 
 class MQTTMessagesProcessingSybAction:
     """ MQTT message processing with defined stages """
-    def __init__(self, db_saver: Any, topic: str):
+    def __init__(self, db_saver: Any, topic: str, timeout_timer: WiredTimer):
         self.db_saver = db_saver
         self.topic = topic
         self.messages = []
+
+        self.timeout_timer = timeout_timer
 
         # If flow with messages too frequent - it is possible to use small stack
         self.max_messages_in_stack = 1
@@ -45,12 +48,19 @@ class InputActionMQTT(Action):
         # Get connector object and saver
         connector = self.init_stages[0]
         db_saver = self.init_stages[1]
-        mqtt_processing = MQTTMessagesProcessingSybAction(db_saver, connector.topic)
+        mqtt_processing = MQTTMessagesProcessingSybAction(db_saver, connector.topic,
+                                                          self.timeout_timer)
 
         self.subscribe_to_broker(connector, mqtt_processing)
 
         # Launch as loop
-        self.client.loop_forever()
+        if self.timeout_timer is not None and self.timeout_timer.execution_seconds is not None:
+            while self.timeout_timer.is_limit_reached() is False:
+                self.client.loop_start()
+            self.client.loop_stop()
+            exit()
+        else:
+            self.client.loop_forever()
 
     def subscribe_to_broker(self, connector: StageMQTTConnectorInterface,
                             mqtt_processing: MQTTMessagesProcessingSybAction):
