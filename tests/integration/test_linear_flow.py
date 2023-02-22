@@ -1,3 +1,4 @@
+import json
 import shutil
 from pathlib import Path
 
@@ -29,7 +30,13 @@ def test_http_local():
     flow = flow_builder.build()
     launch_demo_with_int_http_connector(flow, execution_seconds=10)
 
-    assert Path(path_to_save_files, 'json_in_test_http_local.json').is_file()
+    created_file = Path(path_to_save_files, 'json_in_test_http_local.json')
+    assert created_file.is_file()
+    with open(created_file, 'r') as fp:
+        loaded_file = json.load(fp)
+
+    assert isinstance(loaded_file, list)
+    assert isinstance(loaded_file[0]['Generated random number'], int)
     remove_folder_with_files(path_to_save_files)
 
 
@@ -51,5 +58,11 @@ def test_mqtt_local():
     flow = flow_builder.build()
     launch_demo_with_int_mqtt_connector(flow, execution_seconds=10)
 
-    assert Path(path_to_save_files, 'json_in_mqtt_subscriber.json').is_file()
+    created_file = Path(path_to_save_files, 'json_in_mqtt_subscriber.json')
+    assert created_file.is_file()
+    with open(created_file, 'r') as fp:
+        loaded_file = json.load(fp)
+
+    assert isinstance(loaded_file, list)
+    assert int(loaded_file[0]['Generated number']) == 0
     remove_folder_with_files(path_to_save_files)

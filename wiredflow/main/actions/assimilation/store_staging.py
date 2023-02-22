@@ -2,6 +2,7 @@ from typing import Union, Callable
 
 from wiredflow.main.actions.assimilation.interface import ProxyStage
 from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
+from wiredflow.main.store_engines.csv_engine.csv_db import CSVStorageStage
 from wiredflow.main.store_engines.json_engine.json_db import JSONStorageStage
 from wiredflow.main.store_engines.mongo_engine.mongo_db import MongoStorageStage
 
@@ -13,6 +14,7 @@ class StoreStageProxy(ProxyStage):
     """
 
     storage_by_name = {'json': JSONStorageStage,
+                       'csv': CSVStorageStage,
                        'mongo': MongoStorageStage}
 
     def __init__(self, storage_name: Union[str, Callable], stage_id: str, **kwargs):
