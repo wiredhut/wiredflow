@@ -5,7 +5,7 @@ from loguru import logger
 
 from wiredflow.main.actions.assimilation.interface import ProxyStage
 from wiredflow.main.actions.stages.core_stage import CoreLogicInterface
-from wiredflow.main.actions.stages.http_stage import StageHTTPConnector
+from wiredflow.main.actions.stages.http_stage import HTTPConnectorInterface
 from wiredflow.main.actions.stages.send_stage import StageSendInterface
 from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
 from wiredflow.wiredtimer.timer import WiredTimer
@@ -86,7 +86,7 @@ class Action:
         """
         relevant_info = None
         for current_stage in self.init_stages:
-            if isinstance(current_stage, StageHTTPConnector):
+            if isinstance(current_stage, HTTPConnectorInterface):
                 self.connector = current_stage
                 relevant_info = current_stage.get()
                 return relevant_info

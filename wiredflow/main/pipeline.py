@@ -34,7 +34,7 @@ class Pipeline:
         self.db_connectors = []
 
     def with_http_connector(self,
-                            name: Union[str, Callable] = 'default',
+                            name: Union[str, Callable] = 'get',
                             source: Union[str, None] = None,
                             headers: Union[Dict, None] = None, **kwargs):
         """
