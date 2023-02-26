@@ -29,13 +29,25 @@ class RandomIntegersHandler(BaseHTTPRequestHandler):
         self.wfile.write(jsonbytes)
 
     def do_POST(self):
+        """ Simulation of POST method """
+        mock_database = [{'Generated random number': random.randint(0, 100)},
+                         {'Generated random number': random.randint(0, 100)},
+                         {'Generated random number': random.randint(0, 100)},
+                         {'Generated random number': random.randint(0, 100)},
+                         {'Generated random number': random.randint(0, 100)},
+                         {'Generated random number': random.randint(0, 100)}]
+
         content_length = int(self.headers['Content-Length'])
         send_data = self.rfile.read(content_length)
         send_data = send_data.decode('utf-8')
 
         print(f'Local HTTP server obtain data via POST method: {send_data}')
-
-        jsonbytes = self._prepare_json_response()
+        if isinstance(send_data, str) and 'select * from demo_table' in send_data:
+            limit = int(send_data.split('limit ')[-1])
+            data_to_send = json.dumps(mock_database[:limit])
+            jsonbytes = self._prepare_json_response(data_to_send)
+        else:
+            jsonbytes = self._prepare_json_response()
         self.wfile.write(jsonbytes)
 
     def do_GET(self):

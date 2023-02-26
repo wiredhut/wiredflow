@@ -14,8 +14,8 @@ This module is well-suited for both prototype preparation, quick experiments,
 and incorporation into industrial systems step-by-step. However, we recommend 
 starting to use the library as a tool for prototyping. It could be especially 
 convenient for IoT applications data processing (data from sensors often can 
-be delivered via MQTT protocol). It allows configuring HTTP/HTTPS, MQTT, 
-database connectors, schedulers, and much more to use all of it through 
+be delivered via MQTT protocol). So wiredflow is pretty good solution for continuous streaming workflows.
+It allows configuring HTTP/HTTPS, MQTT, database connectors, schedulers, and much more to use all of it through 
 pure Python.
 
 Below is a Q&A section to make it clearer 
@@ -84,6 +84,8 @@ library's dependencies (unless it is explicitly stated).
 
 First, check [examples](examples) folder, which can be easily launched locally: 
 * [simple HTTP case](examples/simple_http.py) - single data source which can be reached via simple HTTP GET request
+* [simple HTTP case with configuration](examples/simple_http_with_configuration.py) - single data source which can be reached via simple HTTP POST request.
+  Parameters of POST request configured with custom logic.
 * [advanced HTTP case](examples/advanced_http.py) - several data sources (receive data via HTTP) with custom data processing
 * [simple MQTT case](examples/simple_mqtt.py) - single data source which send messages using MQTT
 * [advanced MQTT case](examples/advanced_mqtt.py) - several data sources (receive data via MQTT) with custom data processing
@@ -100,10 +102,12 @@ Or investigate jupyter notebooks with examples:
 
 The library is not a low-code solution, but it's great for developing custom pipelines when you can't avoid writing custom business logic. 
 The library consists of the following key blocks (by combining these blocks it is possible to implement processing pipelines of flexible structure): 
+* **Configuration** - Optional block before HTTP and MQTT (or another) connectors to configure connector parameters. Allows implementing custom configurations
+  logic using Python function. Configuration block pass parameters to next stage.
 * **HTTP connector** - Retrieving data using `HTTP` requests, for example using the `GET` method.
 * **MQTT connector** - Retrieving data using `MQTT` protocol, the connector subscribes to the MQTT queue and receives data real-time.
 * **Storage** - File or database where to save data
-* **Core logic** - An abstraction that allows implementing custom business logic using Python function
+* **Core logic** - An abstraction that allows implementing custom business logic using Python function. Core logic block pass data to next stage.
 * **Send** - An abstraction that sends data received through core logic processing to specified endpoints. 
   Can use both `MQTT` brokers and standard `POST`/`PUT` `HTTP`/`HTTPS` methods 
 

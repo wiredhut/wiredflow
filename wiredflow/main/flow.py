@@ -39,7 +39,7 @@ class FlowProcessor:
             pipeline.create_action()
         self._get_db_connectors()
 
-        self._reassign_db_connectors_to_core_logic_pipeline()
+        self._reassign_db_connectors_to_custom_pipeline()
 
     def launch_flow(self, execution_seconds: Union[int, None] = None):
         """
@@ -69,14 +69,17 @@ class FlowProcessor:
                 extract_object = pipeline.action.get_db_connector_object
                 self.extract_objects.update({pipeline_name: extract_object})
 
-    def _reassign_db_connectors_to_core_logic_pipeline(self):
+    def _reassign_db_connectors_to_custom_pipeline(self):
         """
-        Assign DB connectors from data getter pipelines to one with core logic.
+        Assign DB connectors from data getter pipelines to one with core logic
+        or custom configuration logic.
         It allows to core logic submodule get access to all desired databases
         (storages) in the pipeline
         """
         for pipeline_name, pipeline in self.processing_pool.items():
             if pipeline.with_core_action is True:
+                pipeline.db_connectors = self.extract_objects
+            if pipeline.with_configuration_action is True:
                 pipeline.db_connectors = self.extract_objects
 
 

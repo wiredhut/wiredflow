@@ -43,8 +43,14 @@ class InputActionHttps(Action):
         """
         Launch defined stages execution in current action
         """
+        # Configure parameters
+        configured_params = self.launch_configuration()
+
         # Get data via client connection
-        relevant_info = self.launch_http_connector()
+        if configured_params is None:
+            relevant_info = self.launch_http_connector()
+        else:
+            relevant_info = self.launch_http_connector(**configured_params)
         if relevant_info is None:
             # Skip further steps
             return None

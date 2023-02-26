@@ -3,6 +3,8 @@ from typing import Union, Dict, Callable
 
 from loguru import logger
 
+from wiredflow.main.actions.assimilation.configuration_staging import \
+    ConfigurationStageProxy
 from wiredflow.main.actions.assimilation.core_staging import CoreStageProxy
 from wiredflow.main.actions.assimilation.http_staging import HTTPStageProxy
 from wiredflow.main.actions.assimilation.mqtt_staging import MQTTStageProxy
@@ -23,6 +25,7 @@ class Pipeline:
         self.params = params
 
         # Info about actions in the pipeline
+        self.with_configuration_action = False
         self.with_get_request_action = False
         self.with_mqtt_connection = False
         self.with_storage_action = False
@@ -31,7 +34,14 @@ class Pipeline:
 
         self.stages = []
         self.action = None
-        self.db_connectors = []
+        self.db_connectors = {}
+
+    def with_configuration(self, configurator: Callable, **kwargs):
+        """ Configuration of subsequent stage parameters in the pipeline """
+        self.with_configuration_action = True
+
+        self.stages.append(ConfigurationStageProxy(configurator, **kwargs))
+        return self
 
     def with_http_connector(self,
                             name: Union[str, Callable] = 'get',

@@ -59,9 +59,9 @@ class CSVStorageStage(StageStorageInterface):
 
         loaded_files = None
         if mode == 'read':
-            pass
             if self.db_path_file.is_file() is False:
                 # There are no saved data yet - return None
+                self.event.set()
                 return None
 
             # Read file in a form of dictionary

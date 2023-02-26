@@ -58,6 +58,7 @@ class JSONStorageStage(StageStorageInterface):
         if mode == 'read':
             if self.db_path_file.is_file() is False:
                 # There are no saved data yet - return None
+                self.event.set()
                 return None
 
             with open(self.db_path_file, 'r') as fp:

@@ -19,12 +19,13 @@ class PipelineActionTemplate:
         """ Compile action based on pipeline """
         is_http_input = self.p.with_get_request_action is True and self.p.with_storage_action is True
         is_mqtt_input = self.p.with_mqtt_connection is True and self.p.with_storage_action is True
+        is_configuration = self.p.with_configuration_action is True
 
-        if len(self.p.stages) <= 3 and is_http_input:
+        if len(self.p.stages) <= 4 and is_http_input:
             # Short pipeline with only input data actions (use https connection)
             return InputActionHttps(self.p.pipeline_name, self.p.stages, **self.params)
 
-        elif len(self.p.stages) <= 3 and is_mqtt_input:
+        elif len(self.p.stages) <= 4 and is_mqtt_input:
             # Short pipeline with only input data actions (use mqtt connection)
             return InputActionMQTT(self.p.pipeline_name, self.p.stages, **self.params)
 

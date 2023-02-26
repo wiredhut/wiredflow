@@ -4,6 +4,8 @@ from typing import List, Any, Dict, Union
 from loguru import logger
 
 from wiredflow.main.actions.assimilation.interface import ProxyStage
+from wiredflow.main.actions.stages.configuration_stage import \
+    ConfigurationInterface
 from wiredflow.main.actions.stages.core_stage import CoreLogicInterface
 from wiredflow.main.actions.stages.http_stage import HTTPConnectorInterface
 from wiredflow.main.actions.stages.send_stage import StageSendInterface
@@ -78,7 +80,19 @@ class Action:
 
         return None
 
-    def launch_http_connector(self):
+    def launch_configuration(self):
+        """
+        Find configuration stage in the action and execute it.
+        """
+        configured_params = None
+        for current_stage in self.init_stages:
+            if isinstance(current_stage, ConfigurationInterface):
+                configured_params = current_stage.launch(**self.db_connectors)
+                return configured_params
+
+        return configured_params
+
+    def launch_http_connector(self, **configured_params):
         """
         Find connector stage in the action and execute it.
         Allows to obtained data from external data sources via, for
@@ -88,7 +102,7 @@ class Action:
         for current_stage in self.init_stages:
             if isinstance(current_stage, HTTPConnectorInterface):
                 self.connector = current_stage
-                relevant_info = current_stage.get()
+                relevant_info = current_stage.get(**configured_params)
                 return relevant_info
 
         return relevant_info

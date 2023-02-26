@@ -13,7 +13,7 @@ class HTTPConnectorInterface:
         self.headers = headers
 
     @abstractmethod
-    def get(self):
+    def get(self, **params):
         """ Get data via HTTP request """
         raise NotImplementedError()
 
@@ -31,8 +31,8 @@ class StageGetHTTPConnector(HTTPConnectorInterface):
     def __init__(self, source: Union[str, None], headers: Union[Dict, None], **params):
         super().__init__(source, headers, **params)
 
-    def get(self):
-        http_info = requests.get(self.source, headers=self.headers)
+    def get(self, **params):
+        http_info = requests.get(self.source, headers=self.headers, **params)
         return http_info.json()
 
 
@@ -44,9 +44,8 @@ class StagePostHTTPConnector(HTTPConnectorInterface):
 
     def __init__(self, source: Union[str, None], headers: Union[Dict, None], **params):
         super().__init__(source, headers, **params)
-        self.data = params.get('data')
 
-    def get(self):
+    def get(self, **params):
         response = requests.request("POST", self.source, headers=self.headers,
-                                    data=self.data)
+                                    **params)
         return response.json()
