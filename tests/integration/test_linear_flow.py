@@ -1,16 +1,10 @@
 import json
-import shutil
 from pathlib import Path
 
 from wiredflow.main.build import FlowBuilder
 from wiredflow.mocks.demo_bindings import launch_demo_with_int_http_connector, \
     launch_demo_with_int_mqtt_connector
-from wiredflow.paths import get_test_folder_path
-
-
-def remove_folder_with_files(path_to_save_files: Path):
-    if path_to_save_files.is_dir() and len(list(path_to_save_files.iterdir())) > 0:
-        shutil.rmtree(path_to_save_files)
+from wiredflow.paths import get_test_folder_path, remove_folder_with_files
 
 
 def test_http_local():
@@ -19,6 +13,7 @@ def test_http_local():
     Data source - HTTP endpoint
     """
     path_to_save_files = Path(get_test_folder_path(), 'test_http_local')
+    remove_folder_with_files(path_to_save_files)
     flow_builder = FlowBuilder()
 
     flow_builder.add_pipeline('test_http_local', timedelta_seconds=5) \
@@ -46,6 +41,7 @@ def test_mqtt_local():
     Data source - MQTT broker
     """
     path_to_save_files = Path(get_test_folder_path(), 'test_mqtt_local')
+    remove_folder_with_files(path_to_save_files)
     flow_builder = FlowBuilder()
 
     flow_builder.add_pipeline('mqtt_subscriber') \

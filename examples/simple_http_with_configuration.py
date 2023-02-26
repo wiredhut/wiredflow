@@ -11,7 +11,7 @@ def configure_post_request_parameters(**params):
         return {'data': 'select * from demo_table limit 1'}
 
 
-def launch_simple_http_demo():
+def launch_simple_http_demo_with_configuration():
     """
     An example how to create linear pipeline with configuration stage.
     Task: if the database is empty, then query for 5 new rows with numbers.
@@ -25,7 +25,7 @@ def launch_simple_http_demo():
 
     flow_builder.add_pipeline('my_custom_name', timedelta_seconds=10)\
         .with_configuration(configure_post_request_parameters)\
-        .with_http_connector(name='post', source='http://localhost:8027')\
+        .with_http_connector(configuration='post', source='http://localhost:8027')\
         .with_storage('json', preprocessing='add_datetime')
 
     # Configure service and launch it
@@ -38,4 +38,4 @@ def launch_simple_http_demo():
 
 if __name__ == '__main__':
     remove_temporary_folder_for_demo()
-    launch_simple_http_demo()
+    launch_simple_http_demo_with_configuration()

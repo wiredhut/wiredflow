@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Dict, Union
+from typing import Dict, Union, Callable
 
 import requests
 
@@ -49,3 +49,17 @@ class StagePostHTTPConnector(HTTPConnectorInterface):
         response = requests.request("POST", self.source, headers=self.headers,
                                     **params)
         return response.json()
+
+
+class StageCustomHTTPConnector:
+    """ Class for launching custom implementations of http connectors """
+
+    def __init__(self, function_to_launch: Callable, **kwargs):
+        self.function_to_launch = function_to_launch
+        self.kwargs = kwargs
+
+    def get(self, **params):
+        arguments = self.kwargs
+        if isinstance(params, dict) is True:
+            arguments = {**self.kwargs, **params}
+        return self.function_to_launch(**arguments)

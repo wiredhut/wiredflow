@@ -44,19 +44,20 @@ class Pipeline:
         return self
 
     def with_http_connector(self,
-                            name: Union[str, Callable] = 'get',
+                            configuration: Union[str, Callable] = 'get',
                             source: Union[str, None] = None,
                             headers: Union[Dict, None] = None, **kwargs):
         """
         Add new client into processing pipeline to get data via HTTPS requests
 
-        :param name: name of HTTP client realization to use or custom realization
+        :param configuration: name of HTTP client realization to use or custom
+        implementation
         :param source: endpoint to apply get method
         :param headers: dictionary with headers for request
         """
         self.with_get_request_action = True
 
-        self.stages.append(HTTPStageProxy(name, source, headers, **kwargs))
+        self.stages.append(HTTPStageProxy(configuration, source, headers, **kwargs))
         return self
 
     def with_mqtt_connector(self,

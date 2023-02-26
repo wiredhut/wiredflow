@@ -19,7 +19,7 @@ def launch_simple_http_demo_with_mongo_database():
                              headers={'accept': 'application/json',
                                       'apikey': 'custom_key_1234'})\
         .with_storage('mongo',
-                      source='mongodb+srv://clusterdreamlone.ryubwzt.mongodb.net/?retryWrites=true&w=majority',
+                      source='mongodb+srv://clusteryoucluster.ryubwzt.mongodb.net/?retryWrites=true&w=majority',
                       database_name='test', collection_name='info',
                       username='username', password='password')
 

@@ -65,7 +65,7 @@ class FlowProcessor:
     def _get_db_connectors(self):
         """ Get instances of all DB connectors from all pipelines """
         for pipeline_name, pipeline in self.processing_pool.items():
-            if pipeline.with_storage_action is True:
+            if pipeline.action.get_db_connector_object is not None:
                 extract_object = pipeline.action.get_db_connector_object
                 self.extract_objects.update({pipeline_name: extract_object})
 

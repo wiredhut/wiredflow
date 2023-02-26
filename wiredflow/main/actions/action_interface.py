@@ -7,7 +7,8 @@ from wiredflow.main.actions.assimilation.interface import ProxyStage
 from wiredflow.main.actions.stages.configuration_stage import \
     ConfigurationInterface
 from wiredflow.main.actions.stages.core_stage import CoreLogicInterface
-from wiredflow.main.actions.stages.http_stage import HTTPConnectorInterface
+from wiredflow.main.actions.stages.http_stage import HTTPConnectorInterface, \
+    StageCustomHTTPConnector
 from wiredflow.main.actions.stages.send_stage import StageSendInterface
 from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
 from wiredflow.wiredtimer.timer import WiredTimer
@@ -100,7 +101,8 @@ class Action:
         """
         relevant_info = None
         for current_stage in self.init_stages:
-            if isinstance(current_stage, HTTPConnectorInterface):
+            is_custom_connector = isinstance(current_stage, StageCustomHTTPConnector)
+            if isinstance(current_stage, HTTPConnectorInterface) or is_custom_connector:
                 self.connector = current_stage
                 relevant_info = current_stage.get(**configured_params)
                 return relevant_info

@@ -2,7 +2,7 @@ from typing import Union, Callable, Dict
 
 from wiredflow.main.actions.assimilation.interface import ProxyStage
 from wiredflow.main.actions.stages.http_stage import HTTPConnectorInterface, \
-    StageGetHTTPConnector, StagePostHTTPConnector
+    StageGetHTTPConnector, StagePostHTTPConnector, StageCustomHTTPConnector
 
 
 class HTTPStageProxy(ProxyStage):
@@ -12,20 +12,28 @@ class HTTPStageProxy(ProxyStage):
                           'post': StagePostHTTPConnector}
 
     def __init__(self,
-                 name: Union[str, Callable], source: Union[str, None],
+                 configuration: Union[str, Callable], source: Union[str, None],
                  headers: Union[Dict, None], **kwargs):
-        if isinstance(name, str):
-            if name == 'default' and source is None:
-                raise ValueError(f'"source" parameter must be specified for {name} HTTP connector')
-            self.http_stage = self.http_stage_by_name[name]
+        self.custom_realization = False
+        if isinstance(configuration, str):
+            self.http_stage = self.http_stage_by_name[configuration]
         else:
-            # Custom class to process HTTP requests
-            self.http_stage = name
+            # Custom function to process HTTP requests
+            self.custom_realization = True
+            self.http_stage = configuration
 
         self.source = source
         self.headers = headers
         self.kwargs = kwargs
 
-    def compile(self) -> HTTPConnectorInterface:
+    def compile(self) -> Union[HTTPConnectorInterface, StageCustomHTTPConnector]:
         """ Compile HTTP connector stage object """
+        if self.custom_realization is True:
+            # Custom implementation through function
+            if self.source is not None:
+                self.kwargs['source'] = self.source
+            if self.headers is not None:
+                self.kwargs['headers'] = self.headers
+            return StageCustomHTTPConnector(self.http_stage, **self.kwargs)
+
         return self.http_stage(self.source, self.headers, **self.kwargs)

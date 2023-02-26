@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 
 
@@ -18,3 +19,8 @@ def get_test_folder_path() -> Path:
 def get_mocks_payloads_path() -> Path:
     """ Return path with messages examples for mocks """
     return Path(get_project_path(), 'wiredflow', 'mocks')
+
+
+def remove_folder_with_files(path_to_save_files: Path):
+    if path_to_save_files.is_dir() and len(list(path_to_save_files.iterdir())) > 0:
+        shutil.rmtree(path_to_save_files)
