@@ -121,7 +121,9 @@ class Action:
                 current_stage.save(input_data)
             else:
                 current_stage.save(input_data, **configured_params)
-            return {}
+
+            # Pass the same data further
+            return {'data': input_data, 'configured_params': configured_params}
 
         elif isinstance(current_stage, CoreLogicInterface):
             ###############################
