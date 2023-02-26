@@ -44,7 +44,7 @@ def launch_advanced_mqtt_demo():
                              username='wiredflow', password='wiredflow') \
         .with_storage('json', preprocessing='add_datetime')
 
-    flow_builder.add_pipeline('custom_core', timedelta_seconds=15) \
+    flow_builder.add_pipeline('custom_core', timedelta_seconds=10) \
         .with_core_logic(custom_logic) \
         .send(destination='localhost', port=1883, topic='demo/matched',
               label_to_send='match')

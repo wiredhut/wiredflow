@@ -1,6 +1,6 @@
 import json
 from abc import abstractmethod
-from typing import Any, List, Dict
+from typing import Any, List, Dict, Callable
 import paho.mqtt.client as mqtt
 import requests
 from loguru import logger
@@ -100,3 +100,18 @@ class HTTPPOSTSendStage(StageSendInterface):
                 if isinstance(data, dict):
                     data = json.dumps(data)
                 requests.post(self.destination, headers=self.headers, data=data)
+
+
+class CustomSendStage:
+    """ Class for launching custom implementations of Send operation """
+
+    def __init__(self, function_to_launch: Callable, **kwargs):
+        self.function_to_launch = function_to_launch
+        self.kwargs = kwargs
+
+    def send(self, data_to_send: Any, **params):
+        arguments = self.kwargs
+        if isinstance(params, dict) is True:
+            arguments = {**self.kwargs, **params}
+
+        return self.function_to_launch(data_to_send, **arguments)

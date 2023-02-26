@@ -116,13 +116,13 @@ class Pipeline:
         self.stages.append(CoreStageProxy(core_logic, **kwargs))
         return self
 
-    def send(self, send_name: Union[str, Callable] = 'mqtt',
+    def send(self, configuration: Union[str, Callable] = 'mqtt',
              destination: Union[str, None] = None,
              label_to_send: Union[str, None] = None, **kwargs):
         """
         Configure sender for desired data aggregates
 
-        :param send_name: name of sender to apply or custom implementation.
+        :param configuration: name of sender to apply or custom implementation.
         Possible options:
             - 'mqtt' to send messages via MQTT
             - 'http_post' to send message via HTTP post request
@@ -133,7 +133,7 @@ class Pipeline:
         self.with_sender = True
         kwargs = {**kwargs, **{'label_to_send': label_to_send}}
 
-        self.stages.append(SendStageProxy(send_name, destination, **kwargs))
+        self.stages.append(SendStageProxy(configuration, destination, **kwargs))
         return self
 
     def run(self, timeout_timer: WiredTimer):

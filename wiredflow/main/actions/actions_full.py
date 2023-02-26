@@ -33,19 +33,3 @@ class FullProcessingAction(Action):
                 break
             elif self.timeout_timer is not None and self.timeout_timer.will_limit_be_reached(number_of_seconds_to_break):
                 break
-
-    def perform_action(self):
-        """ Launch all processes for desired launch """
-        if self.connector is not None:
-            # The connector is exist
-            for obtained_data in self.launch_http_connector():
-                if obtained_data is None:
-                    continue
-
-                self.launch_storage(obtained_data)
-                core_data = self.launch_core(obtained_data)
-                self.launch_senders(core_data)
-        else:
-            # There is no connector in the pipeline so launch core
-            core_data = self.launch_core(None)
-            self.launch_senders(core_data)

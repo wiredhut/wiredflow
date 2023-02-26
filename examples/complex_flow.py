@@ -31,6 +31,11 @@ def custom_core_logic(**parameters_to_use):
     return message
 
 
+def custom_sender(data_to_send, **params):
+    """ Example of custom sender implementation """
+    print(f'Launch my custom data sending for data: {data_to_send}')
+
+
 def launch_complex_demo():
     """
     An example of how to run a service that process information from various
@@ -73,7 +78,8 @@ def launch_complex_demo():
         .with_core_logic(custom_core_logic) \
         .send(destination='localhost', port=1883, topic='demo/uppercase', label_to_send='uppercase') \
         .send(destination='localhost', port=1883, topic='demo/lowercase', label_to_send='lowercase')\
-        .send('http_put', destination='http://localhost:8027', label_to_send='calculation_mode')
+        .send('http_put', destination='http://localhost:8027', label_to_send='calculation_mode')\
+        .send(custom_sender)
 
     # Configure service and launch it
     flow = flow_builder.build()

@@ -9,7 +9,8 @@ from wiredflow.main.actions.stages.configuration_stage import \
 from wiredflow.main.actions.stages.core_stage import CoreLogicInterface
 from wiredflow.main.actions.stages.http_stage import HTTPConnectorInterface, \
     StageCustomHTTPConnector
-from wiredflow.main.actions.stages.send_stage import StageSendInterface
+from wiredflow.main.actions.stages.send_stage import StageSendInterface, \
+    CustomSendStage
 from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
 from wiredflow.wiredtimer.timer import WiredTimer
 
@@ -81,61 +82,68 @@ class Action:
 
         return None
 
-    def launch_configuration(self):
-        """
-        Find configuration stage in the action and execute it.
-        """
+    def perform_action(self):
+        """ Launch all processes for desired action. Default execution strategy """
+        input_data = None
         configured_params = None
         for current_stage in self.init_stages:
-            if isinstance(current_stage, ConfigurationInterface):
-                configured_params = current_stage.launch(**self.db_connectors)
-                return configured_params
+            output_data = self.launch_stage(current_stage, input_data,
+                                            configured_params)
 
-        return configured_params
+            input_data = output_data.get('data')
+            configured_params = output_data.get('configured_params')
 
-    def launch_http_connector(self, **configured_params):
-        """
-        Find connector stage in the action and execute it.
-        Allows to obtained data from external data sources via, for
-        example, HTTP protocols
-        """
-        relevant_info = None
-        for current_stage in self.init_stages:
-            is_custom_connector = isinstance(current_stage, StageCustomHTTPConnector)
-            if isinstance(current_stage, HTTPConnectorInterface) or is_custom_connector:
-                self.connector = current_stage
-                relevant_info = current_stage.get(**configured_params)
-                return relevant_info
+    def launch_stage(self, current_stage, input_data, configured_params) -> Dict:
+        """ Launch desired stage with configured parameters and data as input """
+        is_custom_connector = isinstance(current_stage, StageCustomHTTPConnector)
 
-        return relevant_info
+        if isinstance(current_stage, ConfigurationInterface):
+            ##############################
+            # Launch configuration stage #
+            ##############################
+            configured_params = current_stage.launch(**self.db_connectors)
+            return {'configured_params': configured_params}
 
-    def launch_storage(self, relevant_info: Any):
-        """
-        Find saver (storage) stage in the action and execute it
-        If there is no such a stage - skip this step
+        elif isinstance(current_stage, HTTPConnectorInterface) or is_custom_connector:
+            ###########################
+            # Launch connection stage #
+            ###########################
+            if configured_params is None:
+                return {'data': current_stage.get()}
+            else:
+                return {'data':  current_stage.get(**configured_params)}
 
-        :param relevant_info: information obtained from previous stage to save
-        """
-        for current_stage in self.init_stages:
-            if isinstance(current_stage, StageStorageInterface):
-                current_stage.save(relevant_info)
+        elif isinstance(current_stage, StageStorageInterface) and input_data is not None:
+            #####################
+            # Launch save stage #
+            #####################
+            if configured_params is None:
+                current_stage.save(input_data)
+            else:
+                current_stage.save(input_data, **configured_params)
+            return {}
 
-    def launch_core(self, relevant_info: Any):
-        """
-        Launch core logic with all data
+        elif isinstance(current_stage, CoreLogicInterface):
+            ###############################
+            # Launch core logic execution #
+            ###############################
+            if configured_params is None:
+                core_output = current_stage.launch(input_data, self.db_connectors)
+            else:
+                core_output = current_stage.launch(input_data, self.db_connectors,
+                                                   **configured_params)
+            return {'data': core_output}
 
-        :param relevant_info: data which were directly obtained
-        from connectors or loaded with extractors
-        """
-        core_output = None
-        for current_stage in self.init_stages:
-            if isinstance(current_stage, CoreLogicInterface):
-                core_output = current_stage.launch(relevant_info, self.db_connectors)
+        elif isinstance(current_stage, StageSendInterface) or isinstance(current_stage, CustomSendStage):
+            #####################
+            # Launch send stage #
+            #####################
+            if configured_params is None:
+                current_stage.send(input_data)
+            else:
+                current_stage.send(input_data, **configured_params)
 
-        return core_output
-
-    def launch_senders(self, data_to_send: Dict):
-        """ Send desired data to suitable endpoints. Launch all senders in the pipeline """
-        for current_stage in self.init_stages:
-            if isinstance(current_stage, StageSendInterface):
-                current_stage.send(data_to_send)
+            # Pass the same data further
+            return {'data': input_data, 'configured_params': configured_params}
+        else:
+            raise ValueError(f'Wiredflow does not support {current_stage} stage type launch')

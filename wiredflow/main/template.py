@@ -17,21 +17,15 @@ class PipelineActionTemplate:
 
     def compile_action(self):
         """ Compile action based on pipeline """
-        is_http_input = self.p.with_get_request_action is True and self.p.with_storage_action is True
-        is_mqtt_input = self.p.with_mqtt_connection is True and self.p.with_storage_action is True
-        is_configuration = self.p.with_configuration_action is True
+        is_http_input = self.p.with_get_request_action is True
+        is_mqtt_input = self.p.with_mqtt_connection is True
 
-        if len(self.p.stages) <= 4 and is_http_input:
-            # Short pipeline with only input data actions (use https connection)
-            return InputActionHttps(self.p.pipeline_name, self.p.stages, **self.params)
-
-        elif len(self.p.stages) <= 4 and is_mqtt_input:
-            # Short pipeline with only input data actions (use mqtt connection)
+        if is_mqtt_input:
             return InputActionMQTT(self.p.pipeline_name, self.p.stages, **self.params)
 
-        elif len(self.p.stages) >= 2 and self.p.with_core_action is True:
-            # Relatively long pipeline with core action
-            return FullProcessingAction(self.p.pipeline_name, self.p.stages, **self.params)
+        elif is_http_input and self.p.with_core_action is False:
+            return InputActionHttps(self.p.pipeline_name, self.p.stages, **self.params)
 
         else:
-            raise NotImplementedError(f'Does not support pipeline "{self.p.pipeline_name}" due to unexpected structure')
+            return FullProcessingAction(self.p.pipeline_name, self.p.stages, **self.params)
+
