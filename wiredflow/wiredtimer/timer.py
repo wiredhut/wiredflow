@@ -13,6 +13,9 @@ class WiredTimer:
         self.current_spend_time = datetime.datetime.now()
         self.execution_seconds = execution_seconds
 
+        # Failures calculation
+        self.failures_start_time = None
+
     def is_limit_reached(self):
         """ Check does the timeout limit was reached or not """
         if self.execution_seconds is None:
@@ -42,3 +45,12 @@ class WiredTimer:
             return True
         else:
             return False
+
+    def set_failures_time(self):
+        self.failures_start_time = datetime.datetime.now()
+
+    def minutes_since_start_failure_batch(self):
+        current_time = datetime.datetime.now()
+        spend_time = current_time - self.failures_start_time
+        spend_minutes = spend_time.total_seconds() / 60
+        return spend_minutes

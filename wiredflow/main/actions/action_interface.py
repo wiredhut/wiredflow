@@ -32,6 +32,7 @@ class Action:
 
     def __init__(self, pipeline_name: str, stages: List[ProxyStage],
                  **params):
+        self.params = params
         self.pipeline_name = pipeline_name
         self.stages = stages
 

@@ -63,8 +63,7 @@ def configure_str_mqtt_broker(execution_seconds: Union[int, None] = None):
                  client_id="", keepalive=60, will=None, auth=None, tls=None,
                  protocol=mqtt.MQTTv5, transport="tcp")
 
-        logger.debug(
-            f'MQTT local broker. Send generated letter {generated_str} from topic {topic}')
+        logger.debug(f'MQTT local broker. Send generated letter {generated_str} from topic {topic}')
         sleep(1)
 
         if timeout_timer.is_limit_reached():

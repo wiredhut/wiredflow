@@ -70,7 +70,7 @@ def launch_advanced_http_demo():
 
     # Core logic of our case
     # Configure notification sender: send message based on calculation approach
-    flow_builder.add_pipeline('core_matching', timedelta_seconds=30) \
+    flow_builder.add_pipeline('core_matching', timedelta_seconds=30, delay_seconds=10) \
         .with_core_logic(toy_example_logic)\
         .send(destination='localhost', port=1883, topic='demo/uppercase', label_to_send='uppercase')\
         .send(destination='localhost', port=1883, topic='demo/lowercase', label_to_send='lowercase')

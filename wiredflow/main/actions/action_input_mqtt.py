@@ -6,6 +6,7 @@ import paho.mqtt.client as mqtt
 from wiredflow.main.actions.action_interface import Action
 from wiredflow.main.actions.assimilation.interface import ProxyStage
 from wiredflow.main.actions.stages.mqtt_stage import StageMQTTConnectorInterface
+from wiredflow.messages.failures_check import ExecutionStatusChecker
 from wiredflow.wiredtimer.timer import WiredTimer
 
 
@@ -54,8 +55,9 @@ class InputActionMQTT(Action):
         self.subscribe_to_broker(connector, mqtt_processing)
 
         # Launch as loop
+        failures_checker = ExecutionStatusChecker()
         if self.timeout_timer is not None and self.timeout_timer.execution_seconds is not None:
-            while self.timeout_timer.is_limit_reached() is False:
+            while self.timeout_timer.is_limit_reached() is False and failures_checker.status.is_ok is True:
                 self.client.loop_start()
             self.client.loop_stop()
             exit()

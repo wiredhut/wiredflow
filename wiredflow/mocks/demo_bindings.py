@@ -3,6 +3,7 @@ from multiprocessing import Pool
 from typing import Union
 
 from wiredflow.main.flow import FlowProcessor
+from wiredflow.messages.failures_check import ExecutionStatusChecker
 from wiredflow.mocks.http_server import start_mock_int_http_server, \
     start_mock_str_http_server
 from wiredflow.mocks.mqtt_broker import configure_int_mqtt_broker, \

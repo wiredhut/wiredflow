@@ -2,8 +2,11 @@ from typing import List
 import schedule
 import time
 
+from loguru import logger
+
 from wiredflow.main.actions.action_interface import Action
 from wiredflow.main.actions.assimilation.interface import ProxyStage
+from wiredflow.messages.failures_check import ExecutionStatusChecker
 
 
 class InputActionHttps(Action):
@@ -28,6 +31,12 @@ class InputActionHttps(Action):
 
         schedule.every(self.timedelta_seconds).seconds.do(self.perform_action)
         while True:
+            failures_checker = ExecutionStatusChecker()
+            if failures_checker.status.is_ok is False:
+                logger.info(f'Service failure due to "{failures_checker.ex}". '
+                            f'Stop pipeline "{self.pipeline_name}" execution')
+                break
+
             schedule.run_pending()
             if self.timeout_timer is not None and self.timeout_timer.is_limit_reached():
                 # Finish execution
