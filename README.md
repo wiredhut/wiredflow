@@ -121,9 +121,10 @@ Protocols, endpoints, notifications, schedulers and storages are our constructor
 ### Wiredflow is your friend
 
 When you start using **wiredflow** to solve real tasks, you may find that some of the flows structures are difficult to implement
-using native functionality.
+using native functionality. For example, to assign several data sources to a core logic block without using intermediate storages. 
 
-For example, to assign several data sources to a core logic block without using intermediate storages. 
+<img src="./docs/media/good_and_bad.png" width="800"/>
+
 When this happens, keep in mind: "Wiredflow is your friend". Implementation through storages is almost always more reliable
 and robust even if you use as storages local files. Thus, Wiredflow encourages you to use more robust solutions in designing services.
 
