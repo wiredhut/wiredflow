@@ -4,7 +4,8 @@ import time
 
 from loguru import logger
 
-from wiredflow.main.actions.action_interface import Action
+from wiredflow.main.actions.action_interface import Action, \
+    calculate_break_interval
 from wiredflow.main.actions.assimilation.interface import ProxyStage
 from wiredflow.messages.failures_check import ExecutionStatusChecker
 
@@ -23,9 +24,8 @@ class InputActionHttps(Action):
 
     def execute_action(self):
         """ Launch process with defined parameters """
-        number_of_seconds_to_break = self.timedelta_seconds / 2
-        if number_of_seconds_to_break < 1:
-            number_of_seconds_to_break = 1
+        number_of_seconds_to_break = calculate_break_interval(self.timedelta_seconds)
+
         # Launch once before loop
         self.perform_action()
 

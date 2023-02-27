@@ -129,7 +129,7 @@ When this happens, keep in mind: "Wiredflow is your friend". Implementation thro
 and robust even if you use as storages local files. Thus, Wiredflow encourages you to use more robust solutions in designing services.
 
 However, if you are sure about what you are doing, you can always implement custom blocks and work around this limitation.
-Because Wiredflow is your friend, and real friends won't force you to do something ypu don't want to.
+Because Wiredflow is your friend, and real friends won't force you to do something you don't want to.
 
 
 ### Documentation 

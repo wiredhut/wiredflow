@@ -203,3 +203,13 @@ class Action:
 
         else:
             raise ValueError(f'Wiredflow does not support generator launch for {current_stage} stage type')
+
+
+def calculate_break_interval(timedelta_seconds) -> float:
+    number_of_seconds_to_break = timedelta_seconds / 2
+    if number_of_seconds_to_break < 1:
+        number_of_seconds_to_break = 1
+    if number_of_seconds_to_break > 10:
+        number_of_seconds_to_break = 10
+
+    return number_of_seconds_to_break

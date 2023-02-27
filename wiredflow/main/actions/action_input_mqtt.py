@@ -1,5 +1,4 @@
-import time
-from typing import List, Optional, Any
+from typing import List, Any
 
 import paho.mqtt.client as mqtt
 
@@ -62,7 +61,10 @@ class InputActionMQTT(Action):
             self.client.loop_stop()
             exit()
         else:
-            self.client.loop_forever()
+            # Execute till other threads are working
+            while failures_checker.status.is_ok is True:
+                self.client.loop_start()
+            self.client.loop_stop()
 
     def subscribe_to_broker(self, connector: StageMQTTConnectorInterface,
                             mqtt_processing: MQTTMessagesProcessingSybAction):
