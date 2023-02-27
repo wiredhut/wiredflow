@@ -33,6 +33,11 @@ class FullProcessingAction(Action):
 
         self.perform_action()
 
+        if self.timeout_timer is not None and self.timeout_timer.is_limit_reached():
+            return None
+        elif self.timeout_timer is not None and self.timeout_timer.will_limit_be_reached(number_of_seconds_to_break):
+            return None
+
         schedule.every(self.timedelta_seconds).seconds.do(self.perform_action)
         while True:
             failures_checker = ExecutionStatusChecker()
