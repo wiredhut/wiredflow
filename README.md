@@ -116,7 +116,20 @@ To make it clearer, here are some examples of possible service structures that c
 <img src="./docs/media/flow_examples.png" width="800"/>
 
 The fastest way to understand wiredflow is to think of it as a lightweight builder for services. 
-Protocols, endpoints, notifications, schedulers and storages are our constructor, and we (engineers), can play with it the way we want to
+Protocols, endpoints, notifications, schedulers and storages are our constructor, and we (engineers), can play with it the way we want to.
+
+### Wiredflow is your friend
+
+When you start using **wiredflow** to solve real tasks, you may find that some of the flows structures are difficult to implement
+using native functionality.
+
+For example, to assign several data sources to a core logic block without using intermediate storages. 
+When this happens, keep in mind: "Wiredflow is your friend". Implementation through storages is almost always more reliable
+and robust even if you use as storages local files. Thus, Wiredflow encourages you to use more robust solutions in designing services.
+
+However, if you are sure about what you are doing, you can always implement custom blocks and work around this limitation.
+Because Wiredflow is your friend, and real friends won't force you to do something ypu don't want to.
+
 
 ### Documentation 
 The full documentation build for this library can be found [here]().
@@ -137,9 +150,17 @@ however, there are some main aspects shown below:
 | CSV file  | `with_storage('csv', **params)`   | Create and use local CSV file and use it as data storage      |
 | MongoDB   | `with_storage('mongo', **params)` | Define connect to already initialized MongoDB instance        |
 
+### Available senders
+
+|  Sender       |      Command for adding       | Short description                                        |
+|---------------|-------------------------------|----------------------------------------------------------|
+| MQTT broker   | `send('mqtt', **params)`      | Send defined data aggregate using MQTT protocol          |
+| POST request  | `send('http_post', **params)` | Send defined data aggregate using HTTP POST method       |
+| PUT request   | `send('http_put', **params)`  | Send defined data aggregate using HTTP PUT method        |
+
 
 ## Contributing 
 In progress
 
-And check [contribution guide](docs/contributing.md) for more details. 
+Check [contribution guide](docs/contributing.md) for more details. 
 

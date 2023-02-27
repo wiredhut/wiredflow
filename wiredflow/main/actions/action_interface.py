@@ -12,6 +12,7 @@ from wiredflow.main.actions.stages.http_stage import HTTPConnectorInterface, \
 from wiredflow.main.actions.stages.send_stage import StageSendInterface, \
     CustomSendStage
 from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
+from wiredflow.main.multistep import is_current_stage_multi_step
 from wiredflow.wiredtimer.timer import WiredTimer
 
 
@@ -86,12 +87,31 @@ class Action:
         """ Launch all processes for desired action. Default execution strategy """
         input_data = None
         configured_params = None
-        for current_stage in self.init_stages:
-            output_data = self.launch_stage(current_stage, input_data,
-                                            configured_params)
+        for stage_id, current_stage in enumerate(self.init_stages):
 
-            input_data = output_data.get('data')
-            configured_params = output_data.get('configured_params')
+            if is_current_stage_multi_step(current_stage) is False:
+                output_data = self.launch_stage(current_stage, input_data,
+                                                configured_params)
+                input_data = output_data.get('data')
+                configured_params = output_data.get('configured_params')
+            else:
+                # Multi step function - there is a need to launch several times
+                for output_data in self.launch_multi_stage(current_stage, input_data, configured_params):
+                    part_input_data = output_data.get('data')
+                    part_configured_params = output_data.get('configured_params')
+
+                    # Launch all defined post-processing
+                    if stage_id + 1 == len(self.init_stages):
+                        # That was last stage
+                        continue
+
+                    for remained_stage in self.init_stages[stage_id + 1:]:
+                        output_data = self.launch_stage(remained_stage,
+                                                        part_input_data,
+                                                        part_configured_params)
+                        input_data = output_data.get('data')
+                        configured_params = output_data.get('configured_params')
+                return None
 
     def launch_stage(self, current_stage, input_data, configured_params) -> Dict:
         """ Launch desired stage with configured parameters and data as input """
@@ -113,10 +133,14 @@ class Action:
             else:
                 return {'data':  current_stage.get(**configured_params)}
 
-        elif isinstance(current_stage, StageStorageInterface) and input_data is not None:
+        elif isinstance(current_stage, StageStorageInterface):
             #####################
             # Launch save stage #
             #####################
+            if input_data is None:
+                # Does not save any data
+                return {'data': input_data, 'configured_params': configured_params}
+
             if configured_params is None:
                 current_stage.save(input_data)
             else:
@@ -149,3 +173,32 @@ class Action:
             return {'data': input_data, 'configured_params': configured_params}
         else:
             raise ValueError(f'Wiredflow does not support {current_stage} stage type launch')
+
+    def launch_multi_stage(self, current_stage, input_data, configured_params) -> Dict:
+        """ Launch generator custom functions to generate parameters or data """
+        if isinstance(current_stage, ConfigurationInterface):
+            configured_params = current_stage.launch(**self.db_connectors)
+            for params in configured_params:
+                yield {'configured_params': params}
+
+        elif isinstance(current_stage, CoreLogicInterface):
+            if configured_params is None:
+                core_output = current_stage.launch(input_data, self.db_connectors)
+            else:
+                core_output = current_stage.launch(input_data, self.db_connectors,
+                                                   **configured_params)
+
+            for output in core_output:
+                yield {'data': output}
+
+        elif isinstance(current_stage, StageCustomHTTPConnector):
+            if configured_params is None:
+                request_data = current_stage.get()
+            else:
+                request_data = current_stage.get(**configured_params)
+
+            for data in request_data:
+                yield {'data': data}
+
+        else:
+            raise ValueError(f'Wiredflow does not support generator launch for {current_stage} stage type')

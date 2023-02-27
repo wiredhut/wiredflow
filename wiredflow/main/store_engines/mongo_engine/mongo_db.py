@@ -64,4 +64,9 @@ class MongoStorageStage(StageStorageInterface):
                      f'"{self.database_name}" collection "{self.collection_name}"')
 
     def load(self, **kwargs):
-        raise NotImplementedError()
+        list_of_collections = self.db.list_collection_names()
+        if self.collection_name not in list_of_collections:
+            # Current collection does not exist
+            return None
+
+        return self.db[self.collection_name].find()
