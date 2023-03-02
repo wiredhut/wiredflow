@@ -1,13 +1,13 @@
 import time
 from typing import List
 
-import schedule
 from loguru import logger
 
 from wiredflow.main.actions.action_interface import Action, \
     calculate_break_interval
 from wiredflow.main.actions.assimilation.interface import ProxyStage
 from wiredflow.messages.failures_check import ExecutionStatusChecker
+from wiredflow.schedule import Scheduler
 from wiredflow.settings import WARM_START_CORE_SECONDS
 
 
@@ -25,7 +25,7 @@ class FullProcessingAction(Action):
         """ Launch all processes in single flow """
         number_of_seconds_to_break = calculate_break_interval(self.timedelta_seconds)
 
-        # Launch once before loop - give some time for non core
+        # Launch once before loop - give some time for non core parts to start
         if self.params.get('delay_seconds') is not None:
             time.sleep(self.params.get('delay_seconds'))
         else:
@@ -38,7 +38,7 @@ class FullProcessingAction(Action):
         elif self.timeout_timer is not None and self.timeout_timer.will_limit_be_reached(number_of_seconds_to_break):
             return None
 
-        schedule.every(self.timedelta_seconds).seconds.do(self.perform_action)
+        scheduler = Scheduler(self.perform_action, self.timedelta_seconds, self.launch_time)
         while True:
             failures_checker = ExecutionStatusChecker()
             if failures_checker.status.is_ok is False:
@@ -46,7 +46,7 @@ class FullProcessingAction(Action):
                             f'Stop pipeline "{self.pipeline_name}" execution')
                 break
 
-            schedule.run_pending()
+            scheduler.run()
 
             if self.timeout_timer is not None and self.timeout_timer.is_limit_reached():
                 # Finish execution

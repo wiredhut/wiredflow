@@ -48,10 +48,16 @@ class Action:
         # Set regime of requests - default value is None
         self.timedelta_seconds = 120
         if params is not None and len(params) > 0:
-            self.timedelta_seconds = params.get('timedelta_seconds')
+            if params.get('timedelta_seconds') is not None:
+                self.timedelta_seconds = params.get('timedelta_seconds')
 
-        self.timedelta_seconds = round(self.timedelta_seconds)
+        self.launch_time = None
+        if params is not None and len(params) > 0:
+            self.launch_time = params.get('launch_time')
+
         if self.timedelta_seconds < 1:
+            logger.info(f'Replace timedelta values with 1 because value {self.timedelta_seconds}'
+                        f'is too small')
             self.timedelta_seconds = 1
 
         # Field for timer
@@ -207,8 +213,8 @@ class Action:
 
 def calculate_break_interval(timedelta_seconds) -> float:
     number_of_seconds_to_break = timedelta_seconds / 2
-    if number_of_seconds_to_break < 1:
-        number_of_seconds_to_break = 1
+    if number_of_seconds_to_break < 0.5:
+        number_of_seconds_to_break = 0.5
     if number_of_seconds_to_break > 10:
         number_of_seconds_to_break = 10
 

@@ -1,5 +1,4 @@
 from typing import List
-import schedule
 import time
 
 from loguru import logger
@@ -8,6 +7,7 @@ from wiredflow.main.actions.action_interface import Action, \
     calculate_break_interval
 from wiredflow.main.actions.assimilation.interface import ProxyStage
 from wiredflow.messages.failures_check import ExecutionStatusChecker
+from wiredflow.schedule import Scheduler
 
 
 class InputActionHttps(Action):
@@ -34,7 +34,7 @@ class InputActionHttps(Action):
         elif self.timeout_timer is not None and self.timeout_timer.will_limit_be_reached(number_of_seconds_to_break):
             return None
 
-        schedule.every(self.timedelta_seconds).seconds.do(self.perform_action)
+        scheduler = Scheduler(self.perform_action, self.timedelta_seconds, self.launch_time)
         while True:
             failures_checker = ExecutionStatusChecker()
             if failures_checker.status.is_ok is False:
@@ -42,7 +42,7 @@ class InputActionHttps(Action):
                             f'Stop pipeline "{self.pipeline_name}" execution')
                 break
 
-            schedule.run_pending()
+            scheduler.run()
             if self.timeout_timer is not None and self.timeout_timer.is_limit_reached():
                 # Finish execution
                 break
