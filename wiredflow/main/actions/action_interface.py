@@ -128,7 +128,8 @@ class Action:
             ##############################
             # Launch configuration stage #
             ##############################
-            configured_params = current_stage.launch(**self.db_connectors)
+            params = {**self.db_connectors, **{'pipeline_name': self.pipeline_name}}
+            configured_params = current_stage.launch(**params)
             return {'configured_params': configured_params}
 
         elif isinstance(current_stage, HTTPConnectorInterface) or is_custom_connector:
