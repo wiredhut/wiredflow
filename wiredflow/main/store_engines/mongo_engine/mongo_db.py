@@ -1,6 +1,6 @@
-from pymongo import MongoClient
+from pymongo import MongoClient, WriteConcern
 
-from typing import Any
+from typing import Any, Union, List
 
 from loguru import logger
 
@@ -44,16 +44,32 @@ class MongoStorageStage(StageStorageInterface):
 
         self.preprocessor = Preprocessor(params.get('preprocessing'))
 
+        # Get fields which can be used for indexation
+        self.index_field: Union[List[tuple], None] = params.get('index_field')
+
     def save(self, relevant_info: Any, **kwargs):
         """ Add new document to collection """
         relevant_info = self.preprocessor.apply_during_save(relevant_info)
 
         # Insert new item to database
         collection = self.db[self.collection_name]
+
+        if self.index_field is not None:
+            # Set index
+            collection.create_index(self.index_field, unique=True)
+
         if isinstance(relevant_info, dict):
-            collection.insert_one(relevant_info)
+            # Insert single dictionary
+            if self.index_field is not None:
+                collection.with_options(write_concern=WriteConcern(w=0)).insert_one(relevant_info)
+            else:
+                collection.insert_one(relevant_info)
         elif isinstance(relevant_info, list):
-            collection.insert_many(relevant_info)
+            # Insert several elements at once
+            if self.index_field is not None:
+                collection.with_options(write_concern=WriteConcern(w=0)).insert_many(relevant_info)
+            else:
+                collection.insert_many(relevant_info)
 
         logger.debug(f'MongoDB info. Successfully save data into database '
                      f'"{self.database_name}" collection "{self.collection_name}"')

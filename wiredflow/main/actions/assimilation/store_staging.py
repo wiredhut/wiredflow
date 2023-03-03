@@ -5,6 +5,7 @@ from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
 from wiredflow.main.store_engines.csv_engine.csv_db import CSVStorageStage
 from wiredflow.main.store_engines.json_engine.json_db import JSONStorageStage
 from wiredflow.main.store_engines.mongo_engine.mongo_db import MongoStorageStage
+from wiredflow.main.store_engines.сustom import CustomStorageStage
 
 
 class StoreStageProxy(ProxyStage):
@@ -17,15 +18,22 @@ class StoreStageProxy(ProxyStage):
                        'csv': CSVStorageStage,
                        'mongo': MongoStorageStage}
 
-    def __init__(self, storage_name: Union[str, Callable], stage_id: str, **kwargs):
-        if isinstance(storage_name, str):
-            self.storage_stage = self.storage_by_name[storage_name]
+    def __init__(self, configuration: Union[str, Callable], stage_id: str,
+                 **kwargs):
+        self.custom_realization = False
+        if isinstance(configuration, str):
+            self.storage_stage = self.storage_by_name[configuration]
         else:
-            self.storage_stage = storage_name
+            self.custom_realization = True
+            self.storage_stage = configuration
 
         self.stage_id = stage_id
         self.kwargs = kwargs
 
     def compile(self) -> StageStorageInterface:
         """ Compile Database connector stage object """
-        return self.storage_stage(self.stage_id, **self.kwargs)
+        if self.custom_realization is True:
+            # Custom realization need to be applied
+            return CustomStorageStage(self.storage_stage, self.stage_id, **self.kwargs)
+        else:
+            return self.storage_stage(self.stage_id, **self.kwargs)

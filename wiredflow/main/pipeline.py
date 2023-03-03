@@ -77,15 +77,17 @@ class Pipeline:
         self.stages.append(MQTTStageProxy(source, port, topic, **kwargs))
         return self
 
-    def with_storage(self, storage_name: Union[str, Callable], **kwargs):
+    def with_storage(self, configuration: Union[str, Callable],
+                     **kwargs):
         """ Add data storing functionality into processing pipeline
 
-        :param storage_name: name of storage to use or custom realization
+        :param configuration: name of storage to use or custom realization
         Possible options:
             - 'json' - save results into json file
+            - 'csv' - save results into csv files locally
             - 'mongo' - save results into mongo DB
 
-        Additional parameters for 'json' storage:
+        Additional parameters for 'json' or 'csv' storage:
             - folder_to_save - path to the folder where to save json files
             - preprocessing - name of preprocessing to apply or list of
             preprocessors
@@ -102,8 +104,11 @@ class Pipeline:
         self.with_storage_action = True
 
         # Define unique name for storage stage
-        stage_id = f'{storage_name}_in_{self.pipeline_name}'
-        self.stages.append(StoreStageProxy(storage_name, stage_id, **kwargs))
+        if isinstance(configuration, str) is True:
+            stage_id = f'{configuration}_in_{self.pipeline_name}'
+        else:
+            stage_id = f'custom_in_{self.pipeline_name}'
+        self.stages.append(StoreStageProxy(configuration, stage_id, **kwargs))
         return self
 
     def with_core_logic(self, core_logic: Callable, **kwargs):
