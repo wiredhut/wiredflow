@@ -67,7 +67,8 @@ class MongoStorageStage(StageStorageInterface):
         elif isinstance(relevant_info, list):
             # Insert several elements at once
             if self.index_field is not None:
-                collection.with_options(write_concern=WriteConcern(w=0)).insert_many(relevant_info)
+                collection.with_options(write_concern=WriteConcern(w=0)).insert_many(relevant_info,
+                                                                                     ordered=False)
             else:
                 collection.insert_many(relevant_info)
 
