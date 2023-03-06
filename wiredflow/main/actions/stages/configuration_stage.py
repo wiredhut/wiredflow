@@ -12,4 +12,7 @@ class ConfigurationInterface:
 
     def launch(self, **kwargs):
         logger.debug(f'Launch configuration stage')
+
+        # Merge parameters
+        kwargs = {**self.kwargs, **kwargs}
         return self.function_to_launch(**kwargs)
