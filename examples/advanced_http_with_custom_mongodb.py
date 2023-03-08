@@ -48,8 +48,7 @@ def launch_simple_http_demo_with_custom_mongo():
     # Repeat actions in pipeline every 1 minute - send GET request and store response
     flow_builder.add_pipeline('my_custom_name', timedelta_seconds=10)\
         .with_http_connector(source='http://localhost:8027',
-                             headers={'accept': 'application/json',
-                                      'apikey': 'custom_key_1234'})\
+                             headers={'accept': 'application/json', 'apikey': 'custom_key_1234'})\
         .with_storage(custom_save,
                       source='mongodb+srv://clusteryoucluster.ryubwzt.mongodb.net/?retryWrites=true&w=majority',
                       database_name='test', collection_name='info',

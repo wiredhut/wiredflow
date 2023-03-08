@@ -94,6 +94,8 @@ First, check [examples](examples) folder, which can be easily launched locally:
 Examples with pre-configured databases:
 * [simple_http_with_mongo.py](examples/simple_http_with_mongo.py) - single data source which can be reached via simple HTTP GET request and
 saved into MongoDB. Tutorial how to configure free remote MongoDB can be [found here](https://www.mongodb.com/basics/mongodb-atlas-tutorial).
+* [advanced_http_with_custom_mongodb.py](examples/advanced_http_with_custom_mongodb.py) - single data source which can be reached via simple HTTP GET request and
+custom storage (MongoDB) logic. Tutorial how to configure free remote MongoDB can be [found here](https://www.mongodb.com/basics/mongodb-atlas-tutorial).
 
 Or investigate jupyter notebooks with examples: 
 * In progress
@@ -116,7 +118,9 @@ To make it clearer, here are some examples of possible service structures that c
 <img src="./docs/media/flow_examples.png" width="800"/>
 
 The fastest way to understand wiredflow is to think of it as a lightweight builder for services. 
-Protocols, endpoints, notifications, schedulers and storages are our constructor, and we (engineers), can play with it the way we want to.
+Protocols, endpoints, notifications, schedulers and storages are our constructor, and we 
+(engineers), can play with it the way we want to. If you would like to know more about wiredflow key features 
+and limitations - follow the page ["Features and limitations"](docs/features_and_limitations.md). 
 
 ### Wiredflow is your friend
 
