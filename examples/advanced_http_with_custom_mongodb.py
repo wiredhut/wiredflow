@@ -15,8 +15,7 @@ def custom_save(data_to_save, **params):
     Requests synchronization is Database responsibility
     """
     # Connect to the database
-    client = MongoClient(params['source'],
-                         username=params['username'], password=params['password'])
+    client = MongoClient(params['source'], username=params['username'], password=params['password'])
     db = client[params['database_name']]
     collection = db[params['collection_name']]
 

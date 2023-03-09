@@ -25,6 +25,9 @@ class InputActionHttps(Action):
     def execute_action(self):
         """ Launch process with defined parameters """
         number_of_seconds_to_break = calculate_break_interval(self.timedelta_seconds)
+        if self.params.get('delay_seconds') is not None:
+            # If there is a need to wait several seconds before start action execution
+            time.sleep(self.params.get('delay_seconds'))
 
         # Launch once before loop
         self.perform_action()

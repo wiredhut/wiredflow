@@ -69,8 +69,7 @@ class FlowProcessor:
         logger.info(f'Flow finish execution')
         failures_checker = ExecutionStatusChecker()
         if failures_checker.status.is_ok is False:
-            raise ValueError(f'Service was failed. Please reconfigure flow. '
-                             f'Exception: {failures_checker.ex}')
+            raise ValueError(f'Service was failed. Please reconfigure flow. Exception: {failures_checker.ex}')
         return failures_checker.status.is_ok
 
     def _get_db_connectors(self):

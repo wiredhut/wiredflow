@@ -110,6 +110,10 @@ class CustomSendStage:
         self.kwargs = kwargs
 
     def send(self, data_to_send: Any, **params):
+        if data_to_send is None:
+            # There is no info to send
+            return None
+
         arguments = self.kwargs
         if isinstance(params, dict) is True:
             arguments = {**self.kwargs, **params}

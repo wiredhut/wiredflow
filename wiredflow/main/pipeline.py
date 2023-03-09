@@ -3,8 +3,7 @@ from typing import Union, Dict, Callable
 
 from loguru import logger
 
-from wiredflow.main.actions.assimilation.configuration_staging import \
-    ConfigurationStageProxy
+from wiredflow.main.actions.assimilation.configuration_staging import ConfigurationStageProxy
 from wiredflow.main.actions.assimilation.core_staging import CoreStageProxy
 from wiredflow.main.actions.assimilation.http_staging import HTTPStageProxy
 from wiredflow.main.actions.assimilation.mqtt_staging import MQTTStageProxy
@@ -36,11 +35,11 @@ class Pipeline:
         self.action = None
         self.db_connectors = {}
 
-    def with_configuration(self, configurator: Callable, **kwargs):
+    def with_configuration(self, configuration: Callable, **kwargs):
         """ Configuration of subsequent stage parameters in the pipeline """
         self.with_configuration_action = True
 
-        self.stages.append(ConfigurationStageProxy(configurator, **kwargs))
+        self.stages.append(ConfigurationStageProxy(configuration, **kwargs))
         return self
 
     def with_http_connector(self,
@@ -111,14 +110,14 @@ class Pipeline:
         self.stages.append(StoreStageProxy(configuration, stage_id, **kwargs))
         return self
 
-    def with_core_logic(self, core_logic: Callable, **kwargs):
+    def with_core_logic(self, configuration: Callable, **kwargs):
         """
         Define custom core logic into processing pipeline and define parameters
         to it
         """
         self.with_core_action = True
 
-        self.stages.append(CoreStageProxy(core_logic, **kwargs))
+        self.stages.append(CoreStageProxy(configuration, **kwargs))
         return self
 
     def send(self, configuration: Union[str, Callable] = 'mqtt',

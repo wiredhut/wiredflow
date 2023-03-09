@@ -1,4 +1,3 @@
-from abc import abstractmethod
 from typing import Any, Dict, Callable
 
 from loguru import logger

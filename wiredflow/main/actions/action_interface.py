@@ -1,16 +1,13 @@
 from abc import abstractmethod
-from typing import List, Any, Dict, Union
+from typing import List, Dict, Union
 
 from loguru import logger
 
 from wiredflow.main.actions.assimilation.interface import ProxyStage
-from wiredflow.main.actions.stages.configuration_stage import \
-    ConfigurationInterface
+from wiredflow.main.actions.stages.configuration_stage import ConfigurationInterface
 from wiredflow.main.actions.stages.core_stage import CoreLogicInterface
-from wiredflow.main.actions.stages.http_stage import HTTPConnectorInterface, \
-    StageCustomHTTPConnector
-from wiredflow.main.actions.stages.send_stage import StageSendInterface, \
-    CustomSendStage
+from wiredflow.main.actions.stages.http_stage import HTTPConnectorInterface, StageCustomHTTPConnector
+from wiredflow.main.actions.stages.send_stage import StageSendInterface, CustomSendStage
 from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
 from wiredflow.main.multistep import is_current_stage_multi_step
 from wiredflow.wiredtimer.timer import WiredTimer
@@ -51,13 +48,13 @@ class Action:
             if params.get('timedelta_seconds') is not None:
                 self.timedelta_seconds = params.get('timedelta_seconds')
 
+        # Define particular datetime
         self.launch_time = None
         if params is not None and len(params) > 0:
             self.launch_time = params.get('launch_time')
 
         if self.timedelta_seconds < 1:
-            logger.info(f'Replace timedelta values with 1 because value {self.timedelta_seconds}'
-                        f'is too small')
+            logger.info(f'Replace timedelta values with 1 because value {self.timedelta_seconds} is too small')
             self.timedelta_seconds = 1
 
         # Field for timer
@@ -66,8 +63,7 @@ class Action:
     def _init_stages_objects(self):
         """ Sequentially launch stages initialization """
         if len(self.init_stages) > 0:
-            logger.debug(f'Action in pipeline {self.pipeline_name} was already'
-                         f' configured. Skip stage')
+            logger.debug(f'Action in pipeline {self.pipeline_name} was already configured. Skip stage')
             return None
 
         for stage_proxy in self.stages:
@@ -137,8 +133,9 @@ class Action:
             # Launch connection stage #
             ###########################
             if configured_params is None:
-                return {'data': current_stage.get()}
+                return {'data': current_stage.get(**{'pipeline_name': self.pipeline_name})}
             else:
+                configured_params = {**configured_params, **{'pipeline_name': self.pipeline_name}}
                 return {'data':  current_stage.get(**configured_params)}
 
         elif isinstance(current_stage, StageStorageInterface):
@@ -150,8 +147,9 @@ class Action:
                 return {'data': input_data, 'configured_params': configured_params}
 
             if configured_params is None:
-                current_stage.save(input_data)
+                current_stage.save(input_data, **{'pipeline_name': self.pipeline_name})
             else:
+                configured_params = {**configured_params, **{'pipeline_name': self.pipeline_name}}
                 current_stage.save(input_data, **configured_params)
 
             # Pass the same data further
@@ -162,10 +160,11 @@ class Action:
             # Launch core logic execution #
             ###############################
             if configured_params is None:
-                core_output = current_stage.launch(input_data, self.db_connectors)
-            else:
                 core_output = current_stage.launch(input_data, self.db_connectors,
-                                                   **configured_params)
+                                                   **{'pipeline_name': self.pipeline_name})
+            else:
+                configured_params = {**configured_params, **{'pipeline_name': self.pipeline_name}}
+                core_output = current_stage.launch(input_data, self.db_connectors, **configured_params)
             return {'data': core_output}
 
         elif isinstance(current_stage, StageSendInterface) or isinstance(current_stage, CustomSendStage):

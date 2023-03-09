@@ -11,6 +11,7 @@ class HTTPConnectorInterface:
         self.connector_name = 'HTTP/HTTPS connector'
         self.source = source
         self.headers = headers
+        self.params = params
 
     @abstractmethod
     def get(self, **params):
@@ -32,6 +33,11 @@ class StageGetHTTPConnector(HTTPConnectorInterface):
         super().__init__(source, headers, **params)
 
     def get(self, **params):
+        if isinstance(self.params, dict) and isinstance(params, dict):
+            params = {**self.params, **params}
+
+        if isinstance(params, dict) and params.get('pipeline_name') is not None:
+            params.pop('pipeline_name')
         http_info = requests.get(self.source, headers=self.headers, **params)
         return http_info.json()
 
@@ -46,6 +52,12 @@ class StagePostHTTPConnector(HTTPConnectorInterface):
         super().__init__(source, headers, **params)
 
     def get(self, **params):
+        if isinstance(self.params, dict) and isinstance(params, dict):
+            params = {**self.params, **params}
+
+        if isinstance(params, dict) and params.get('pipeline_name') is not None:
+            params.pop('pipeline_name')
+
         response = requests.request("POST", self.source, headers=self.headers,
                                     **params)
         return response.json()
@@ -56,10 +68,10 @@ class StageCustomHTTPConnector:
 
     def __init__(self, function_to_launch: Callable, **kwargs):
         self.function_to_launch = function_to_launch
-        self.kwargs = kwargs
+        self.params = kwargs
 
     def get(self, **params):
-        arguments = self.kwargs
-        if isinstance(params, dict) is True:
-            arguments = {**self.kwargs, **params}
-        return self.function_to_launch(**arguments)
+        if isinstance(self.params, dict) and isinstance(params, dict):
+            params = {**self.params, **params}
+
+        return self.function_to_launch(**params)

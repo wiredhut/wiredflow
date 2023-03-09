@@ -2,8 +2,7 @@ import json
 from pathlib import Path
 
 from wiredflow.main.build import FlowBuilder
-from wiredflow.mocks.demo_bindings import launch_demo_with_int_http_connector, \
-    launch_demo_with_int_mqtt_connector
+from wiredflow.mocks.demo_bindings import launch_demo_with_int_http_connector, launch_demo_with_int_mqtt_connector
 from wiredflow.paths import get_test_folder_path, remove_folder_with_files
 
 
@@ -18,8 +17,7 @@ def test_http_local():
 
     flow_builder.add_pipeline('test_http_local', timedelta_seconds=5) \
         .with_http_connector(source='http://localhost:8027') \
-        .with_storage('json', preprocessing='add_datetime',
-                      folder_to_save=path_to_save_files)
+        .with_storage('json', preprocessing='add_datetime', folder_to_save=path_to_save_files)
 
     # Configure service and launch it
     flow = flow_builder.build()
@@ -45,10 +43,8 @@ def test_mqtt_local():
     flow_builder = FlowBuilder()
 
     flow_builder.add_pipeline('mqtt_subscriber') \
-        .with_mqtt_connector(source='localhost', port=1883,
-                             topic='/demo/integers') \
-        .with_storage('json', preprocessing='add_datetime',
-                      folder_to_save=path_to_save_files)
+        .with_mqtt_connector(source='localhost', port=1883, topic='/demo/integers') \
+        .with_storage('json', preprocessing='add_datetime', folder_to_save=path_to_save_files)
 
     # Configure service and launch it
     flow = flow_builder.build()
