@@ -47,6 +47,11 @@ jobs:
       - name: Install project
         run: poetry install --no-interaction
       #----------------------------------------------
+      # install local Mosquitto MQTT broker
+      #----------------------------------------------
+      - name: Install Mosquitto MQTT
+        run: sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa
+      #----------------------------------------------
       #              run test suite
       #----------------------------------------------
       - name: Run tests
