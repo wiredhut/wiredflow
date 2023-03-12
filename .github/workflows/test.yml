@@ -51,6 +51,7 @@ jobs:
       #----------------------------------------------
       - name: Install Mosquitto MQTT
         run: sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa
+      - run: sudo apt-get update
       #----------------------------------------------
       #              run test suite
       #----------------------------------------------
