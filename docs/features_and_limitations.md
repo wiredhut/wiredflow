@@ -10,7 +10,7 @@ follow this [link](./scalability_tokenization.md). Or [implementation with remot
 
 ## Each pipeline in individual thread
 
-TODO add picture 
+<img src="./media/pipeline_thread.png" width="800"/>
 
 We should start the discussion with a fundamental concept: "all pipelines in wiredflow run in separate threads".
 This means that if there are defined 30 pipelines in `Flow` (e.g. Service), the Python interpreter will use the `threading` module and run 30 threads.
@@ -36,7 +36,7 @@ write custom functions and want to synchronize threads, then it is necessary to 
 
 ## All pipelines may be in one service
 
-TODO add picture 
+<img src="./media/single_service.png" width="800"/>
 
 As it was mentioned above, using Wiredflow it is possible to configure the whole service (with different pipelines) in one 
 python (`.py`) file (entry point). So, all the business logic will be described in one place.
