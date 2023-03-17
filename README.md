@@ -6,8 +6,9 @@ Designed to create services with multi-step data processing using just Python an
 ## Why you should try wiredflow
 
 This module is a simplified analogue of ETL-related libraries (e.g. 
-[luigi](https://github.com/spotify/luigi) and [petl](https://github.com/petl-developers/petl)) and 
-workflow management (workflow orchestration) platforms (e.g. [Apache Airflow](https://github.com/apache/airflow)
+[luigi](https://github.com/spotify/luigi)) and 
+workflow management (workflow orchestration) platforms 
+(e.g. [Apache Airflow](https://github.com/apache/airflow)
 and [prefect](https://github.com/PrefectHQ/prefect)). 
 
 This module is well-suited for both prototype preparation, quick experiments, 
@@ -43,7 +44,7 @@ to you how this library differs from other more well-known analogues.
 
 > **Question**: If wiredflow does not use a database, where is the data saved?
 > 
-> **Response**: In csv files or in JSON files. Yes, this is not a production solution, 
+> **Response**: In CSV files or in JSON files. Yes, this is not a production solution, 
 > but it is very convenient to deal with data you unfamiliar with.
 
 ---
