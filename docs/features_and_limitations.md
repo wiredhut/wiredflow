@@ -54,7 +54,7 @@ remote launch usage and through flow tokenization. Check [efficiency issues reso
 
 ## Construct service through builder 
 
-TODO add picture 
+<img src="./media/wiredflow_builder.png" width="800"/>
 
 Builder is a highly beneficial software design pattern. It allows to configure both simple linear and complex services in a very flexible way.
 However, when the number of parameters in it is pretty large, the amount of code to be written to properly configure the service will be large too.

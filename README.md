@@ -6,7 +6,7 @@ Designed to create services with multi-step data processing using just Python an
 ## Why you should try wiredflow
 
 This module is a simplified analogue of ETL-related libraries (e.g. 
-[luigi](https://github.com/spotify/luigi)) and 
+[luigi](https://github.com/spotify/luigi) and [bonobo](https://github.com/python-bonobo/bonobo) (bonobo by the way is also pretty simple tool) and 
 workflow management (workflow orchestration) platforms 
 (e.g. [Apache Airflow](https://github.com/apache/airflow)
 and [prefect](https://github.com/PrefectHQ/prefect)). 
@@ -38,7 +38,8 @@ to you how this library differs from other more well-known analogues.
 > **Response**: 1) Prototyping - you can quickly start listening to your MQTT 
 > queues or start collecting data using HTTP requests, etc. 2) Python code 
 > would be easy to build into larger projects because using wiredflow has 
-> pretty low overhead.
+> pretty low overhead. 3) Wiredflow has its own internal scheduler, allowing 
+> you to run your services out of the box.
 
 ---
 
@@ -66,7 +67,8 @@ to you how this library differs from other more well-known analogues.
 > **Question**: I saw in the documentation that the service can be subscribed to 
 > multiple MQTT queues at the same time. How does it work?
 > 
-> **Response**: wiredflow uses the multithreading Python module. 
+> **Response**: wiredflow uses the multithreading Python module. This allows 
+> effective sharing of resources between individual pipelines in your service.
 
 ---
 
