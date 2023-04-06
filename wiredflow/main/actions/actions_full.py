@@ -27,7 +27,9 @@ class FullProcessingAction(Action):
 
         # Launch once before loop - give some time for non core parts to start
         if self.params.get('delay_seconds') is not None:
-            time.sleep(self.params.get('delay_seconds'))
+            if self.params.get('delay_seconds') != 0:
+                # Sleep for "delay_seconds" seconds
+                time.sleep(self.params.get('delay_seconds'))
         else:
             time.sleep(WARM_START_CORE_SECONDS)
 

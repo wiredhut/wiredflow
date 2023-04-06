@@ -22,7 +22,7 @@ def test_initialization_json_file(preprocessing: Union[str, None], number_of_rec
     path_to_save_files = Path(get_test_folder_path(), 'json_storage_test')
     remove_folder_with_files(path_to_save_files)
 
-    storage_stage = JSONStorageStage(stage_id='json_storage_test',
+    storage_stage = JSONStorageStage(stage_id='json_storage_test', use_threads=True,
                                      **{'folder_to_save': path_to_save_files, 'preprocessing': preprocessing})
 
     # Save single dictionary
@@ -57,7 +57,7 @@ def test_json_storage_with_mapping(mapping: str, number_of_documents: int):
     path_to_save_files = Path(get_test_folder_path(), 'json_storage_mapping_test')
     remove_folder_with_files(path_to_save_files)
 
-    storage_stage = JSONStorageStage(stage_id='json_storage_test',
+    storage_stage = JSONStorageStage(stage_id='json_storage_test', use_threads=True,
                                      **{'folder_to_save': path_to_save_files, 'mapping': mapping})
 
     for item in [{'Item 1': 1}, {'Item 1': 11}, {'Item 2': 2}]:
@@ -78,7 +78,8 @@ def test_initialization_csv_file():
     path_to_save_files = Path(get_test_folder_path(), 'csv_storage_test')
     remove_folder_with_files(path_to_save_files)
 
-    storage_stage = CSVStorageStage(stage_id='csv_storage_test', **{'folder_to_save': path_to_save_files})
+    storage_stage = CSVStorageStage(stage_id='csv_storage_test',
+                                    use_threads=True, **{'folder_to_save': path_to_save_files})
 
     # Save single dictionary
     storage_stage.save({'First message': 'Some description of first message', 'Message id': 0})

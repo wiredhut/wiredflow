@@ -19,7 +19,7 @@ class StoreStageProxy(ProxyStage):
                        'mongo': MongoStorageStage}
 
     def __init__(self, configuration: Union[str, Callable], stage_id: str,
-                 **kwargs):
+                 use_threads: bool, **kwargs):
         self.custom_realization = False
         if isinstance(configuration, str):
             self.storage_stage = self.storage_by_name[configuration]
@@ -29,11 +29,12 @@ class StoreStageProxy(ProxyStage):
 
         self.stage_id = stage_id
         self.kwargs = kwargs
+        self.use_threads = use_threads
 
     def compile(self) -> StageStorageInterface:
         """ Compile Database connector stage object """
         if self.custom_realization is True:
             # Custom realization need to be applied
-            return CustomStorageStage(self.storage_stage, self.stage_id, **self.kwargs)
+            return CustomStorageStage(self.storage_stage, self.stage_id, self.use_threads, **self.kwargs)
         else:
-            return self.storage_stage(self.stage_id, **self.kwargs)
+            return self.storage_stage(self.stage_id, self.use_threads, **self.kwargs)

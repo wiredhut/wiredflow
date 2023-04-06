@@ -15,7 +15,7 @@ class SendStageProxy(ProxyStage):
                       'http_post': HTTPPOSTSendStage}
 
     def __init__(self, send_name: Union[str, Callable],
-                 destination: str, **kwargs):
+                 destination: str, use_threads: bool, **kwargs):
         self.custom_realization = False
         if isinstance(send_name, str):
             self.send_stage = self.sender_by_name[send_name]
@@ -25,6 +25,7 @@ class SendStageProxy(ProxyStage):
 
         self.destination = destination
         self.kwargs = kwargs
+        self.use_threads = use_threads
 
     def compile(self) -> Union[StageSendInterface, CustomSendStage]:
         """ Compile Database connector stage object """
@@ -32,6 +33,6 @@ class SendStageProxy(ProxyStage):
             # Custom implementation through function
             if self.destination is not None:
                 self.kwargs['destination'] = self.destination
-            return CustomSendStage(self.send_stage, **self.kwargs)
+            return CustomSendStage(self.send_stage, self.use_threads, **self.kwargs)
 
-        return self.send_stage(self.destination, **self.kwargs)
+        return self.send_stage(self.destination, self.use_threads, **self.kwargs)

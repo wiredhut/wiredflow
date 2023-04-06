@@ -24,11 +24,9 @@ class Action:
 
     :param pipeline_name: name of pipeline where this action was launched
     :param stages: list with configured stages (and parameters) to be launched
-    :param is_single_execution: is there a need to launch all stages without loop
     """
 
-    def __init__(self, pipeline_name: str, stages: List[ProxyStage],
-                 **params):
+    def __init__(self, pipeline_name: str, stages: List[ProxyStage], **params):
         self.params = params
         self.pipeline_name = pipeline_name
         self.stages = stages
@@ -147,10 +145,12 @@ class Action:
                 return {'data': input_data, 'configured_params': configured_params}
 
             if configured_params is None:
-                current_stage.save(input_data, **{'pipeline_name': self.pipeline_name})
+                configured_params = {**current_stage.params, **{'pipeline_name': self.pipeline_name}}
             else:
                 configured_params = {**configured_params, **{'pipeline_name': self.pipeline_name}}
-                current_stage.save(input_data, **configured_params)
+                configured_params = {**current_stage.params, **configured_params}
+
+            current_stage.save(input_data, **configured_params)
 
             # Pass the same data further
             return {'data': input_data, 'configured_params': configured_params}
@@ -160,11 +160,11 @@ class Action:
             # Launch core logic execution #
             ###############################
             if configured_params is None:
-                core_output = current_stage.launch(input_data, self.db_connectors,
-                                                   **{'pipeline_name': self.pipeline_name})
+                configured_params = {**current_stage.kwargs, **{'pipeline_name': self.pipeline_name}}
             else:
                 configured_params = {**configured_params, **{'pipeline_name': self.pipeline_name}}
-                core_output = current_stage.launch(input_data, self.db_connectors, **configured_params)
+                configured_params = {**current_stage.kwargs, **configured_params}
+            core_output = current_stage.launch(input_data, self.db_connectors, **configured_params)
             return {'data': core_output}
 
         elif isinstance(current_stage, StageSendInterface) or isinstance(current_stage, CustomSendStage):

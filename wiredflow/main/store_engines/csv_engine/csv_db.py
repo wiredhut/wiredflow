@@ -4,21 +4,21 @@ from pathlib import Path
 from typing import Any, Optional, Union, List, Dict
 
 from loguru import logger
-from threading import Event
 
 from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
 from wiredflow.main.store_engines.preprocessors.mapping import DataMapper, \
     read_csv_as_list_with_dict
 from wiredflow.main.store_engines.preprocessors.preprocessing import \
     Preprocessor
+from wiredflow.main.synchronization import EventSynchronization
 from wiredflow.paths import get_tmp_folder_path
 
 
 class CSVStorageStage(StageStorageInterface):
     """ Connector to CSV file """
 
-    def __init__(self, stage_id: str, **params):
-        super().__init__(stage_id, **params)
+    def __init__(self, stage_id: str, use_threads: bool, **params):
+        super().__init__(stage_id, use_threads, **params)
         self.stage_id = stage_id
         # Prepare local folder where there is a need to save json file
         if 'folder_to_save' in list(params.keys()):
@@ -33,8 +33,8 @@ class CSVStorageStage(StageStorageInterface):
         self.mapper = DataMapper(params.get('mapping'), self.db_path_file,
                                  mapper_mode='csv')
 
-        self.event = Event()
-        self.event.set()
+        self.synchronizer = EventSynchronization(use_threads)
+        self.synchronizer.initialize()
 
     def save(self, relevant_info: Any, **kwargs):
         self._access_to_file('write', info_to_write=relevant_info)
@@ -54,14 +54,13 @@ class CSVStorageStage(StageStorageInterface):
         :param read_kwargs: additional parameters to request data
         """
         # To avoid deadlock - synchronize thread during file storing or reading
-        self.event.wait()
-        self.event.clear()
+        self.synchronizer.wait()
 
         loaded_files = None
         if mode == 'read':
             if self.db_path_file.is_file() is False:
                 # There are no saved data yet - return None
-                self.event.set()
+                self.synchronizer.release()
                 return None
 
             # Read file in a form of dictionary
@@ -76,7 +75,7 @@ class CSVStorageStage(StageStorageInterface):
             info_to_write = self.mapper.apply_during_save(info_to_write)
             self._save_dict_into_file(info_to_write)
 
-        self.event.set()
+        self.synchronizer.release()
         return loaded_files
 
     def _save_dict_into_file(self, info_to_write: Union[List, Dict]):

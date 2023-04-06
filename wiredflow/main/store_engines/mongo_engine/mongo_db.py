@@ -12,8 +12,8 @@ from wiredflow.main.store_engines.preprocessors.preprocessing import \
 class MongoStorageStage(StageStorageInterface):
     """ Connector to MongoDB file """
 
-    def __init__(self, stage_id: str, **params):
-        super().__init__(stage_id, **params)
+    def __init__(self, stage_id: str, use_threads: bool, **params):
+        super().__init__(stage_id, use_threads, **params)
         self.stage_id = stage_id
         # Auth
         self.username = params.get('username')

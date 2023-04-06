@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 from wiredflow.main.build import FlowBuilder
-from wiredflow.mocks.demo_bindings import launch_demo_with_int_http_connector, launch_demo_with_int_mqtt_connector
+from wiredflow.mocks.demo_bindings_threads import launch_demo_with_int_http_connector, launch_demo_with_int_mqtt_connector
 from wiredflow.paths import get_test_folder_path, remove_folder_with_files
 
 

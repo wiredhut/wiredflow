@@ -10,9 +10,10 @@ from paho.mqtt.publish import multiple
 class StageSendInterface:
     """ Base class for defining interface for senders """
 
-    def __init__(self, destination: str, **params):
+    def __init__(self, destination: str, use_threads: bool, **params):
         self.destination = destination
         self.params = params
+        self.use_threads = use_threads
 
     @abstractmethod
     def send(self, info_to_send: Any, **kwargs):
@@ -23,8 +24,8 @@ class StageSendInterface:
 class MQTTSendStage(StageSendInterface):
     """ Send message to destination via MQTT protocol """
 
-    def __init__(self, destination: str, **params):
-        super().__init__(destination, **params)
+    def __init__(self, destination: str, use_threads: bool, **params):
+        super().__init__(destination, use_threads, **params)
         self.port = params['port']
         self.topic = params['topic']
         self.label_to_send = params['label_to_send']
@@ -59,8 +60,8 @@ class MQTTSendStage(StageSendInterface):
 class HTTPPUTSendStage(StageSendInterface):
     """ Send message to destination via HTTP protocol using put method """
 
-    def __init__(self, destination: str, **params):
-        super().__init__(destination, **params)
+    def __init__(self, destination: str, use_threads: bool, **params):
+        super().__init__(destination, use_threads, **params)
         self.headers = params.get('headers')
         self.label_to_send = params['label_to_send']
 
@@ -82,8 +83,8 @@ class HTTPPUTSendStage(StageSendInterface):
 class HTTPPOSTSendStage(StageSendInterface):
     """ Send message to destination via HTTP protocol using POST method """
 
-    def __init__(self, destination: str, **params):
-        super().__init__(destination, **params)
+    def __init__(self, destination: str, use_threads: bool, **params):
+        super().__init__(destination, use_threads, **params)
         self.headers = params.get('headers')
         self.label_to_send = params['label_to_send']
 
@@ -105,9 +106,10 @@ class HTTPPOSTSendStage(StageSendInterface):
 class CustomSendStage:
     """ Class for launching custom implementations of Send operation """
 
-    def __init__(self, function_to_launch: Callable, **kwargs):
+    def __init__(self, function_to_launch: Callable, use_threads: bool, **kwargs):
         self.function_to_launch = function_to_launch
         self.kwargs = kwargs
+        self.use_threads = use_threads
 
     def send(self, data_to_send: Any, **params):
         if data_to_send is None:

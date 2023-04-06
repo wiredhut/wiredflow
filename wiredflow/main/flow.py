@@ -1,4 +1,8 @@
 import threading
+from multiprocessing import Lock
+from multiprocessing.context import Process
+from multiprocessing.pool import Pool
+
 from typing import Union
 
 from loguru import logger
@@ -20,13 +24,14 @@ class FlowProcessor:
     ensuring their consistency
     """
 
-    def __init__(self):
+    def __init__(self, use_threads: bool = True):
         self.processing_pool = {}
         # Information about DB connectors (extractors) in each pipeline
         # DB connectors help to get information about databases in the system
         # So through Processor it's available to get access to the all databases
         # in all pipelines
         self.extract_objects = {}
+        self.use_threads = use_threads
 
     def add_new_pipeline_into_pool(self, pipeline: Pipeline):
         """
@@ -55,16 +60,31 @@ class FlowProcessor:
         self.initialize_internal_structure()
 
         timeout_timer.set_failures_time()
-        threads = [threading.Thread(target=launch_pipeline, args=(pipeline, timeout_timer))
-                   for pipeline in self.processing_pool.values()]
+        if self.use_threads is True:
+            logger.info(f'Launch service with {len(self.processing_pool.values())} pipelines using thread mode')
+            # Launch threads
+            threads = [threading.Thread(target=launch_pipeline, args=(pipeline, timeout_timer))
+                       for pipeline in self.processing_pool.values()]
 
-        # Launch pipelines without core processing
-        for thread in threads:
-            thread.start()
+            # Launch pipelines into separate threads
+            for thread in threads:
+                thread.start()
 
-        # Finish all threads processing
-        for thread in threads:
-            thread.join()
+            # Finish all threads processing
+            for thread in threads:
+                thread.join()
+        else:
+            logger.info(f'Launch service with {len(self.processing_pool.values())} pipelines using parallel mode')
+            processes = [Process(target=launch_pipeline, args=(pipeline, timeout_timer))
+                         for pipeline in self.processing_pool.values()]
+
+            # Launch pipelines into separate processes
+            for process in processes:
+                process.start()
+
+            # Finish all threads processing
+            for process in processes:
+                process.join()
 
         logger.info(f'Flow finish execution')
         failures_checker = ExecutionStatusChecker()
@@ -94,6 +114,7 @@ class FlowProcessor:
 
 
 def launch_pipeline(pipeline, timeout_timer: WiredTimer):
+    """ Wrapper for launching in separate process or thread """
     try:
         pipeline.run(timeout_timer)
     except Exception as ex:

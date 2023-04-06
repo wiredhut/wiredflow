@@ -9,8 +9,8 @@ class CustomStorageStage(StageStorageInterface):
     """ Class for launching custom functions to save data """
 
     def __init__(self, function_to_launch: Callable,
-                 stage_id: str, **params):
-        super().__init__(stage_id, **params)
+                 stage_id: str, use_threads: bool, **params):
+        super().__init__(stage_id, use_threads, **params)
         self.function_to_launch = function_to_launch
 
     def save(self, relevant_info: Any, **kwargs):

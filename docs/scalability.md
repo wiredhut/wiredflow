@@ -18,8 +18,19 @@ powerful server, but that is expensive. It would be much more efficient to use
 10 servers like the original one. But how do we configure Wiredflow to make 
 it work properly with the new setup?
 
+## Simple tips
+
+If the service is not running fast enough and:
+1) your server resources are not being fully utilized
+2) number of pipelines in the service more than 2 and less than CPU cores on your machine
+3) some pipelines are occupied by computationally expensive tasks
+
+Then you should try to run the service in parallel mode. 
+Using the parameter `use_threads=False` wiredflow will start the pipelines not in threads (as is done by default), but in processes.
+If that doesn't help, then see the tips below.
+
 ## Tokenization
-The first approach for scaling the service is tokenization. 
+The first "real" approach for scaling the service is tokenization. 
 It consists in dividing the original service into individual blocks.
 This is another interpretation of the classical approach to decomposition of tasks in programming.
 

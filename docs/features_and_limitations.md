@@ -3,19 +3,22 @@
 In this section we will take a closer look at the basic concepts that are used in Wiredflow. 
 It is known fact that each approach is likely to have advantages and disadvantages. We are here to investigate them.
 
-NB: It is worth noting that the restrictions described below (mostly related to scalability) can be overcome by dividing the 
-service into several smaller ones (perform tokenization). However, tokenization, while an effective 
-way to scale, can make service management much more difficult. If you want to know more about concept of tokenization,
-follow this [link](./scalability_tokenization.md). Or [implementation with remote launches](scalability_remote.md) can be applied to solve efficiency and scalability issues.
+NB: It is worth noting that the restrictions described below (mostly related to 
+scalability) can be overcome by using tips from [Scalability issues page](./scalability.md).
 
-## Each pipeline in individual thread
+## Each pipeline in an individual thread (or process)
 
 <img src="./media/pipeline_thread.png" width="800"/>
 
-We should start the discussion with a fundamental concept: "all pipelines in wiredflow run in separate threads".
+NB: Threads and processes are not the same abstractions! Follow the guide below to figure out the difference. 
+
+We should start the discussion with a fundamental concept: "all pipelines in wiredflow run in separate threads (or processes)".
 This means that if there are defined 30 pipelines in `Flow` (e.g. Service), the Python interpreter will use the `threading` module and run 30 threads.
 It is worth noting that threads in Python do not run in parallel. 
 This means that the interpreter is only computing one thread at a given moment in time.
+
+By default, threads are using. If you want the pipelines to be executed in parallel, wiredflow can also run the pipelines in separate processes. 
+It might then be reasonable to limit the number of pipelines to the number of CPU cores. 
 
 ### Pros
 
@@ -24,15 +27,16 @@ This means that the interpreter is only computing one thread at a given moment i
 It is relatively easy to share messages between threads. This allows all threads to terminate if at least one 
 of them crashes with an error (natively supported be the library);
 - Load balancing - only one task is calculated at a single time. So the processor will not be as heavily utilized as 
-it could have been if the processes used 
+it could have been if the processes used;
+- Native ability to use "threads" and "processes" mode
 
 ### Cons
 
-- Threads in Python will slow computationally intensive tasks (which would be better executed using the processes). 
-So it won't be very effective if, for example, you fit different machine learning models in pipelines. Сan be resolved through
-remote launch usage and through flow tokenization. Check [efficiency issues resolving guide](scalability.md) for more information. 
-- Threads sometimes needs synchronization. Wiredflow supports thread synchronization, but if you 
-write custom functions and want to synchronize threads, then it is necessary to use a special decorator. This is not complicated, but it is easy just to forget about it
+- Threads and processes in Python may slow computationally intensive tasks. 
+So it won't be very effective if, for example, you fit different large machine learning models in pipelines. Сan be resolved through
+remote launch usage and through flow tokenization. Check [efficiency issues resolving guide](scalability.md) for more information.
+- Threads and processes sometimes needs synchronization. Wiredflow supports thread synchronization, but if you 
+write custom functions and want to synchronize threads, then it is necessary to use a special decorator (in progress). This is not complicated, but it is easy just to forget about it
 
 ## All pipelines may be in one service
 
@@ -71,7 +75,7 @@ of specialized code. And then it's better if the tool can natively assimilate it
 
 ## Customizations through functions 
 
-TODO add picture 
+<img src="./media/simplicity.png" width="800"/>
 
 As it was mentioned in [customization](customization.md) section, any stage of data processing can be set in a custom way. 
 For example, if you don't like the default connectors, it is possible to implement own one through a simple Python function. 
