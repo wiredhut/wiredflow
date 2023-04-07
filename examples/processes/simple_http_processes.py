@@ -22,8 +22,6 @@ def launch_simple_http_demo_using_processes():
                                       'apikey': 'custom_key_1234'})\
         .with_storage('json', preprocessing='add_datetime')
 
-    # Or simply flow.launch_flow()
-    # if there is no need to launch local demo http server
     launch_demo_with_int_http_connector_processes(flow_builder, execution_seconds=20)
 
 

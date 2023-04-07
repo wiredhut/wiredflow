@@ -10,6 +10,7 @@ from wiredflow.main.actions.stages.http_stage import HTTPConnectorInterface, Sta
 from wiredflow.main.actions.stages.send_stage import StageSendInterface, CustomSendStage
 from wiredflow.main.actions.stages.storage_stage import StageStorageInterface
 from wiredflow.main.multistep import is_current_stage_multi_step
+from wiredflow.messages.failures_check import ExecutionStatusChecker
 from wiredflow.wiredtimer.timer import WiredTimer
 
 
@@ -68,7 +69,7 @@ class Action:
             self.init_stages.append(stage_proxy.compile())
 
     @abstractmethod
-    def execute_action(self):
+    def execute_action(self, failures_checker: ExecutionStatusChecker):
         """ Launch all internally defined stages """
         raise NotImplementedError()
 

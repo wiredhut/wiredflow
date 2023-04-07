@@ -1,5 +1,5 @@
 import time
-from typing import List
+from typing import List, Union
 
 from loguru import logger
 
@@ -21,7 +21,7 @@ class FullProcessingAction(Action):
     def __init__(self, pipeline_name: str, stages: List[ProxyStage], **params):
         super().__init__(pipeline_name, stages, **params)
 
-    def execute_action(self):
+    def execute_action(self, failures_checker: ExecutionStatusChecker):
         """ Launch all processes in single flow """
         number_of_seconds_to_break = calculate_break_interval(self.timedelta_seconds)
 
@@ -42,9 +42,8 @@ class FullProcessingAction(Action):
 
         scheduler = Scheduler(self.perform_action, self.timedelta_seconds, self.launch_time)
         while True:
-            failures_checker = ExecutionStatusChecker()
-            if failures_checker.status.is_ok is False:
-                logger.info(f'Service failure due to "{failures_checker.ex}". '
+            if failures_checker.is_current_status_ok() is False:
+                logger.info(f'Service failure due to "{failures_checker.exception_message()}". '
                             f'Stop pipeline "{self.pipeline_name}" execution')
                 break
 

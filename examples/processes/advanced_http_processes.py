@@ -1,6 +1,5 @@
 from wiredflow.main.build import FlowBuilder
-from wiredflow.mocks.demo_bindings_process import \
-    launch_demo_with_several_http_connectors_processes
+from wiredflow.mocks.demo_bindings_process import launch_demo_with_several_http_connectors_processes
 from wiredflow.mocks.demo_bindings_threads import remove_temporary_folder_for_demo
 
 
@@ -57,9 +56,8 @@ def launch_advanced_http_demo_using_processes():
         .send(destination='localhost', port=1883, topic='demo/uppercase', label_to_send='uppercase')\
         .send(destination='localhost', port=1883, topic='demo/lowercase', label_to_send='lowercase')
 
-    # Configure service and launch it
     launch_demo_with_several_http_connectors_processes(flow_builder,
-                                                       execution_seconds=60)
+                                                       execution_seconds=30)
 
 
 if __name__ == '__main__':

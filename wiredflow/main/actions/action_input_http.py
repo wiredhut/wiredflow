@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 import time
 
 from loguru import logger
@@ -22,7 +22,7 @@ class InputActionHttps(Action):
     def __init__(self, pipeline_name: str, stages: List[ProxyStage], **params):
         super().__init__(pipeline_name, stages, **params)
 
-    def execute_action(self):
+    def execute_action(self, failures_checker: ExecutionStatusChecker):
         """ Launch process with defined parameters """
         number_of_seconds_to_break = calculate_break_interval(self.timedelta_seconds)
         if self.params.get('delay_seconds') is not None:
@@ -39,9 +39,8 @@ class InputActionHttps(Action):
 
         scheduler = Scheduler(self.perform_action, self.timedelta_seconds, self.launch_time)
         while True:
-            failures_checker = ExecutionStatusChecker()
-            if failures_checker.status.is_ok is False:
-                logger.info(f'Service failure due to "{failures_checker.ex}". '
+            if failures_checker.is_current_status_ok() is False:
+                logger.info(f'Service failure due to "{failures_checker.exception_message()}". '
                             f'Stop pipeline "{self.pipeline_name}" execution')
                 break
 
