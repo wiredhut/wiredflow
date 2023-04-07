@@ -12,10 +12,14 @@ class FlowBuilder:
     processing core with business logic. If not - it is uses just
     separate modules to perform local tasks. Checking the condition
     of sufficiency of connectors is checked at the core logic level
+
+    :param use_threads: is there a need to use threads or processes to launch
+    pipelines
     """
 
-    def __init__(self):
-        self.processor = FlowProcessor()
+    def __init__(self, use_threads: bool = True):
+        self.processor = FlowProcessor(use_threads)
+        self.use_threads = use_threads
 
     def add_pipeline(self, pipeline_name: Optional[str] = None,
                      **params):
@@ -30,7 +34,7 @@ class FlowBuilder:
         if pipeline_name in list(self.processor.processing_pool.keys()):
             raise ValueError('Pipeline names in processor must be unique. Duplicates were detected')
 
-        new_pipeline = Pipeline(pipeline_name, **params)
+        new_pipeline = Pipeline(pipeline_name, self.use_threads, **params)
         self.processor.add_new_pipeline_into_pool(new_pipeline)
         return new_pipeline
 

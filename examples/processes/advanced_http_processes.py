@@ -1,6 +1,6 @@
 from wiredflow.main.build import FlowBuilder
-from wiredflow.mocks.demo_bindings import remove_temporary_folder_for_demo, \
-    launch_demo_with_several_http_connectors
+from wiredflow.mocks.demo_bindings_process import launch_demo_with_several_http_connectors_processes
+from wiredflow.mocks.demo_bindings_threads import remove_temporary_folder_for_demo
 
 
 def toy_example_logic(**parameters_to_use):
@@ -33,30 +33,11 @@ def toy_example_logic(**parameters_to_use):
     return message
 
 
-def launch_advanced_http_demo():
+def launch_advanced_http_demo_using_processes():
     """
-    An example of how to run a service that receives information from
-    several http servers and merges the data in a specified way.
-
-    Toy example. Service should get information from two endpoints using
-    GET HTTP requests. One endpoint returns random numbers, the other returns
-    random letters:
-        - http://localhost:8027 will return integers (need to request every 30 seconds)
-        - http://localhost:8026 will return letters (need to request every 1 minute)
-
-    Task: if the current letter is uppercase, the service
-    should download all the numbers that were stored in the database and
-    calculate sum of all obtained values.
-    If the letter is lowercase, there is a need to calculate mean value.
-    The resulting responses need to be sent by notification via local MQTT broker:
-    one message to topic 'uppercase' and another to topic 'lowercase'.
-    Calculations must be performed every 30 seconds
-
-    NB: Demo will be executed in the loop. This means that the example won't
-    finish calculating until you stop it yourself. Alternatively - you can assign
-    'execution_seconds' parameter to set the timeout
+    An example of how to run a service with processes usage (parallel mode)
     """
-    flow_builder = FlowBuilder()
+    flow_builder = FlowBuilder(use_threads=False)
 
     # Launch pipeline every 10 seconds
     flow_builder.add_pipeline('integers_processing', timedelta_seconds=10) \
@@ -70,19 +51,15 @@ def launch_advanced_http_demo():
 
     # Core logic of our case
     # Configure notification sender: send message based on calculation approach
-    flow_builder.add_pipeline('core_matching', timedelta_seconds=30, delay_seconds=10) \
+    flow_builder.add_pipeline('core_matching', timedelta_seconds=20, delay_seconds=10) \
         .with_core_logic(toy_example_logic)\
         .send(destination='localhost', port=1883, topic='demo/uppercase', label_to_send='uppercase')\
         .send(destination='localhost', port=1883, topic='demo/lowercase', label_to_send='lowercase')
 
-    # Configure service and launch it
-    flow = flow_builder.build()
-
-    # Or simply flow.launch_flow()
-    # if there is no need to launch local demo http servers
-    launch_demo_with_several_http_connectors(flow)
+    launch_demo_with_several_http_connectors_processes(flow_builder,
+                                                       execution_seconds=30)
 
 
 if __name__ == '__main__':
     remove_temporary_folder_for_demo()
-    launch_advanced_http_demo()
+    launch_advanced_http_demo_using_processes()

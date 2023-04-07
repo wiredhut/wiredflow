@@ -10,6 +10,7 @@ from wiredflow.main.actions.assimilation.mqtt_staging import MQTTStageProxy
 from wiredflow.main.actions.assimilation.send_staging import SendStageProxy
 from wiredflow.main.actions.assimilation.store_staging import StoreStageProxy
 from wiredflow.main.template import PipelineActionTemplate
+from wiredflow.messages.failures_check import ExecutionStatusChecker
 from wiredflow.wiredtimer.timer import WiredTimer
 
 
@@ -19,8 +20,9 @@ class Pipeline:
     Pipeline launch Actions and Action launch Stages
     """
 
-    def __init__(self, pipeline_name: str, **params):
+    def __init__(self, pipeline_name: str, use_threads: bool, **params):
         self.pipeline_name = pipeline_name
+        self.use_threads = use_threads
         self.params = params
 
         # Info about actions in the pipeline
@@ -39,7 +41,7 @@ class Pipeline:
         """ Configuration of subsequent stage parameters in the pipeline """
         self.with_configuration_action = True
 
-        self.stages.append(ConfigurationStageProxy(configuration, **kwargs))
+        self.stages.append(ConfigurationStageProxy(configuration, self.use_threads, **kwargs))
         return self
 
     def with_http_connector(self,
@@ -56,7 +58,8 @@ class Pipeline:
         """
         self.with_get_request_action = True
 
-        self.stages.append(HTTPStageProxy(configuration, source, headers, **kwargs))
+        self.stages.append(HTTPStageProxy(configuration, source, headers,
+                                          self.use_threads, **kwargs))
         return self
 
     def with_mqtt_connector(self,
@@ -73,7 +76,8 @@ class Pipeline:
         """
         self.with_mqtt_connection = True
 
-        self.stages.append(MQTTStageProxy(source, port, topic, **kwargs))
+        self.stages.append(MQTTStageProxy(source, port, topic,
+                                          self.use_threads, **kwargs))
         return self
 
     def with_storage(self, configuration: Union[str, Callable],
@@ -107,7 +111,8 @@ class Pipeline:
             stage_id = f'{configuration}_in_{self.pipeline_name}'
         else:
             stage_id = f'custom_in_{self.pipeline_name}'
-        self.stages.append(StoreStageProxy(configuration, stage_id, **kwargs))
+        self.stages.append(StoreStageProxy(configuration, stage_id, self.use_threads,
+                                           **kwargs))
         return self
 
     def with_core_logic(self, configuration: Callable, **kwargs):
@@ -117,7 +122,7 @@ class Pipeline:
         """
         self.with_core_action = True
 
-        self.stages.append(CoreStageProxy(configuration, **kwargs))
+        self.stages.append(CoreStageProxy(configuration, self.use_threads, **kwargs))
         return self
 
     def send(self, configuration: Union[str, Callable] = 'mqtt',
@@ -137,10 +142,11 @@ class Pipeline:
         self.with_sender = True
         kwargs = {**kwargs, **{'label_to_send': label_to_send}}
 
-        self.stages.append(SendStageProxy(configuration, destination, **kwargs))
+        self.stages.append(SendStageProxy(configuration, destination,
+                                          self.use_threads, **kwargs))
         return self
 
-    def run(self, timeout_timer: WiredTimer):
+    def run(self, timeout_timer: WiredTimer, failures_checker: ExecutionStatusChecker):
         """ Launch compiled action in current pipeline """
         common_message = f'Launch pipeline "{self.pipeline_name}"'
         if timeout_timer.execution_seconds is None:
@@ -150,7 +156,7 @@ class Pipeline:
 
         self.action.db_connectors = self.db_connectors
         self.action.timeout_timer = timeout_timer
-        self.action.execute_action()
+        self.action.execute_action(failures_checker)
 
     def create_action(self):
         """

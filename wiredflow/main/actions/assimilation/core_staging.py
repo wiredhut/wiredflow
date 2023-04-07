@@ -9,9 +9,10 @@ class CoreStageProxy(ProxyStage):
     Class for compiling core logic using custom functions
     """
 
-    def __init__(self, configuration: Callable, **kwargs):
+    def __init__(self, configuration: Callable, use_threads: bool, **kwargs):
         self.configuration = configuration
         self.kwargs = kwargs
+        self.use_threads = use_threads
 
     def compile(self) -> CoreLogicInterface:
-        return CoreLogicInterface(self.configuration, **self.kwargs)
+        return CoreLogicInterface(self.configuration, self.use_threads, **self.kwargs)

@@ -13,7 +13,7 @@ class HTTPStageProxy(ProxyStage):
 
     def __init__(self,
                  configuration: Union[str, Callable], source: Union[str, None],
-                 headers: Union[Dict, None], **kwargs):
+                 headers: Union[Dict, None], use_threads: bool, **kwargs):
         self.custom_realization = False
         if isinstance(configuration, str):
             self.http_stage = self.http_stage_by_name[configuration]
@@ -25,6 +25,7 @@ class HTTPStageProxy(ProxyStage):
         self.source = source
         self.headers = headers
         self.kwargs = kwargs
+        self.use_threads = use_threads
 
     def compile(self) -> Union[HTTPConnectorInterface, StageCustomHTTPConnector]:
         """ Compile HTTP connector stage object """
@@ -34,6 +35,6 @@ class HTTPStageProxy(ProxyStage):
                 self.kwargs['source'] = self.source
             if self.headers is not None:
                 self.kwargs['headers'] = self.headers
-            return StageCustomHTTPConnector(self.http_stage, **self.kwargs)
+            return StageCustomHTTPConnector(self.http_stage, self.use_threads, **self.kwargs)
 
-        return self.http_stage(self.source, self.headers, **self.kwargs)
+        return self.http_stage(self.source, self.headers, self.use_threads, **self.kwargs)

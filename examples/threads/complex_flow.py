@@ -1,5 +1,5 @@
 from wiredflow.main.build import FlowBuilder
-from wiredflow.mocks.demo_bindings import remove_temporary_folder_for_demo, \
+from wiredflow.mocks.demo_bindings_threads import remove_temporary_folder_for_demo, \
     launch_demo_for_complex_case
 
 

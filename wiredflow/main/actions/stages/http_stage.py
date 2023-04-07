@@ -7,11 +7,13 @@ import requests
 class HTTPConnectorInterface:
     """ Base class which define common interface for all HTTP data request """
 
-    def __init__(self, source: Union[str, None], headers: Union[Dict, None], **params):
+    def __init__(self, source: Union[str, None], headers: Union[Dict, None],
+                 use_threads: bool, **params):
         self.connector_name = 'HTTP/HTTPS connector'
         self.source = source
         self.headers = headers
         self.params = params
+        self.use_threads = use_threads
 
     @abstractmethod
     def get(self, **params):
@@ -29,8 +31,9 @@ class StageGetHTTPConnector(HTTPConnectorInterface):
     for actively requesting desired data using GET method
     """
 
-    def __init__(self, source: Union[str, None], headers: Union[Dict, None], **params):
-        super().__init__(source, headers, **params)
+    def __init__(self, source: Union[str, None], headers: Union[Dict, None],
+                 use_threads: bool, **params):
+        super().__init__(source, headers, use_threads, **params)
 
     def get(self, **params):
         if isinstance(self.params, dict) and isinstance(params, dict):
@@ -48,8 +51,9 @@ class StagePostHTTPConnector(HTTPConnectorInterface):
     use SQL commands to grab data)
     """
 
-    def __init__(self, source: Union[str, None], headers: Union[Dict, None], **params):
-        super().__init__(source, headers, **params)
+    def __init__(self, source: Union[str, None], headers: Union[Dict, None],
+                 use_threads: bool, **params):
+        super().__init__(source, headers, use_threads, **params)
 
     def get(self, **params):
         if isinstance(self.params, dict) and isinstance(params, dict):
@@ -66,9 +70,10 @@ class StagePostHTTPConnector(HTTPConnectorInterface):
 class StageCustomHTTPConnector:
     """ Class for launching custom implementations of http connectors """
 
-    def __init__(self, function_to_launch: Callable, **kwargs):
+    def __init__(self, function_to_launch: Callable, use_threads: bool, **kwargs):
         self.function_to_launch = function_to_launch
         self.params = kwargs
+        self.use_threads = use_threads
 
     def get(self, **params):
         if isinstance(self.params, dict) and isinstance(params, dict):

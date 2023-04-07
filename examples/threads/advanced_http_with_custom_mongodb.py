@@ -2,7 +2,7 @@ import pymongo
 from pymongo import MongoClient, WriteConcern
 
 from wiredflow.main.build import FlowBuilder
-from wiredflow.mocks.demo_bindings import launch_demo_with_int_http_connector
+from wiredflow.mocks.demo_bindings_threads import launch_demo_with_int_http_connector
 
 
 def custom_save(data_to_save, **params):

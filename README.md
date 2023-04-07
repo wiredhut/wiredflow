@@ -6,8 +6,9 @@ Designed to create services with multi-step data processing using just Python an
 ## Why you should try wiredflow
 
 This module is a simplified analogue of ETL-related libraries (e.g. 
-[luigi](https://github.com/spotify/luigi) and [petl](https://github.com/petl-developers/petl)) and 
-workflow management (workflow orchestration) platforms (e.g. [Apache Airflow](https://github.com/apache/airflow)
+[luigi](https://github.com/spotify/luigi) and [bonobo](https://github.com/python-bonobo/bonobo) (bonobo by the way is also pretty simple tool) and 
+workflow management (workflow orchestration) platforms 
+(e.g. [Apache Airflow](https://github.com/apache/airflow)
 and [prefect](https://github.com/PrefectHQ/prefect)). 
 
 This module is well-suited for both prototype preparation, quick experiments, 
@@ -37,13 +38,14 @@ to you how this library differs from other more well-known analogues.
 > **Response**: 1) Prototyping - you can quickly start listening to your MQTT 
 > queues or start collecting data using HTTP requests, etc. 2) Python code 
 > would be easy to build into larger projects because using wiredflow has 
-> pretty low overhead.
+> pretty low overhead. 3) Wiredflow has its own internal scheduler, allowing 
+> you to run your services out of the box.
 
 ---
 
 > **Question**: If wiredflow does not use a database, where is the data saved?
 > 
-> **Response**: In csv files or in JSON files. Yes, this is not a production solution, 
+> **Response**: In CSV files or in JSON files. Yes, this is not a production solution, 
 > but it is very convenient to deal with data you unfamiliar with.
 
 ---
@@ -65,7 +67,8 @@ to you how this library differs from other more well-known analogues.
 > **Question**: I saw in the documentation that the service can be subscribed to 
 > multiple MQTT queues at the same time. How does it work?
 > 
-> **Response**: wiredflow uses the multithreading Python module. 
+> **Response**: wiredflow uses the multithreading Python module. This allows 
+> effective sharing of resources between individual pipelines in your service.
 
 ---
 
@@ -82,20 +85,25 @@ NB: All examples should start in your virtual environment without any problems.
 The wiredflow-based services do not require any configuration beyond Python and
 library's dependencies (unless it is explicitly stated).
 
-First, check [examples](examples) folder, which can be easily launched locally: 
-* [simple HTTP case](examples/simple_http.py) - single data source which can be reached via simple HTTP GET request
-* [simple HTTP case with configuration](examples/simple_http_with_configuration.py) - single data source which can be reached via simple HTTP POST request.
+First, check [examples](examples) folder, which can be easily launched locally. 
+In [threads](examples/threads) folder you will find examples how to configure service and 
+launch pipelines in different threads: 
+* [simple HTTP case](examples/threads/simple_http.py) - single data source which can be reached via simple HTTP GET request
+* [simple HTTP case with configuration](examples/threads/simple_http_with_configuration.py) - single data source which can be reached via simple HTTP POST request.
   Parameters of POST request configured with custom logic.
-* [advanced HTTP case](examples/advanced_http.py) - several data sources (receive data via HTTP) with custom data processing
-* [simple MQTT case](examples/simple_mqtt.py) - single data source which send messages using MQTT
-* [advanced MQTT case](examples/advanced_mqtt.py) - several data sources (receive data via MQTT) with custom data processing
-* [complex multi-source case](examples/complex_flow.py) - complex flow example with custom multi-step data processing and several notificators
+* [advanced HTTP case](examples/threads/advanced_http.py) - several data sources (receive data via HTTP) with custom data processing
+* [simple MQTT case](examples/threads/simple_mqtt.py) - single data source which send messages using MQTT
+* [advanced MQTT case](examples/threads/advanced_mqtt.py) - several data sources (receive data via MQTT) with custom data processing
+* [complex multi-source case](examples/threads/complex_flow.py) - complex flow example with custom multi-step data processing and several notificators
 
 Examples with pre-configured databases:
 * [simple_http_with_mongo.py](examples/simple_http_with_mongo.py) - single data source which can be reached via simple HTTP GET request and
 saved into MongoDB. Tutorial how to configure free remote MongoDB can be [found here](https://www.mongodb.com/basics/mongodb-atlas-tutorial).
 * [advanced_http_with_custom_mongodb.py](examples/advanced_http_with_custom_mongodb.py) - single data source which can be reached via simple HTTP GET request and
 custom storage (MongoDB) logic. Tutorial how to configure free remote MongoDB can be [found here](https://www.mongodb.com/basics/mongodb-atlas-tutorial).
+
+If you want to know how to launch pipelines in separate processes (launch service in parallel) - just set `use_threads=False` in builder 
+and check [processes](examples/processes) folder for usage examples.
 
 Or investigate jupyter notebooks with examples: 
 * In progress
@@ -104,7 +112,7 @@ Or investigate jupyter notebooks with examples:
 
 The library is not a low-code solution, but it's great for developing custom pipelines when you can't avoid writing custom business logic. 
 The library consists of the following key blocks (by combining these blocks it is possible to implement processing pipelines of flexible structure): 
-* **Configuration** - Optional block before HTTP and MQTT (or another) connectors to configure connector parameters. Allows implementing custom configurations
+* **Configuration** - Optional block before other stages to configure next stage parameters. Allows implementing custom configurations
   logic using Python function. Configuration block pass parameters to next stage.
 * **HTTP connector** - Retrieving data using `HTTP` requests, for example using the `GET` method.
 * **MQTT connector** - Retrieving data using `MQTT` protocol, the connector subscribes to the MQTT queue and receives data real-time.

@@ -34,7 +34,7 @@ def custom_storage_stage_checker(data_to_save, **params):
 
 
 def custom_core_logic_stage_checker(**params):
-    assert len(params.keys()) == 3
+    assert len(params.keys()) == 4
     assert params['relevant_info'] is None
     assert params['pipeline_name'] == 'test_pipeline'
     assert len(params['db_connectors']) == 0
@@ -108,14 +108,16 @@ def test_parameters_passed_correctly_into_senders():
 def test_parameters_into_configuration_stage():
     """ Check that parameters correctly define on a Stages level for configuration """
 
-    config = ConfigurationInterface(function_to_launch=common_checking, **{'param_1': 'param_1'})
+    config = ConfigurationInterface(function_to_launch=common_checking,
+                                    use_threads=True, **{'param_1': 'param_1'})
     config.launch(**{'param_1': 'param_new', 'param_2': 'param_2'})
 
 
 def test_parameters_into_http_connector_stage():
     """ Check that parameters correctly define on a Stages level for HTTP connection """
 
-    connector = StageCustomHTTPConnector(function_to_launch=common_checking, **{'param_1': 'param_1'})
+    connector = StageCustomHTTPConnector(function_to_launch=common_checking,
+                                         use_threads=True, **{'param_1': 'param_1'})
     connector.get(**{'param_1': 'param_new', 'param_2': 'param_2'})
 
 
@@ -126,7 +128,8 @@ def test_parameters_into_storage():
         assert params['param_1'] == 'param_new'
         assert params['param_2'] == 'param_2'
 
-    storage = CustomStorageStage(function_to_launch=storage_checking, stage_id='test', **{'param_1': 'param_1'})
+    storage = CustomStorageStage(function_to_launch=storage_checking, stage_id='test',
+                                 use_threads=True, **{'param_1': 'param_1'})
     storage.save(relevant_info=None, **{'param_1': 'param_new', 'param_2': 'param_2'})
 
 
@@ -137,7 +140,8 @@ def test_parameters_into_core_logic():
         assert params['param_1'] == 'param_new'
         assert params['param_2'] == 'param_2'
 
-    core = CoreLogicInterface(function_to_launch=core_checking, stage_id='test', **{'param_1': 'param_1'})
+    core = CoreLogicInterface(function_to_launch=core_checking, stage_id='test',
+                              use_threads=True, **{'param_1': 'param_1'})
     core.launch(relevant_info=None, db_connectors={}, **{'param_1': 'param_new', 'param_2': 'param_2'})
 
 
@@ -147,6 +151,6 @@ def test_parameters_into_send():
         assert params['param_1'] == 'param_new'
         assert params['param_2'] == 'param_2'
 
-    send = CustomSendStage(function_to_launch=send_checking, stage_id='test', **{'param_1': 'param_1'})
+    send = CustomSendStage(function_to_launch=send_checking, stage_id='test',
+                           use_threads=True, **{'param_1': 'param_1'})
     send.send(data_to_send={'data': 'some info'}, **{'param_1': 'param_new', 'param_2': 'param_2'})
-    

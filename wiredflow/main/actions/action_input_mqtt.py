@@ -1,4 +1,4 @@
-from typing import List, Any
+from typing import List, Any, Union
 
 import paho.mqtt.client as mqtt
 
@@ -43,7 +43,7 @@ class InputActionMQTT(Action):
         super().__init__(pipeline_name, stages, **params)
         self.client = None
 
-    def execute_action(self):
+    def execute_action(self, failures_checker: ExecutionStatusChecker):
         """ Launch MQTT connection """
         # Get connector object and saver
         connector = self.init_stages[0]
@@ -54,15 +54,14 @@ class InputActionMQTT(Action):
         self.subscribe_to_broker(connector, mqtt_processing)
 
         # Launch as loop
-        failures_checker = ExecutionStatusChecker()
         if self.timeout_timer is not None and self.timeout_timer.execution_seconds is not None:
-            while self.timeout_timer.is_limit_reached() is False and failures_checker.status.is_ok is True:
+            while self.timeout_timer.is_limit_reached() is False and failures_checker.is_current_status_ok() is True:
                 self.client.loop_start()
             self.client.loop_stop()
             exit()
         else:
             # Execute till other threads are working
-            while failures_checker.status.is_ok is True:
+            while failures_checker.is_current_status_ok() is True:
                 self.client.loop_start()
             self.client.loop_stop()
 

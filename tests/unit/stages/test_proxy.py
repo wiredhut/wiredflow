@@ -26,7 +26,7 @@ def custom_common_implementation():
                           (custom_common_implementation, {'custom': 'value'}, CustomStorageStage)])
 def test_storage_stage_proxy(storage_config: Union[str, Callable], params: dict, expected_stage: Any):
     """ Check that proxy configure correct Storage stage object based on desired parameters """
-    proxy_stage = StoreStageProxy(storage_config, stage_id='test', **params)
+    proxy_stage = StoreStageProxy(storage_config, stage_id='test', use_threads=True, **params)
     compiled_stage = proxy_stage.compile()
 
     assert isinstance(compiled_stage, expected_stage)
@@ -44,8 +44,8 @@ def test_storage_stage_proxy(storage_config: Union[str, Callable], params: dict,
                           (custom_common_implementation, {'custom': 'value'}, StageCustomHTTPConnector)])
 def test_http_connection_stage_proxy(connector_config: Union[str, Callable], params: dict, expected_stage: Any):
     """ Check that proxy configure correct HTTP connector stage based on desired parameters """
-    proxy_stage = HTTPStageProxy(connector_config, source='test', headers={'accept': 'application/json',
-                                                                           'apikey': '1234'}, **params)
+    proxy_stage = HTTPStageProxy(connector_config, source='test', use_threads=True,
+                                 headers={'accept': 'application/json', 'apikey': '1234'}, **params)
     compiled_stage = proxy_stage.compile()
 
     assert isinstance(compiled_stage, expected_stage)
@@ -63,7 +63,8 @@ def test_http_connection_stage_proxy(connector_config: Union[str, Callable], par
                           (custom_common_implementation, {'custom': 'value'}, CustomSendStage)])
 def test_send_stage_proxy(send_config: Union[str, Callable], params: dict, expected_stage: Any):
     """ Check that proxy configure correct Send stage based on desired parameters """
-    proxy_stage = SendStageProxy(send_config, destination='test', **params)
+    proxy_stage = SendStageProxy(send_config, destination='test',
+                                 use_threads=True, **params)
     compiled_stage = proxy_stage.compile()
 
     assert isinstance(compiled_stage, expected_stage)

@@ -42,8 +42,9 @@ def mqtt_on_message(client, userdata, message):
 class DefaultMQTTConnector(StageMQTTConnectorInterface):
 
     def __init__(self, source: Union[str, None], port: int,
-                 topic: Union[str, None], **params):
+                 topic: Union[str, None], use_threads: bool, **params):
         super().__init__(source, port, topic, **params)
+        self.use_threads = use_threads
 
     def configure_client(self, client: mqtt.Client):
         client.on_connect = mqtt_on_connect

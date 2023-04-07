@@ -1,6 +1,6 @@
 from wiredflow.main.build import FlowBuilder
-from wiredflow.mocks.demo_bindings import remove_temporary_folder_for_demo, \
-    launch_demo_with_several_mqtt_connectors
+from wiredflow.mocks.demo_bindings_process import launch_demo_with_several_mqtt_connectors_processes
+from wiredflow.mocks.demo_bindings_threads import remove_temporary_folder_for_demo
 
 
 def custom_logic(**parameters_to_use):
@@ -17,20 +17,11 @@ def custom_logic(**parameters_to_use):
     return {'match': match_to_send}
 
 
-def launch_advanced_mqtt_demo():
+def launch_advanced_mqtt_demo_using_processes():
     """
-    An example of how to launch a flow to collect some data from MQTT queues,
-    save it into a file and then perform some transformations.
-
-    Task: implement algorithm to store all information obtained from brokers
-    and every 15 seconds match last obtained integer and letter and send such
-    a message to topic 'demo/matched'.
-
-    NB: Demo will be executed in the loop. This means that the example won't
-    finish calculating until you stop it yourself. Alternatively - you can assign
-    'execution_seconds' parameter to set the timeout
+    An example of how to launch a flow with processes usage (parallel mode)
     """
-    flow_builder = FlowBuilder()
+    flow_builder = FlowBuilder(use_threads=False)
 
     # Get integers values via MQTT
     flow_builder.add_pipeline('int_subscriber')\
@@ -49,14 +40,10 @@ def launch_advanced_mqtt_demo():
         .send(destination='localhost', port=1883, topic='demo/matched',
               label_to_send='match')
 
-    # Configure service and launch it
-    flow = flow_builder.build()
-
-    # Or simply flow.launch_flow()
-    # if there is no need to launch local demo http server
-    launch_demo_with_several_mqtt_connectors(flow, execution_seconds=20)
+    launch_demo_with_several_mqtt_connectors_processes(flow_builder,
+                                                       execution_seconds=20)
 
 
 if __name__ == '__main__':
     remove_temporary_folder_for_demo()
-    launch_advanced_mqtt_demo()
+    launch_advanced_mqtt_demo_using_processes()
