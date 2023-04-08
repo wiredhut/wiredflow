@@ -1,4 +1,4 @@
-<img src="./docs/media/wiredflow.png" width="800"/>
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/wiredflow.png" width="800"/>
 
 Lightweight Python library for configuring ETL (Extract, Transform, Load) pipelines. 
 Designed to create services with multi-step data processing using just Python and nothing more.
@@ -123,19 +123,19 @@ The library consists of the following key blocks (by combining these blocks it i
 
 To make it clearer, here are some examples of possible service structures that can be built using wiredflow:
 
-<img src="./docs/media/flow_examples.png" width="800"/>
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/flow_examples.png" width="800"/>
 
 The fastest way to understand wiredflow is to think of it as a lightweight builder for services. 
 Protocols, endpoints, notifications, schedulers and storages are our constructor, and we 
 (engineers), can play with it the way we want to. If you would like to know more about wiredflow key features 
-and limitations - follow the page ["Features and limitations"](docs/features_and_limitations.md). 
+and limitations - follow the page ["Features and limitations"](docs/common/features_and_limitations.md). 
 
 ### Wiredflow is your friend
 
 When you start using **wiredflow** to solve real tasks, you may find that some of the flows structures are difficult to implement
 using native functionality. For example, to assign several data sources to a core logic block without using intermediate storages. 
 
-<img src="./docs/media/good_and_bad.png" width="800"/>
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/good_and_bad.png" width="800"/>
 
 When this happens, keep in mind: "Wiredflow is your friend". Implementation through storages is almost always more reliable
 and robust even if you use as storages local files. Thus, Wiredflow encourages you to use more robust solutions in designing services.
@@ -173,7 +173,8 @@ however, there are some main aspects shown below:
 
 
 ## Contributing 
-In progress
 
-Check [contribution guide](docs/contributing.md) for more details. 
+Feel free to join wiredflow open source project!
+
+Check [contribution guide](docs/additional/contributing.md) for more details. 
 

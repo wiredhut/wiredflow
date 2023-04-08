@@ -8,7 +8,7 @@ scalability) can be overcome by using tips from [Scalability issues page](./scal
 
 ## Each pipeline in an individual thread (or process)
 
-<img src="./media/pipeline_thread.png" width="800"/>
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/pipeline_thread.png" width="800"/>
 
 NB: Threads and processes are not the same abstractions! Follow the guide below to figure out the difference. 
 
@@ -40,7 +40,7 @@ write custom functions and want to synchronize threads, then it is necessary to 
 
 ## All pipelines may be in one service
 
-<img src="./media/single_service.png" width="800"/>
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/single_service.png" width="800"/>
 
 As it was mentioned above, using Wiredflow it is possible to configure the whole service (with different pipelines) in one 
 python (`.py`) file (entry point). So, all the business logic will be described in one place.
@@ -58,7 +58,7 @@ remote launch usage and through flow tokenization. Check [efficiency issues reso
 
 ## Construct service through builder 
 
-<img src="./media/wiredflow_builder.png" width="800"/>
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/wiredflow_builder.png" width="800"/>
 
 Builder is a highly beneficial software design pattern. It allows to configure both simple linear and complex services in a very flexible way.
 However, when the number of parameters in it is pretty large, the amount of code to be written to properly configure the service will be large too.
@@ -75,7 +75,7 @@ of specialized code. And then it's better if the tool can natively assimilate it
 
 ## Customizations through functions 
 
-<img src="./media/simplicity.png" width="800"/>
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/simplicity.png" width="800"/>
 
 As it was mentioned in [customization](customization.md) section, any stage of data processing can be set in a custom way. 
 For example, if you don't like the default connectors, it is possible to implement own one through a simple Python function. 
