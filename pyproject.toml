@@ -14,6 +14,7 @@ paho-mqtt = "^1.6.1"
 pymongo = "^4.3.3"
 pytest = "^7.2.1"
 mkdocs = "^1.4.2"
+Jinja2 = "3.0.0."
 
 [tool.poetry.dev-dependencies]
 

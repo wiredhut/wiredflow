@@ -109,14 +109,14 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "jinja2"
-version = "3.1.2"
+version = "3.0.0"
 description = "A very fast and expressive template engine."
 category = "main"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.6"
 
 [package.dependencies]
-MarkupSafe = ">=2.0"
+MarkupSafe = ">=2.0.0rc2"
 
 [package.extras]
 i18n = ["Babel (>=2.7)"]
@@ -367,7 +367,7 @@ dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "f115d0e94129571fde753635fbb8b779cb363d005b467d0cae317fab2436653b"
+content-hash = "a569bcad33d541fa57079592bc99eb2e3eda5a26220c45e2298ee9c2e2c3a210"
 
 [metadata.files]
 attrs = []
