@@ -13,6 +13,7 @@ schedule = "^1.1.0"
 paho-mqtt = "^1.6.1"
 pymongo = "^4.3.3"
 pytest = "^7.2.1"
+Jinja2 = "3.0.3"
 
 [tool.poetry.dev-dependencies]
 
