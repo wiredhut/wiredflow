@@ -1,14 +1,23 @@
 site_name: wiredflow
 site_url: https://github.com/wiredhut/wiredflow
+site_author: Wiredhut team
+repo_url: https://github.com/wiredhut/wiredflow
 
 nav:
     - Home: index.md
-    - 'User Guide':
-          - 'Writing your docs': 'writing-your-docs.md'
-          - 'Styling your docs': 'styling-your-docs.md'
-    - About:
-          - 'License': 'license.md'
-          - 'Release Notes': 'release-notes.md'
+    - Common description:
+          - 'Features and limitations': 'common/features_and_limitations.md'
+          - 'Scalability issues': 'common/scalability.md'
+          - 'Scalability: tokenization': 'common/scalability_tokenization.md'
+          - 'Scalability: remote launch': 'common/scalability_remote.md'
+          - 'Customization': 'common/customization.md'
+    - Tutorials:
+          - 'Quick start': 'tutorial/1_quick_start.md'
+          - 'Create data': 'tutorial/quick_start.md'
+    - Additional:
+          - 'Contribution': 'additional/contributing.md'
+          - 'Publications': 'additional/publications.md'
+          - 'About us': 'additional/about.md'
 theme:
     name: readthedocs
-    logo: https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/wiredflow_inverse.png
+    logo: https://raw.githubusercontent.com/wiredhut/wiredflow/markdown/docs/media/wiredflow_inverse.png

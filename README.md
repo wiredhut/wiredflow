@@ -128,7 +128,7 @@ To make it clearer, here are some examples of possible service structures that c
 The fastest way to understand wiredflow is to think of it as a lightweight builder for services. 
 Protocols, endpoints, notifications, schedulers and storages are our constructor, and we 
 (engineers), can play with it the way we want to. If you would like to know more about wiredflow key features 
-and limitations - follow the page ["Features and limitations"](docs/features_and_limitations.md). 
+and limitations - follow the page ["Features and limitations"](docs/common/features_and_limitations.md). 
 
 ### Wiredflow is your friend
 
@@ -173,7 +173,8 @@ however, there are some main aspects shown below:
 
 
 ## Contributing 
-In progress
 
-Check [contribution guide](docs/contributing.md) for more details. 
+Feel free to join wiredflow open source project!
+
+Check [contribution guide](docs/additional/contributing.md) for more details. 
 
