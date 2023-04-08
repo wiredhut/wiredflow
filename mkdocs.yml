@@ -20,4 +20,4 @@ nav:
           - 'About us': 'additional/about.md'
 theme:
     name: readthedocs
-    logo: https://raw.githubusercontent.com/wiredhut/wiredflow/markdown/docs/media/wiredflow_inverse.png
+    logo: https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/wiredflow_inverse.png
