@@ -1,0 +1,14 @@
+site_name: wiredflow
+site_url: https://github.com/wiredhut/wiredflow
+
+nav:
+    - Home: index.md
+    - 'User Guide':
+          - 'Writing your docs': 'writing-your-docs.md'
+          - 'Styling your docs': 'styling-your-docs.md'
+    - About:
+          - 'License': 'license.md'
+          - 'Release Notes': 'release-notes.md'
+theme:
+    name: readthedocs
+    logo: https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/wiredflow_inverse.png
