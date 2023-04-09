@@ -1,5 +1,34 @@
 # Functionality review
 
+This page provides an overview of existing and planned functionality in the library. 
+Here, in the form of tables and graphs, the main components of the pipelines and services 
+blocks and their possible variations are shown. 
+
+## Brief introduction 
+
+First, a short section on terms. Services in wiredflow are called **Flow** or **Service**. 
+A **service** can consist of one or more **pipelines**. 
+**Pipelines** can consist of individual operations (**stages**). 
+
+That's it - move on!
+
+## What stages can a Pipeline consist of?
+
+Wiredflow allows users to design services with any number of pipelines. Pipelines can also consist of different number of stages.
+Let's take a look at the possible combinations: 
+
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/flow_examples.png" width="800"/>
+
+Thus, there are the following possible stages in pipelines:
+* **Configuration** - requires a custom implementation. The stage configures the parameters for the following stages;
+* **Connectors** (HTTP and MQTT connector) - connector to external data source;
+* **Storage** - save data into file or database;
+* **Core logic** - requires a custom implementation. Business logic of developing application;
+* **Send** - send message from service to external services.
+
+Some stages always require custom implementation, others have several possible default configurations.
+Wiredflow uses a builder to generate services, so the pipelines are modified by sequentially adding blocks. 
+
 ### Available connectors (per protocols)
 
 | Connector |   Command for adding    | Short description                                                          |

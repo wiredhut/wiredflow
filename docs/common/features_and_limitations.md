@@ -6,6 +6,14 @@ It is known fact that each approach is likely to have advantages and disadvantag
 NB: It is worth noting that the restrictions described below (mostly related to 
 scalability) can be overcome by using tips from [Scalability issues page](./scalability.md).
 
+## Brief introduction 
+
+First, a short section on terms. Services in wiredflow are called **Flow** or **Service**. 
+A **service** can consist of one or more **pipelines**. 
+**Pipelines** can consist of individual operations (**stages**). 
+
+That's it - move on!
+
 ## Each pipeline in an individual thread (or process)
 
 <img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/pipeline_thread.png" width="800"/>
@@ -28,15 +36,17 @@ It is relatively easy to share messages between threads. This allows all threads
 of them crashes with an error (natively supported be the library);
 - Load balancing - only one task is calculated at a single time. So the processor will not be as heavily utilized as 
 it could have been if the processes used;
-- Native ability to use "threads" and "processes" mode
+- Native ability to use "threads" and "processes" mode.
 
 ### Cons
 
 - Threads and processes in Python may slow computationally intensive tasks. 
 So it won't be very effective if, for example, you fit different large machine learning models in pipelines. Сan be resolved through
-remote launch usage and through flow tokenization. Check [efficiency issues resolving guide](scalability.md) for more information.
+remote launch usage and through flow tokenization. 
+  Check [efficiency issues resolving guide](scalability.md) for more information;
 - Threads and processes sometimes needs synchronization. Wiredflow supports thread synchronization, but if you 
-write custom functions and want to synchronize threads, then it is necessary to use a special decorator (in progress). This is not complicated, but it is easy just to forget about it
+write custom functions and want to synchronize threads, then it is necessary to use a special decorator (in progress). 
+  This is not complicated, but it is easy just to forget about it.
 
 ## All pipelines may be in one service
 

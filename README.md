@@ -85,5 +85,5 @@ in particular and check the [official documentation](https://wiredflow.readthedo
 
 Feel free to join wiredflow open source project!
 
-Check [contribution guide](docs/additional/contributing.md) for more details. 
+Check [contribution guide](https://wiredflow.readthedocs.io/en/latest/additional/contributing/) for more details. 
 

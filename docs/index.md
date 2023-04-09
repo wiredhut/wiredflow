@@ -13,7 +13,7 @@ The documentation is organized into two large sections:
   with wiredflow and construct own multi-threading or multi-processes services
 
 There is also an **"Additional"** section with different useful pages. 
-For example, in the "Additional" section you can find information about publications 
+For example, in the **"Additional"** section you can find information about publications 
 using wiredflow as well as descriptions of real commercial use cases.
 
 In this section there is a page describing how to contribute into library - it is important 
