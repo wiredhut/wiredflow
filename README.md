@@ -76,7 +76,7 @@ to you how this library differs from other more well-known analogues.
 Use the following command to install this module
 
 ```
-pip install git+https://github.com/wiredhut/wiredflow.git
+pip install wiredflow
 ```
 
 ## Usage examples
@@ -145,7 +145,7 @@ Because Wiredflow is your friend, and real friends won't force you to do somethi
 
 
 ### Documentation 
-The full documentation build for this library can be found [here]().
+The full documentation build for this library can be found [here](https://wiredflow.readthedocs.io/en/latest/).
 however, there are some main aspects shown below:
 
 ### Available connectors (per protocols)
