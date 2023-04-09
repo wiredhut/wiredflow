@@ -1,1 +1,23 @@
-jinja2==3.0.3
+attrs==22.2.0; python_version >= "3.6"
+certifi==2022.12.7; python_version >= "3.7" and python_version < "4"
+charset-normalizer==3.0.1; python_version >= "3.7" and python_version < "4"
+colorama==0.4.6; python_version >= "3.7" and python_full_version < "3.0.0" and sys_platform == "win32" or sys_platform == "win32" and python_version >= "3.7" and python_full_version >= "3.7.0"
+dnspython==2.3.0; python_version >= "3.7" and python_version < "4.0"
+exceptiongroup==1.1.0; python_version < "3.11" and python_version >= "3.7"
+idna==3.4; python_version >= "3.7" and python_version < "4"
+iniconfig==2.0.0; python_version >= "3.7"
+jinja2==3.0.3; python_version >= "3.6" \
+    --hash=sha256:077ce6014f7b40d03b47d1f1ca4b0fc8328a692bd284016f806ed0eaca390ad8 \
+    --hash=sha256:611bb273cd68f3b993fabdc4064fc858c5b47a973cb5aa7999ec1ba405c87cd7
+loguru==0.6.0; python_version >= "3.5"
+markupsafe==2.1.2; python_version >= "3.7"
+packaging==23.0; python_version >= "3.7"
+paho-mqtt==1.6.1
+pluggy==1.0.0; python_version >= "3.7"
+pymongo==4.3.3; python_version >= "3.7"
+pytest==7.2.1; python_version >= "3.7"
+requests==2.28.2; python_version >= "3.7" and python_version < "4"
+schedule==1.1.0; python_version >= "3.6"
+tomli==2.0.1; python_version < "3.11" and python_version >= "3.7"
+urllib3==1.26.14; python_version >= "3.7" and python_full_version < "3.0.0" and python_version < "4" or python_version >= "3.7" and python_version < "4" and python_full_version >= "3.6.0"
+win32-setctime==1.1.0; sys_platform == "win32" and python_version >= "3.5"
