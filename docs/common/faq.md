@@ -54,5 +54,16 @@ to you how this library differs from other more well-known analogues.
 > **Question**: I saw in the documentation that the service can be subscribed to 
 > multiple MQTT queues at the same time. How does it work?
 > 
-> **Response**: wiredflow uses the multithreading Python module. This allows 
-> effective sharing of resources between individual pipelines in your service.
+> **Response**: Wiredflow uses the multithreading and multiprocessing Python modules. This allows 
+> effective sharing of resources between individual pipelines in your service. It is possible 
+> to choose whether to use threads to launch pipelines or processes.
+
+---
+
+> **Question**: Many ETL tools must be managed externally (using CRON or Kubernetes above docker containers). 
+> Does wiredflow have the same system?
+> 
+> **Response**: Wiredflow has its own internal scheduler, which allows 
+> launching pipelines with different scheduling in the same service. 
+> But services can be configured to run once also. 
+> And then services can be orchestrated by external mechnaisms

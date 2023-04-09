@@ -7,7 +7,10 @@ This is very convenient when one of the tasks requires a lot of resources and ex
 
 ## Problem localization
 
-The first thing to start with is to determine which task is too slow.
+The first thing to start with is to determine which task is too slow. 
+For example, if the service consists of two pipelines, then first you should determine which 
+pipeline are not effective enough. Then it is worth defining the stage, which is the "bottleneck".
+Once you have decided about the stage - it's time to configure remote launch for it.
 
 ## Custom remote launcher implementation
 

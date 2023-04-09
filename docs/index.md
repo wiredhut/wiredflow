@@ -5,12 +5,18 @@ Welcome to wiredflow open-source tool documentation!
 Wiredflow is a lightweight Python library for configuring ETL (Extract, Transform, Load) pipelines. 
 Designed to create services with multi-step data processing using just Python and nothing more.
 
-The documentation is organized into two large sections: 
+The main body of documentation is organized into two large sections: 
 
 - **Common description** - provides general information about how the library works, what its advantages and limitations are. 
   Also in this section you can find detailed information about the interior of the library;
 - **Tutorials** - is a step-by-step guide showing from the very beginning how to work
   with wiredflow and construct own multi-threading or multi-processes services
+
+Tip: 
+> If you know what is APIs, 
+> databases, SQL, ETL, docker (and so on) and would like to get some description of wiredflow - feel free to check **Common description**, 
+> if you don't know what's going on here or just want to start use this tool, go to **Tutorials**. There you will find both usage examples,
+> and a detailed explanation of the technologies that are used
 
 There is also an **"Additional"** section with different useful pages. 
 For example, in the **"Additional"** section you can find information about publications 

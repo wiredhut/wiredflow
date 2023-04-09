@@ -2,9 +2,10 @@
 
 This document details the features of tokenization of wiredflow services. 
 The goal of tokenization is to improve service performance. This can be achieved by decomposing tasks on three levels:
-* Stage into stages;
-* Pipeline into pipelines; 
-* Flow into flows.
+
+- Stage into stages;
+- Pipeline into pipelines; 
+- Flow into flows.
 
 ## Stage into stages
 

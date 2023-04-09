@@ -11,19 +11,30 @@ Wiredflow may well be massively scalable!
 Let's start with a description of the task. Scalability refers to the 
 ability to increase the computational resources of the service when the 
 load increases. Let's consider an example. Suppose that the service was 
-using a server with **4GB of RAM and 4 core processor** and was good for **1000 
-users per day**. However, the service became popular and now it is used not by 
-1000 people per day, but by **10000**. The first solution is we can rent a more 
-powerful server, but that is expensive. It would be much more efficient to use 
+using a server A with **4GB of RAM and 4 core processor**. It was pretty good for **1000 
+data items processing per day**. However, the service became popular and now it is process not 
+1000 data items per day, but **10000**. The first solution is we can rent a more 
+powerful server B, but that is expensive. It would be much more efficient to use 
 10 servers like the original one. But how do we configure Wiredflow to make 
 it work properly with the new setup?
+
+The initial configuration of the service will approximately be as follows:
+
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/scalability_source.png" width="800"/>
+
+If we use the default wiredflow configuration, all our pipelines (there are 3 of them) run in threads. 
+This allows the interpreter to switch the context when a particular stage is pending 
+(e.g. a response from an external service). This allows the interpreter not to idle when several pipelines have to be computed simultaneously.
+
+Suppose that we want to speed up each pipeline. Let's try!
 
 ## Simple tips
 
 If the service is not running fast enough and:
-1) your server resources are not being fully utilized
-2) number of pipelines in the service more than 2 and less than CPU cores on your machine
-3) some pipelines are occupied by computationally expensive tasks
+
+1. your server resources are not being fully utilized
+2. number of pipelines in the service more than 2 and less than CPU cores on your machine
+3. some pipelines are occupied by computationally expensive tasks
 
 Then you should try to run the service in parallel mode. 
 Using the parameter `use_threads=False` wiredflow will start the pipelines not in threads (as is done by default), but in processes.
@@ -36,10 +47,11 @@ This is another interpretation of the classical approach to decomposition of tas
 
 Tokenization is a rather general term and can be interpreted in three ways in this documentation 
 according to wiredflow specifics (per levels):
-* Stage into stages - Dividing an operation into several sequential ones. It is also possible that some parts can be performed 
+
+- Stage into stages - Dividing an operation into several sequential ones. It is also possible that some parts can be performed 
   simultaneously (good reason to pack them into different **stages**);
-* Pipeline into pipelines - Splitting one pipeline into several new ones. This will allow the service to "switch" between tasks more efficiently; 
-* Flow into flows - Splitting one flow (service) (e.g. one `.py` file) into several new ones (2, 3, 5 new `.py` files). Separate `.py` files in this case mean that 
+- Pipeline into pipelines - Splitting one pipeline into several new ones. This will allow the service to "switch" between tasks more efficiently; 
+- Flow into flows - Splitting one flow (service) (e.g. one `.py` file) into several new ones (2, 3, 5 new `.py` files). Separate `.py` files in this case mean that 
   separate services can be run on different servers.
 
 Tokenization is not the straightforward process. It requires a deep understanding of the business logic 

@@ -87,9 +87,9 @@ of specialized code. And then it's better if the tool can natively assimilate it
 
 <img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/simplicity.png" width="800"/>
 
-As it was mentioned in [customization](customization.md) section, any stage of data processing can be set in a custom way. 
+Any stage of data processing can be set in a custom way. 
 For example, if you don't like the default connectors, it is possible to implement own one through a simple Python function. 
-Follow [these instructions](customization.md) for more information about how to write custom functions. 
+Follow [these instructions](../tutorial/4_customization.md) for more information about how to write custom functions. 
 
 ### Pros
 
