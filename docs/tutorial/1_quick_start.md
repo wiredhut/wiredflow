@@ -15,3 +15,11 @@ We'll go step by step, detailing at each step what we're doing and why.
 ## What is API
 
 ## How to use wiredflow for ETL construction
+
+Start with installation - it is pretty easy:
+
+```
+pip install wiredflow
+```
+
+Then, ...

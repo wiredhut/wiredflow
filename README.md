@@ -3,8 +3,6 @@
 Lightweight Python library for configuring ETL (Extract, Transform, Load) pipelines. 
 Designed to create services with multi-step data processing using just Python and nothing more.
 
-## Why you should try wiredflow
-
 This module is a simplified analogue of ETL-related libraries (e.g. 
 [luigi](https://github.com/spotify/luigi) and [bonobo](https://github.com/python-bonobo/bonobo) (bonobo by the way is also pretty simple tool) and 
 workflow management (workflow orchestration) platforms 
@@ -18,57 +16,6 @@ convenient for IoT applications data processing (data from sensors often can
 be delivered via MQTT protocol). So wiredflow is pretty good solution for continuous streaming workflows.
 It allows configuring HTTP/HTTPS, MQTT, database connectors, schedulers, and much more to use all of it through 
 pure Python.
-
-Below is a Q&A section to make it clearer 
-to you how this library differs from other more well-known analogues.
-
-> **Question**: What does "lightweight" mean?
-> 
-> **Response**: That means that the library only uses native Python to run. 
-> Thus for basic usage there is no need to install **docker** or deal with **docker-compose**, you do 
-> not need to deploy the **database** locally (or non-locally) or figuring out how perform desired actions 
-> on **AWS** with full production infrastructure - you can just use your laptop and run 
-> the python script as "hello_world.py". The only thing you need to know to work 
-> with wiredflow is Python.
-
----
-
-> **Question**: What is the advantage of such a lightweight?
-> 
-> **Response**: 1) Prototyping - you can quickly start listening to your MQTT 
-> queues or start collecting data using HTTP requests, etc. 2) Python code 
-> would be easy to build into larger projects because using wiredflow has 
-> pretty low overhead. 3) Wiredflow has its own internal scheduler, allowing 
-> you to run your services out of the box.
-
----
-
-> **Question**: If wiredflow does not use a database, where is the data saved?
-> 
-> **Response**: In CSV files or in JSON files. Yes, this is not a production solution, 
-> but it is very convenient to deal with data you unfamiliar with.
-
----
-
-> **Question**: What if I want to use the database?
-> 
-> **Response**: Sure you can use a database, for example you can use a local one 
-> or save (and retrieve) the data to the already configured remote one.
-
----
-
-> **Question**: Can I create Python scripts that will combine data from multiple 
-> sources (APIs) and store data in a storage?
->
-> **Response**: Sure! That's exactly what wiredflow is for.
-
----
-
-> **Question**: I saw in the documentation that the service can be subscribed to 
-> multiple MQTT queues at the same time. How does it work?
-> 
-> **Response**: wiredflow uses the multithreading Python module. This allows 
-> effective sharing of resources between individual pipelines in your service.
 
 ---
 
@@ -105,10 +52,13 @@ custom storage (MongoDB) logic. Tutorial how to configure free remote MongoDB ca
 If you want to know how to launch pipelines in separate processes (launch service in parallel) - just set `use_threads=False` in builder 
 and check [processes](examples/processes) folder for usage examples.
 
-Or investigate jupyter notebooks with examples: 
-* In progress
+## Documentation 
+The full documentation build for this library can be found [here](https://wiredflow.readthedocs.io/en/latest/). 
+There you will find a detailed description of the library's internals as well as a lot of examples and tutorials
 
-## Description
+If you are looking forward to start using the library, it is recommended to begin the exploration with the section ["Quick start"](https://wiredflow.readthedocs.io/en/latest/tutorial/1_quick_start/).
+
+## Brief description
 
 The library is not a low-code solution, but it's great for developing custom pipelines when you can't avoid writing custom business logic. 
 The library consists of the following key blocks (by combining these blocks it is possible to implement processing pipelines of flexible structure): 
@@ -128,49 +78,8 @@ To make it clearer, here are some examples of possible service structures that c
 The fastest way to understand wiredflow is to think of it as a lightweight builder for services. 
 Protocols, endpoints, notifications, schedulers and storages are our constructor, and we 
 (engineers), can play with it the way we want to. If you would like to know more about wiredflow key features 
-and limitations - follow the page ["Features and limitations"](docs/common/features_and_limitations.md). 
-
-### Wiredflow is your friend
-
-When you start using **wiredflow** to solve real tasks, you may find that some of the flows structures are difficult to implement
-using native functionality. For example, to assign several data sources to a core logic block without using intermediate storages. 
-
-<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/good_and_bad.png" width="800"/>
-
-When this happens, keep in mind: "Wiredflow is your friend". Implementation through storages is almost always more reliable
-and robust even if you use as storages local files. Thus, Wiredflow encourages you to use more robust solutions in designing services.
-
-However, if you are sure about what you are doing, you can always implement custom blocks and work around this limitation.
-Because Wiredflow is your friend, and real friends won't force you to do something you don't want to.
-
-
-### Documentation 
-The full documentation build for this library can be found [here](https://wiredflow.readthedocs.io/en/latest/).
-however, there are some main aspects shown below:
-
-### Available connectors (per protocols)
-
-| Connector |   Command for adding    | Short description                                                          |
-|-----------|-------------------------|----------------------------------------------------------------------------|
-| MQTT      | `with_mqtt_connector()` | Create stage with ability to subscribe to MQTT topic and recieve data      |
-| HTTP      | `with_http_connector()` | Create stage with ability to send GET requests using HTTP / HTTPS protocol |
-
-### Available storages (databases and files storages for local usage)
-
-|  Storage  |      Command for adding           | Short description                                             |
-|-----------|-----------------------------------|---------------------------------------------------------------|
-| JSON file | `with_storage('json', **params)`  | Create and use local JSON file and use it as data storage     |
-| CSV file  | `with_storage('csv', **params)`   | Create and use local CSV file and use it as data storage      |
-| MongoDB   | `with_storage('mongo', **params)` | Define connect to already initialized MongoDB instance        |
-
-### Available senders
-
-|  Sender       |      Command for adding       | Short description                                        |
-|---------------|-------------------------------|----------------------------------------------------------|
-| MQTT broker   | `send('mqtt', **params)`      | Send defined data aggregate using MQTT protocol          |
-| POST request  | `send('http_post', **params)` | Send defined data aggregate using HTTP POST method       |
-| PUT request   | `send('http_put', **params)`  | Send defined data aggregate using HTTP PUT method        |
-
+and limitations - follow the page ["Features and limitations"](https://wiredflow.readthedocs.io/en/latest/common/features_and_limitations/)
+in particular and check the [official documentation](https://wiredflow.readthedocs.io/en/latest/) in common. 
 
 ## Contributing 
 
