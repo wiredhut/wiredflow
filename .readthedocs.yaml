@@ -11,7 +11,7 @@ build:
   tools:
     python: "3.10"
   commands:
-    pip install poetry==1.3.2
+    pip install "poetry==1.3.2"
 
 mkdocs:
   configuration: mkdocs.yml
