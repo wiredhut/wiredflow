@@ -55,7 +55,8 @@ Tokenization is a rather general term and can be interpreted in three ways in th
 according to wiredflow specifics (per levels):
 
 - Stage into stages - Dividing an operation into several sequential ones. It is also possible that some parts can be performed 
-  simultaneously (good reason to pack them into different **stages**);
+  simultaneously (good reason to pack them into different **stages**). This procedure is preliminary - there are rare cases when it is possible to 
+  allocate separate pipelines in a service. As a rule, first it is necessary to isolate tasks within the stages;
 - Pipeline into pipelines - Splitting one pipeline into several new ones. This will allow the service to "switch" between tasks more efficiently; 
 - Flow into flows - Splitting one flow (service) (e.g. one `.py` file) into several new ones (2, 3, 5 new `.py` files). Separate `.py` files in this case mean that 
   separate services can be run on different servers.

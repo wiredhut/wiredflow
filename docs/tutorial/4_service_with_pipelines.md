@@ -1,3 +1,3 @@
 # Wiredflow based service with several pipelines
 
-In progress
+<span style="color:orange">In progress</span>

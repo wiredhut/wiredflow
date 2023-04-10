@@ -1,8 +1,8 @@
 <img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/wiredflow.png" width="800"/>
 
-Welcome to wiredflow open-source tool documentation! 
+Welcome to wiredflow tool documentation! 
 
-Wiredflow is a lightweight Python library for configuring ETL (Extract, Transform, Load) pipelines. 
+Wiredflow is an open-source lightweight Python library for configuring ETL (Extract, Transform, Load) pipelines. 
 Designed to create services with multi-step data processing using just Python and nothing more.
 
 The main body of documentation is organized into two large sections: 

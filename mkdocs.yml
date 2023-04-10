@@ -7,17 +7,23 @@ nav:
     - Home: index.md
     - Common description:
           - 'Why you should try wiredflow': 'common/faq.md'
-          - 'Features and limitations': 'common/features_and_limitations.md'
           - 'Functionality review': 'common/functionality_review.md'
+          - 'Features and limitations': 'common/features_and_limitations.md'
           - 'Scalability issues': 'common/scalability.md'
           - 'Scalability: tokenization': 'common/scalability_tokenization.md'
           - 'Scalability: remote launch': 'common/scalability_remote.md'
           - 'Wiredflow is your friend': 'common/friend.md'
     - Tutorials:
           - 'Quick start': 'tutorial/1_quick_start.md'
-          - 'Several pipelines service': 'tutorial/2_service_with_pipelines.md'
-          - 'Threads or processes': 'tutorial/3_threads_and_processes.md'
-          - 'Customization': 'tutorial/4_customization.md'
+          - 'HTTP connector': 'tutorial/2_http.md'
+          - 'MQTT connector': 'tutorial/3_mqtt.md'
+          - 'Complex service': 'tutorial/4_service_with_pipelines.md'
+          - 'MongoDB integration': 'tutorial/5_mongo.md'
+          - 'Customization': 'tutorial/6_customization.md'
+          - 'Threads or processes': 'tutorial/7_threads_and_processes.md'
+          - 'Tokenization': 'tutorial/8_tokenization.md'
+          - 'Remote launch': 'tutorial/9_remote.md'
+          - 'Wiredflow for development': 'tutorial/10_development.md'
     - Additional:
           - 'Contribution': 'additional/contributing.md'
           - 'Publications': 'additional/publications.md'

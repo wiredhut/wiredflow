@@ -21,7 +21,7 @@ With the functionality of this library, it is possible to compile services that:
 3. Save data into databases or files (.csv, .json);
 4. Send messages (e.g. alerts) to external services;
 5. Repeat above mentioned actions with a certain period (by schedule) - it is possible to use an internal scheduler;
-6. Log execution and catch failures from each service component to ensure the consistency of the whole flow
+6. Log execution and catch failures from each service component to ensure the consistency of the whole flow.
 
 As stated in the library description, wiredflow can be used as a regular 
 Python library, and you can run prototypes locally without using additional 
@@ -35,7 +35,8 @@ However, wiredflow [will suggest the most reliable option](friend.md).
 
 ## What stages can a Pipeline consist of?
 
-Wiredflow allows users to design services with any number of pipelines. Pipelines can also consist of different number of stages.
+Wiredflow allows users to design services with any number of pipelines. 
+Pipelines can also consist of different number of stages.
 Let's take a look at the possible combinations: 
 
 <img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/flow_examples.png" width="800"/>

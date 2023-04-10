@@ -14,14 +14,16 @@ and integrate "self-made" functions into wiredflow-based service.
 ## Common description 
 
 Wiredflow consists of several key blocks (stages). Some stages do not involve default implementations and require custom implementations in any case:
-* **Configuration** - Configure parameters for next stage in the pipeline;
-* **Core logic** - General abstraction to implement custom logic.
+
+- **Configuration** - Configure parameters for next stage in the pipeline;
+- **Core logic** - General abstraction to implement custom logic.
 
 The following stages have default implementations, but they can easily be replaced with custom ones
-* **HTTP connector** - Retrieving data using `HTTP` requests - active requester;
-* **MQTT connector** - Retrieving data using `MQTT` protocol - passive subscriber;
-* **Storage** - Client to database;
-* **Send** - Send messages to external services.
+
+- **HTTP connector** - Retrieving data using `HTTP` requests - active requester;
+- **MQTT connector** - Retrieving data using `MQTT` protocol - passive subscriber;
+- **Storage** - Client to database;
+- **Send** - Send messages to external services.
 
 **NB**: It is up to you to decide in which block to implement the custom functions. 
 Depending on the task description above, feel free to choose the right architecture 

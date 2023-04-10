@@ -7,18 +7,18 @@ guide we compiled just for you.
 Good luck!
 
 ## Check documentation 
-In progress 
+<span style="color:orange">In progress</span>
 
 ## Check issues 
-In progress 
+<span style="color:orange">In progress</span>
 
 ## Explore the architecture
-In progress 
+<span style="color:orange">In progress</span>
 
 ## Create a new branch and prepare PR
-In progress 
+<span style="color:orange">In progress</span>
 
 ## Enjoy results of your work!
-In progress 
+<span style="color:orange">In progress</span>
 
 This is an important section. You did a great job. Take benefit of what you've done.
