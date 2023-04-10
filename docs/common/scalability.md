@@ -28,7 +28,7 @@ This allows the interpreter to switch the context when a particular stage is pen
 
 Suppose that we want to speed up each pipeline. Let's try!
 
-## Simple tips
+## Simple tips (thread into process)
 
 If the service is not running fast enough and:
 
@@ -38,6 +38,12 @@ If the service is not running fast enough and:
 
 Then you should try to run the service in parallel mode. 
 Using the parameter `use_threads=False` wiredflow will start the pipelines not in threads (as is done by default), but in processes.
+
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/scalability_process.png" width="800"/>
+
+This trick does not speed up service at the stages level. 
+It allows more efficient use of the multicore processor architecture on the pipelines level. 
+However, this approach does not always help to speed up your service. 
 If that doesn't help, then see the tips below.
 
 ## Tokenization
@@ -63,9 +69,20 @@ intelligently designed architecture of the solution. This also means that this i
 
 Check [page with more detailed recommendations](./scalability_tokenization.md). 
 
+In the current example we did the following: 
+
+1. Split the core logic into two parts, which can be executed simultaneously (Stage into stages);
+2. Compiled two pipelines from one with core logic (Pipeline into pipelines);
+3. Pipeline 4 runs on a separate, more powerful virtual machine (Flow into flows).
+
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/scalability_tokenization.png" width="800"/>
+
+Thus, we have simultaneously reduced the execution time of individual stages 
+as well as of entire pipelines and the service.
+
 ## Remote launch
-Another approach is to remotely run the most computationally expensive operations on remote servers.
-In this case, Wiredflow will be a tool for orchestrating the system and will provide consistency.
+Another approach is to remotely run the most computationally expensive operations on remote (surprisingly) servers.
+In this case, Wiredflow will become a tool for orchestrating the system and will provide consistency.
 
 It is worth noting that the frameworks are not in competence with each other. 
 On the contrary, Wiredflow and Apache Airflow, for example,
@@ -74,6 +91,11 @@ lightweight Wiredflow pipelines and complex scalable Apache
 Airflow-based pipelines in the same service. Therefore, you 
 can always use the tools used in your team to remotely 
 run high-load parts of the applications.
+
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/scalability_remote.png" width="800"/>
+
+As can be seen from the scheme, we simply use a more powerful server to 
+execute the most computationally intensive stages.
 
 For more information on remote start and its capabilities, see [this more detailed guide](./scalability_remote.md).
 
