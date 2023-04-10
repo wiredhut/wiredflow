@@ -6,6 +6,21 @@ wiredflow is not the only library used for ETL pipelines. We can consider
 [Apache Airflow](https://github.com/apache/airflow) and [prefect](https://github.com/PrefectHQ/prefect) as analogues.
 So the question may arise: "Why I should try wiredflow instead of other tools?".
 
+## Key features of wiredflow
+
+Start with list of key features which help to determine is wiredflow suitable for your tasks or not: 
+
+- easy to use - almost the same as any regular python library
+- suitable for creating both classic ETL pipelines (batch processing) and real-time services 
+  (continuous streaming workflows)
+- ability to construct complex services with both streaming and batch-processing logic
+- has an internal scheduler
+- native ability to save data into files (for local development and MVP) and databases for more production solutions
+- highly customizable
+- allow launching service partly in threads or processes through single entry point
+
+## Questions section
+
 Below is a Q&A section to make it clearer 
 to you how this library differs from other more well-known analogues.
 

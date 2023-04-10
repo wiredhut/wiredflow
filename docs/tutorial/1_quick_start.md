@@ -3,7 +3,7 @@
 Welcome to the wiredflow documentation section exploring use cases! 
 
 Below, we take a look at what **ETL** (Extract, Transform, Load) services, 
-detailing at each step what we're doing and why are, write our own services 
+detailing at each step what we're doing and why, write our own services 
 to solve toy tasks, and configure advanced services. 
 
 The only skill required to begin studying is the ability to use Python. 

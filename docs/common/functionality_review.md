@@ -2,9 +2,9 @@
 
 This page provides an overview of existing and planned functionality in the library. 
 Here, in the form of tables and graphs, the main components of the pipelines and services 
-blocks and their possible variations are shown. 
+blocks and their possible variations are shown.
 
-## Brief introduction 
+## Brief introduction
 
 First, a short section on terms. Services in wiredflow are called **Flow** or **Service**. 
 A **service** can consist of one or more **pipelines**. 

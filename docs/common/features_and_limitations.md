@@ -99,4 +99,4 @@ architecture as you want to, but the entry point into service will be as simple 
 
 ### Cons
 
-- Does not allow to keep the state of objects (in contrast to the class usage). 
+- Does not allow to keep the state of objects (in contrast to the class usage).
