@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "wiredflow"
 version = "0.1.0"
-description = ""
+description = "Library for constructing ETL (Extract, Transform, Load) services"
 authors = ["Dreamlone <mik_sar@mail.ru>"]
 
 [tool.poetry.dependencies]
