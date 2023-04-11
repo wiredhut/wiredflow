@@ -15,9 +15,10 @@ Start with list of key features which help to determine is wiredflow suitable fo
   (continuous streaming workflows)
 - ability to construct complex services with both streaming and batch-processing logic
 - has an internal scheduler
+- out of box integration with HTTP and MQTT protocol
 - native ability to save data into files (for local development and MVP) and databases for more production solutions
 - highly customizable
-- allow launching service partly in threads or processes through single entry point
+- allow launching service partly in threads or processes (parallel computing) through single entry point
 
 ## Questions section
 

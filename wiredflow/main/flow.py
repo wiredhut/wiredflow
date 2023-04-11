@@ -1,11 +1,5 @@
-import multiprocessing
 import threading
-from multiprocessing import Lock
-from multiprocessing.context import Process
-from multiprocessing.managers import Namespace, BaseManager
-from multiprocessing.pool import Pool
-
-from typing import Union, Optional
+from typing import Union
 
 from loguru import logger
 
@@ -15,8 +9,6 @@ from wiredflow.wiredtimer.timer import WiredTimer
 
 # SuperFastPython.com
 # example of using a manager to create a custom class
-from time import sleep
-from random import random
 from multiprocessing import Process
 from multiprocessing.managers import BaseManager
 

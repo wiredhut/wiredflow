@@ -4,7 +4,7 @@ from typing import Union
 
 from wiredflow.main.flow import FlowProcessor
 from wiredflow.mocks.http_server import start_mock_int_http_server, \
-    start_mock_str_http_server
+    start_mock_str_http_server, start_mock_hello_world_http_server
 from wiredflow.mocks.mqtt_broker import configure_int_mqtt_broker, \
     configure_str_mqtt_broker
 from wiredflow.paths import get_tmp_folder_path
@@ -40,8 +40,19 @@ def _parallel_launching(mode: str, flow_processor: FlowProcessor,
         return configure_int_mqtt_broker(execution_seconds)
     elif mode == 'mqtt_str_demo':
         return configure_str_mqtt_broker(execution_seconds)
+    elif mode == 'hello_world_demo':
+        return start_mock_hello_world_http_server(execution_seconds)
     else:
         raise ValueError(f'Does not support mode {mode} for demo purposes')
+
+
+def launch_demo_with_int_hello_world_connector(flow_processor: FlowProcessor,
+                                               execution_seconds: Union[int, None] = None):
+    """ Launch flow processing and local HTTP server in separate processes """
+    with Pool(processes=2) as pool:
+        return pool.map(partial(_parallel_launching, flow_processor=flow_processor,
+                                execution_seconds=execution_seconds),
+                        ['hello_world_demo', 'default'])
 
 
 def launch_demo_with_int_http_connector(flow_processor: FlowProcessor,

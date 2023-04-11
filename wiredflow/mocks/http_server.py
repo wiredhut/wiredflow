@@ -11,6 +11,7 @@ from loguru import logger
 HTTP_LOCALHOST = "127.0.0.1"
 INT_PORT = 8027
 STR_PORT = 8026
+HELLO_WORLD_PORT = 8025
 
 
 class RandomIntegersHandler(BaseHTTPRequestHandler):
@@ -114,6 +115,31 @@ class RandomStringHandler(BaseHTTPRequestHandler):
         return data_to_send.encode(encoding='utf_8')
 
 
+class HelloWorldHandler(BaseHTTPRequestHandler):
+    """
+    Class for imitating API with GET requests. Return "Hello world!" message
+    """
+
+    def do_GET(self):
+        """ Generate random number and send it by request """
+        data_to_send = json.dumps([{"Message": "Hello world!"}])
+        logger.trace(f'HTTP server send data: {data_to_send} by request')
+
+        jsonbytes = self._prepare_json_response(data_to_send)
+        self.wfile.write(jsonbytes)
+
+    def _prepare_json_response(self,
+                               data_to_send: Union[str, None] = None) -> bytes:
+        self.send_response(200)
+        self.send_header("Content-type", "application/json")
+        self.end_headers()
+        if data_to_send is None:
+            data_to_send = json.dumps(json.dumps({'correct': True}),
+                                      indent=4, default=asdict)
+
+        return data_to_send.encode(encoding='utf_8')
+
+
 def _start_mock_http_server(execution_seconds: Union[int, None],
                             server: HTTPServer):
     common_message = f'Start mock HTTP server in separate process: {HTTP_LOCALHOST},' \
@@ -148,4 +174,9 @@ def start_mock_int_http_server(execution_seconds: Union[int, None] = None):
 
 def start_mock_str_http_server(execution_seconds: Union[int, None] = None):
     server = HTTPServer((HTTP_LOCALHOST, STR_PORT), RandomStringHandler)
+    return _start_mock_http_server(execution_seconds, server)
+
+
+def start_mock_hello_world_http_server(execution_seconds: Union[int, None] = None):
+    server = HTTPServer((HTTP_LOCALHOST, HELLO_WORLD_PORT), HelloWorldHandler)
     return _start_mock_http_server(execution_seconds, server)
