@@ -20,10 +20,17 @@ pure Python.
 ---
 
 ## Installation
-Use the following command to install this module
 
-```
+Use the following command to install this module if you use pip
+
+```Bash
 pip install wiredflow
+```
+
+or (if you use poetry) following command
+
+```Bash
+poetry add wiredflow
 ```
 
 ## Usage examples

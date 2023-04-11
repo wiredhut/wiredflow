@@ -62,6 +62,12 @@ Start with installation - it is pretty easy:
 pip install wiredflow
 ```
 
+If you use poetry: 
+
+```
+poetry add wiredflow
+```
+
 Now you can open your IDE and create the file `quick_start.py`. We begin our journey in ETL service design!
 
 We suggest starting with a simple example that does two things: 
@@ -125,7 +131,7 @@ Next, we will analyze each line in detail, so that you will have no doubt that w
 ### Builder as core of the system 
 
 The explanation starts with the most important element in wiredflow: the Builder. 
-Builder is a programming pattern which allows you to design various Python objects. 
+Builder is a programming pattern which allows you to design various Python objects by flexible way. 
 
 `FlowBuilder` in wiredflow allows you to build ETL **services** (**flows**) with 
 different structure and for different tasks. This is a pretty flexible tool. 
@@ -179,9 +185,9 @@ After that you can run the configured service
 ### Demo bindings 
 
 When the service is configured to be used on real tasks, it is enough to execute the method `launch_flow()`.
-However, in the examples in the documentation in the [examples folder](https://github.com/wiredhut/wiredflow/tree/main/examples) 
+However, in the documentation examples and in the [examples folder](https://github.com/wiredhut/wiredflow/tree/main/examples) 
 it can be seen that special functions are used for launching. 
-For instance, in the current example `wiredflow_hello_world` was used. 
+For instance, in the current example `launch_demo_with_int_hello_world_connector` was used. 
 
 These functions are only used in examples and tests to demonstrate ETL capabilities when interacting with 
 third-party services. In other words, this function launches not only the service itself, but also in a separate 
