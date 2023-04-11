@@ -104,13 +104,15 @@ if __name__ == '__main__':
     wiredflow_hello_world()
 ```
 
-You can try running this code and see the result. Output should look something like this:
+You can try running this code and see the result. Service sends GET HTTP request, gets message and saves it in JSON 
+file - then repeat such an action every 60 seconds.
+
+Output should look something like this:
 
 ```
 2023-04-11 14:33:40.480 | INFO     | wiredflow.main.flow:launch_flow:65 - Launch service with 1 pipelines using thread mode
 2023-04-11 14:33:40.480 | INFO     | wiredflow.mocks.http_server:_start_mock_http_server:150 - Start mock HTTP server in separate process: 127.0.0.1, port 8025. Execution timeout, seconds: 20
 2023-04-11 14:33:40.481 | INFO     | wiredflow.main.pipeline:run:155 - Launch pipeline "hello_world". Execution timeout, seconds: 20
-127.0.0.1 - - [11/Apr/2023 14:33:40] "GET / HTTP/1.1" 200 -
 2023-04-11 14:33:40.485 | DEBUG    | wiredflow.main.store_engines.json_engine.json_db:save:37 - JSON info. Storage json_in_hello_world successfully save data in .../wiredflow/files/json_in_hello_world.json
 2023-04-11 14:33:50.495 | INFO     | wiredflow.wiredtimer.timer:will_limit_be_reached:44 - WiredTimer info: timeout was reached
 2023-04-11 14:33:50.495 | INFO     | wiredflow.main.flow:launch_flow:79 - Flow finish execution
