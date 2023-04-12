@@ -9,7 +9,7 @@ workflow management (workflow orchestration) platforms
 (e.g. [Apache Airflow](https://github.com/apache/airflow)
 and [prefect](https://github.com/PrefectHQ/prefect)). 
 
-This module is well-suited for both prototype preparation, quick experiments, 
+Wiredflow is well-suited for both prototype preparation, quick experiments, 
 and incorporation into industrial systems step-by-step. However, we recommend 
 starting to use the library as a tool for prototyping. It could be especially 
 convenient for IoT applications data processing (data from sensors often can 
@@ -21,13 +21,15 @@ pure Python.
 
 ## Installation
 
-Use the following command to install this module if you use pip
+Use the following commands to install this module
+
+Using pip:
 
 ```Bash
 pip install wiredflow
 ```
 
-or (if you use poetry) following command
+Using poetry:
 
 ```Bash
 poetry add wiredflow

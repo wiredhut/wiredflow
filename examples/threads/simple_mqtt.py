@@ -24,7 +24,7 @@ def launch_advanced_mqtt_demo():
     flow = flow_builder.build()
 
     # Or simply flow.launch_flow()
-    # if there is no need to launch local demo http server
+    # if there is no need to launch local demo mqtt broker
     launch_demo_with_int_mqtt_connector(flow, execution_seconds=10)
 
 

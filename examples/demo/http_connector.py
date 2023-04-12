@@ -14,7 +14,7 @@ def launch_http_processing_flow():
         .with_http_connector(source='http://localhost:8027',
                              headers={'accept': 'application/json',
                                       'apikey': 'custom_key_1234'})\
-        .with_storage('json', preprocessing='add_datetime')
+        .with_storage('json')
 
     # Configure service and launch it
     flow = flow_builder.build()
