@@ -53,9 +53,9 @@ launch pipelines in different threads:
 * [complex multi-source case](examples/threads/complex_flow.py) - complex flow example with custom multi-step data processing and several notificators
 
 Examples with pre-configured databases:
-* [simple_http_with_mongo.py](examples/simple_http_with_mongo.py) - single data source which can be reached via simple HTTP GET request and
+* [simple_http_with_mongo.py](examples/threads/simple_http_with_mongo.py) - single data source which can be reached via simple HTTP GET request and
 saved into MongoDB. Tutorial how to configure free remote MongoDB can be [found here](https://www.mongodb.com/basics/mongodb-atlas-tutorial).
-* [advanced_http_with_custom_mongodb.py](examples/advanced_http_with_custom_mongodb.py) - single data source which can be reached via simple HTTP GET request and
+* [advanced_http_with_custom_mongodb.py](examples/threads/advanced_http_with_custom_mongodb.py) - single data source which can be reached via simple HTTP GET request and
 custom storage (MongoDB) logic. Tutorial how to configure free remote MongoDB can be [found here](https://www.mongodb.com/basics/mongodb-atlas-tutorial).
 
 If you want to know how to launch pipelines in separate processes (launch service in parallel) - just set `use_threads=False` in builder 
