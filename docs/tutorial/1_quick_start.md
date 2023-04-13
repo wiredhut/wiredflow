@@ -110,6 +110,10 @@ if __name__ == '__main__':
     wiredflow_hello_world()
 ```
 
+The structure of the obtained service can be represented as follows: 
+
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/quick_start_connector.png" width="800"/>
+
 You can try running this code and see the result. Service sends GET HTTP request, gets message and saves it in JSON 
 file - then repeat such an action every 60 seconds.
 

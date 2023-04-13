@@ -16,7 +16,8 @@ As soon as the pipeline receives messages from the MQTT broker, it will save the
 ## Service implementation 
 
 A description of the task: The MQTT broker (localhost, port 1883, topic '/demo/integers') generates messages with a random number (range from 0 to 100). 
-It is required to receive these messages and save them to a file.
+It is required to receive these messages and save them to a file. During subscription process broker requires authorization via 
+credentials `username='wiredflow'`, `password='wiredflow'`.
 
 The code below accomplishes this task
 ```Python
@@ -50,8 +51,12 @@ if __name__ == '__main__':
     launch_mqtt_processing_flow()
 ```
 
-And this code is very similar to the one shown in the example with the HTTP connector. 
+And this code is very similar to the one shown in the [example with the HTTP connector](2_http.md). 
 Except in this example the `with_mqtt_connector()` method was used during service building.
+
+The service structure visualization: 
+
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/mqtt_connector.png" width="800"/>
 
 Output in the terminal: 
 

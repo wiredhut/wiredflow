@@ -41,6 +41,10 @@ if __name__ == '__main__':
     launch_http_processing_flow()
 ```
 
+The structure of the obtained service can be represented as follows: 
+
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/http_connector.png" width="800"/>
+
 Looks familiar, doesn't it? 
 
 Indeed. This example is very similar to the one discussed on page ["Quick start"](1_quick_start.md). 
@@ -50,12 +54,12 @@ This is the convenience of using ETL pipelines built with wiredflow. They are pr
 
 Thus, some of the key parameters that can significantly affect the behavior of a service using the HTTP connector are:
 
-- `source` - endpoint URL to apply request
-- `headers` - dictionary with headers for request. In this dictionary you can put credentials for initialization for example
 - `configuration` - name of HTTP client realization to use or custom implementation. Possible variants: 
-  - `get` - use HTTP GET method
+  - `get` - use HTTP GET method (by default)
   - `post` - use HTTP POST method
   - custom implementation through functions. See [Customization](7_customization.md) section for more information
+- `source` - endpoint URL to apply request
+- `headers` - dictionary with headers for request. In this dictionary you can put credentials for initialization for example
 
 Note that storage in this case stores data of any structure. So if we connect to another service and process the 
 new data - we will have to change the `source` and credentials for authentication / authorization. 
