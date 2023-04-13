@@ -11,11 +11,23 @@ As soon as the pipeline receives messages from the MQTT broker, it will save the
 
 ## What is MQTT protocol
 
-<span style="color:orange">In progress</span>
+Let's start with brief introduction into theoretical explanation. MQTT is a message transport protocol for machines communication using publish/subscribe model. 
+You can think of systems using the MQTT protocol as a newspaper delivery system. 
+There is a publisher (broker) which generates newspapers (messages) and sends them to all subscribers. 
+The publisher (broker) can send newspapers whenever it wants (irregular release). Sometimes it can send three magazines a month, and sometimes none at all.
+
+This is a very rough and general description of the systems which use the MQTT protocol for communication. 
+However, this understanding will be enough to implement a service for MQTT messages via wiredflow. 
+
+If you are interested in the MQTT protocol and want to dive deeper, we have prepared a small list of literature that you can explore:
+
+- [What is MQTT? and Why is the MQTT protocol important?](https://aws.amazon.com/what-is/mqtt/)
+- [MQTT Beginners Guide. The IoT protocol explained with Python](https://medium.com/python-point/mqtt-basics-with-python-examples-7c758e605d4#:~:text=MQTT%20is%20an%20open%20and,latency%20and%20low%20network%20bandwidth.)
+- [Python Client for MQTT processing - `paho-mqtt`](https://www.eclipse.org/paho/index.php?page=clients/python/index.php)
 
 ## Service implementation 
 
-A description of the task: The MQTT broker (localhost, port 1883, topic '/demo/integers') generates messages with a random number (range from 0 to 100). 
+A description of the task: The MQTT broker (localhost, port 1883, topic '/demo/integers') generates messages with a numbers (sorted range from 0 to 100). 
 It is required to receive these messages and save them to a file. During subscription process broker requires authorization via 
 credentials `username='wiredflow'`, `password='wiredflow'`.
 
