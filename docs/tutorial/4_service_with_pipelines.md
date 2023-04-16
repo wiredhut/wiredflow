@@ -131,14 +131,15 @@ The service structure visualization:
 
 <img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/complex_flow_example.png" width="800"/>
 
-As can be seen from the code snippet above, a custom function has been implemented
-to integrate business logic of the proposed service.
+As can be seen from the code snippet above and from service visualization, a custom function has been implemented
+to integrate business logic of the proposed service via "core logic" stage.
 
 ## Sharing error messages
 
 We talked a lot above about the fact that if you run the service through a 
-single entry point, it will effectively share errors. We suggest to use 
-an example to figure out how it works.
+single entry point, it will effectively share errors. We suggest using 
+an example to figure out how it works. Let's modify our custom function so 
+that it crashes with an error. And run the code.
 
 
 ```Python
@@ -146,7 +147,6 @@ def print_into_terminal(**kwargs):
     raise ValueError('Cannot print messages!')
 ```
 
-Let's modify our custom function so that it crashes with an error. And run the code.
 Then the following messages will appear in the logs as soon as wiredflow starts the pipeline with custom logic:
 
 ```
