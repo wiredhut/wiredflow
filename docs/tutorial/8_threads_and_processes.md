@@ -1,3 +1,3 @@
-# Wiredflow based service with several pipelines
+# Launch multi-pipelines service through processes
 
 <span style="color:orange">In progress</span>

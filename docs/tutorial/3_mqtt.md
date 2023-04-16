@@ -63,8 +63,11 @@ if __name__ == '__main__':
     launch_mqtt_processing_flow()
 ```
 
-And this code is very similar to the one shown in the [example with the HTTP connector](2_http.md). 
-Except in this example the `with_mqtt_connector()` method was used during service building.
+Thus, in order to start saving messages received from an MQTT broker via wiredflow, it is necessary 
+to include the MQTT connector in the structure of the corresponding pipeline.
+It is also should be mentioned that this code is very similar to the one shown in the [example with the HTTP connector](2_http.md). 
+Except in this example the `with_mqtt_connector()` method was used during service building
+instead of `with_http_connector()`. 
 
 The service structure visualization: 
 
@@ -97,7 +100,8 @@ Output in the terminal:
 ```
 
 The service worked for 10 seconds and during that time it received one message per second 
-(when no messages came, the pipelines waited). 
+(when no messages came, the pipelines waited). As soon as Pipeline receives a message, it 
+immediately saves it to the database. Or in our case, in the JSON file.
 As expected, all values are saved in the JSON file:
 
 ```JSON

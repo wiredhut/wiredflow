@@ -9,7 +9,7 @@ def launch_http_processing_flow():
     """
     flow_builder = FlowBuilder()
 
-    # Repeat actions in pipeline every 1 minute - send GET request and store response
+    # Repeat actions in pipeline every 10 seconds - send GET request and store response
     flow_builder.add_pipeline('my_custom_name', timedelta_seconds=10)\
         .with_http_connector(source='http://localhost:8027',
                              headers={'accept': 'application/json',
