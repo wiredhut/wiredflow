@@ -13,6 +13,7 @@ nav:
           - 'Scalability: tokenization': 'common/scalability_tokenization.md'
           - 'Scalability: remote launch': 'common/scalability_remote.md'
           - 'Wiredflow is your friend': 'common/friend.md'
+          - 'Architecture of wiredflow (for developers)': 'common/architecture.md'
     - Tutorials:
           - 'Quick start': 'tutorial/1_quick_start.md'
           - 'HTTP connector': 'tutorial/2_http.md'
@@ -29,6 +30,7 @@ nav:
           - 'Contribution': 'additional/contributing.md'
           - 'Publications': 'additional/publications.md'
           - 'Commercial use cases': 'additional/real_cases.md'
+          - 'Roadmap': 'additional/roadmap.md'
           - 'About us': 'additional/about.md'
 theme:
     name: readthedocs

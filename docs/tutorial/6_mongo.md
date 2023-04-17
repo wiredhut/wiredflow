@@ -1,3 +1,5 @@
 # Using MongoDB to store data
 
-<span style="color:orange">In progress</span>
+This section deals with the modification of a service that we [developed earlier](4_service_with_pipelines.md). 
+We will try to make it more reliable by replacing all local files storages with the real database (MongoDB).
+
