@@ -9,9 +9,19 @@ can understand the internals of wiredflow as quickly as possible and be able to 
 
 ## How the user sees wiredflow
 
-<span style="color:orange">In progress</span>
+The user works with wiredflow as a tool for constructing services. That is, 
+the framework in this case is considered from the functional point of view.
+To construct services, it is necessary to use one of the suggested entities:
+
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/arc_user_view.png" width="800"/>
+
+Thus, the user can compile services with a variety of such blocks.
+All the user needs to know - what blocks there are and how they should be configured correctly.
+This is the end of the abstractions with which the user interacts.
 
 ## How the developer sees wiredflow
+
+Wiredflow uses a classic approach - multi-layer architecture: 
 
 <span style="color:orange">In progress</span>
 

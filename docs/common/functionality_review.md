@@ -47,7 +47,7 @@ Thus, there are the following possible stages in pipelines:
 - **Connectors** (HTTP and MQTT connector) - connector to external data source;
 - **Storage** - save data into file or database;
 - **Core logic** - requires a custom implementation. Business logic of developing application;
-- **Send** - send message from service to external services.
+- **Send** - send messages from service to external services.
 
 Some stages always require custom implementation, others have several possible default configurations.
 Wiredflow uses a builder to generate services, so the pipelines are modified by sequentially adding blocks. 

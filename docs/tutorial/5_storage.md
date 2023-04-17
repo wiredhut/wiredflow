@@ -185,5 +185,5 @@ In this section we will give some arguments in which cases what database should 
 Databases with which there is native integration will be considered here. 
 However, feel free to use any database that suits your needs and integrate it through the customization mechanisms.
 
-**The wiredflow library is currently under active development, so right now there is only integration 
+**The wiredflow library is currently under active development, so for now there is only integration 
 with the MongoDB database. Integration with SQLite and other databases is planned.**
