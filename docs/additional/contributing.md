@@ -45,6 +45,17 @@ If you do not have write access to the repository, you need to:
 4. [Create Pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)
 5. Fix suggestions of project maintainers (or argue your position in a reasoned way) during review
 
+Below are some recommendations for changes you will need to make to the code if 
+you want to include the new stage implementation in wiredflow (very likely this is the change you want to make).
+
+### Integrate new storage stage
+
+### Integrate new send stage
+
+### Integrate new connector
+
+It is more ambitious and complicated task. 
+
 ## Enjoy results of your work!
 
 And yes, this is an important section.
