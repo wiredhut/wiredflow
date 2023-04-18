@@ -34,6 +34,10 @@ Improvements planned for integration:
 
 &#9745; [Publication: ML and wiredflow post](https://github.com/wiredhut/wiredflow/issues/24)
 
+&#9745; [Set schedule in pipelines using time of launch](https://github.com/wiredhut/wiredflow/issues/26)
+
+&#9745; [Retry number in the pipeline](https://github.com/wiredhut/wiredflow/issues/27)
+
 The list above is compiled right after the release of the current library version. 
 It contains either major tasks or tasks that are critical for the development of the framework.
 

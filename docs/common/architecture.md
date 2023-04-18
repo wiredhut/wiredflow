@@ -35,6 +35,7 @@ A brief description of the abstraction layers and their functions:
 - **Scheduler** & **Timer** - internal scheduler and timer, measures the execution time of various tasks and stops execution if the time limit is exceeded. Follow defined scheduling during execution;
 
 Failures managers: 
+
 - **FailuresCheck** (threads) - singleton for sharing messages about errors during execution of a pipelines, when pipelines are running in threads;
 - multiprocessing **Manager** (processes) - sharing messages about errors during execution of a pipelines, when pipelines are running in processes;
 
