@@ -25,12 +25,12 @@ Wiredflow uses a classic approach - multi-layer architecture.
 A brief description of the abstraction layers and their functions:
 
 - **Builder** - builder pattern. Is used to create services (flows) by sequentially adding stages and pipelines to the flow structure;
-  - **Flow** - service with pipelines. Runs pipelines in threads or processes;
-    - **Pipeline** - storage container for stages. Provides methods to modify its structure;
-    - **PipelineTemplate** - transforms a pipeline (defines structures) into an executable object - Action. Action type defined based on stages and their order in the pipeline;
-      - **Action** - provides a single interface for launching both individual stages and their sequences. Responsible for the correct sequential execution of the stages;
-        - **ProxyStage** - wrapper over the stages, - provides transferring and merging arguments in stages and single interface for invoking different stage implementations; 
-        - **Stages** - low-level abstraction, which consists of a single operation (just load data, just transform it or load into database);
+- **Flow** - service with pipelines. Runs pipelines in threads or processes;
+  - **Pipeline** - storage container for stages. Provides methods to modify its structure;
+  - **PipelineTemplate** - transforms a pipeline (defines structures) into an executable object - Action. Action type defined based on stages and their order in the pipeline;
+- **Action** - provides a single interface for launching both individual stages and their sequences. Responsible for the correct sequential execution of the stages;
+  - **ProxyStage** - wrapper over the stages, - provides transferring and merging arguments in stages and single interface for invoking different stage implementations; 
+  - **Stages** - low-level abstraction, which consists of a single operation (just load data, just transform it or load into database);
 
 - **Scheduler** & **Timer** - internal scheduler and timer, measures the execution time of various tasks and stops execution if the time limit is exceeded. Follow defined scheduling during execution;
 
