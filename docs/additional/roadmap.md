@@ -1,8 +1,8 @@
 # Roadmap
 
 Dear users of the open-source tool wiredflow, welcome to the project roadmap page! 
-Here are ideas for upcoming release ideas that we plan to implement and integrate into the library. 
-If you have any ideas, you are welcome to follow this [guide](contributing.md) and offer your vision.
+Here are ideas for upcoming release and functionality that we plan to implement and integrate into the library. 
+If you have any thoughts, you are welcome to follow this [guide](contributing.md) and offer your vision.
 
 Improvements planned for integration:
 
