@@ -2,7 +2,7 @@
 
 Sometimes, in order to know a tool, it's worth finding out how it's arranged internally. 
 This section will help to make sense of it. 
-This section was prepared by the developers for developers. 
+Current page was prepared by the developers for developers. 
 
 We have tried to organize the text, diagrams and specifications so that the reader 
 can understand the internals of wiredflow as quickly as possible and be able to start modifying the source code.
@@ -24,17 +24,18 @@ This is the end of the abstractions with which the user interacts.
 During the framework development we actively use the principles of object-oriented programming and a multi-layer architecture (pretty classic approach).
 A brief description of the abstraction layers and their functions:
 
-- **Builder** - builder pattern. Is used to create services (flows) by sequentially adding stages and pipelines to the flow structure;
-- **Flow** - service with pipelines. Runs pipelines in threads or processes;
+- **<span style="color:orange">Builder</span>** - builder pattern. Is used to create services (flows) by sequentially adding stages and pipelines to the flow structure;
+- **<span style="color:orange">Flow</span>** - service with pipelines. Runs pipelines in threads or processes;
   - **Pipeline** - storage container for stages. Provides methods to modify its structure;
   - **PipelineTemplate** - transforms a pipeline (defines structures) into an executable object - Action. Action type defined based on stages and their order in the pipeline;
-- **Action** - provides a single interface for launching both individual stages and their sequences. Responsible for the correct sequential execution of the stages;
+- **<span style="color:orange">Action</span>** - provides a single interface for launching both individual stages and their sequences. Responsible for the correct sequential execution of the stages;
   - **ProxyStage** - wrapper over the stages, - provides transferring and merging arguments in stages and single interface for invoking different stage implementations; 
   - **Stage** - low-level abstraction, which consists of a single operation (just load data, just transform it or load into database);
 
+
 - **Scheduler** & **Timer** - internal scheduler and timer, measures the execution time of various tasks and stops execution if the time limit is exceeded. Follow defined scheduling during execution;
 
-Failures managers: 
+Failures managers (share information between pipelines): 
 
 - **FailuresCheck** (threads) - singleton for sharing messages about errors during execution of a pipelines, when pipelines are running in threads;
 - multiprocessing **Manager** (processes) - sharing messages about errors during execution of a pipelines, when pipelines are running in processes;
@@ -67,6 +68,9 @@ considered in more detail:
 - **Proxy Stages**
 - **Stages**
 
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/arc_dev_view.png" width="900"/>
+
+
 ### Pipeline and pipeline templates
 
 We should start with the pipelines. Flow launches pipelines in individual threads or processes 
@@ -82,14 +86,27 @@ Pipeline plays an important role as a basic identifier in the service - each pip
 the moment of its creation. Thus, the logs in the low-level abstractions will operate on the name of the 
 pipelines within which they are executed. 
 
+When the pipeline structure is formed, there is a need to run the ETL process. 
+Then the **Pipeline** needs to be converted to **Action**. The **PipelineTemplate** is used for 
+this transformation: 
+
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/pipeline_templates.png" width="900"/>
+
 ### Actions
 
-<span style="color:orange">In progress</span>
+Action is required to launch the stages in the correct order. This abstraction can also stop the
+task if the failures manager reports an error or if the execution time is over. 
+Thus, actions control the execution of ETL processes.
+The interface is unaffected by the number of stages to run and their order. 
+
+### Proxy Stages
+
+Proxy Stages ensures that arguments are passed to stages correctly. Furthermore, this layer allows 
+different variants of built-in stages as well as custom implementations to be run in a uniform way.
 
 ### Stages
 
-<span style="color:orange">In progress</span>
+Stages are the lowest-level abstraction in the framework. It represents a single operation that 
+needs to be performed. For example "retrieve data via HTTP request", "save dictionary into database".
+The business logic of ETL pipelines is contained in isolated stages classes.
 
-### Stages
-
-<span style="color:orange">In progress</span>
