@@ -3,7 +3,7 @@
 In this section we will take a closer look at the basic concepts that are used in Wiredflow. 
 It is known fact that each approach is likely to have advantages and disadvantages. We are here to investigate them.
 
-NB: It is worth noting that the restrictions described below (mostly related to 
+**<span style="color:orange">NB:</span>** It is worth noting that the restrictions described below (mostly related to 
 scalability) can be overcome by using tips from [Scalability issues page](./scalability.md).
 
 ## Brief introduction 
@@ -18,7 +18,7 @@ That's it - move on!
 
 <img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/pipeline_thread.png" width="800"/>
 
-NB: Threads and processes are not the same abstractions! Follow the guide below to figure out the difference. 
+**<span style="color:orange">NB:</span>** Threads and processes are not the same abstractions! Follow the guide below to figure out the difference. 
 
 We should start the discussion with a fundamental concept: "all pipelines in wiredflow run in separate threads (or processes)".
 This means that if there are defined 30 pipelines in `Flow` (e.g. Service), the Python interpreter will use the `threading` module and run 30 threads.

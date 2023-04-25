@@ -37,10 +37,12 @@ files storages: `json` and `csv`. Additional parameters for files storages are:
 
 - `preprocessing` - name of preprocessing to apply or list of preprocessors
 Possible options:
+
     - `add_datetime` - add datetime label to obtained dictionary
 
 - `mapping` - name of mapping procedure to apply during save stage
 Possible variants:
+
     - `update` - update dictionary with new kye-values pairs
     - `overwrite` - create file from scratch
     - `extend` - if the structure list-related - then just add new
@@ -56,7 +58,7 @@ from wiredflow.main.build import FlowBuilder
 from wiredflow.mocks.demo_bindings_threads import launch_demo_with_int_http_connector
 
 
-def launch_flow_with_custom_storage_config(storage_configuration: str, **params):
+def launch_flow_with_local_storage_config(storage_configuration: str, **params):
     """
     Example of usage local files as storages
 
@@ -77,7 +79,7 @@ Let's start with the typical example of running a service to save results to a j
 ```Python
 if __name__ == '__main__':
     # Save data into json file into new folder
-    launch_flow_with_custom_storage_config('json', folder_to_save=Path('./json_storage'))
+    launch_flow_with_local_storage_config('json', folder_to_save=Path('./json_storage'))
 ```
 
 Saved messaged obtained from HTTP endpoint:
@@ -106,7 +108,7 @@ If there is a need to save data into csv file - just change the configuration na
 
 ```Python
 if __name__ == '__main__':
-    launch_flow_with_custom_storage_config('csv', folder_to_save=Path('./csv_storage'))
+    launch_flow_with_local_storage_config('csv', folder_to_save=Path('./csv_storage'))
 ```
 
 ### Customization 
@@ -117,7 +119,7 @@ Start with `preprocessing` - add label `datetime_label` into each item during sa
 
 ```Python
 if __name__ == '__main__':
-    launch_flow_with_custom_storage_config('json', preprocessing='add_datetime', folder_to_save=Path('./preprocessing'))
+    launch_flow_with_local_storage_config('json', preprocessing='add_datetime', folder_to_save=Path('./preprocessing'))
 ```
 
 Service output into the JSON file will be the following:
@@ -156,7 +158,7 @@ If we want to save a new values, ignoring the old ones, we can use the parameter
 
 ```Python
 if __name__ == '__main__':
-    launch_flow_with_custom_storage_config('json', mapping='overwrite', folder_to_save=Path('./overwrite'))
+    launch_flow_with_local_storage_config('json', mapping='overwrite', folder_to_save=Path('./overwrite'))
 ```
 
 Thus, the file will always contain only the latest actual data sample:
