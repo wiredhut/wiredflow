@@ -36,7 +36,7 @@ Please follow the instructions and at the end you should receive the credentials
 
 Insert the following names (current cluster name `ClusterDreamlone`):
 
-<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/atlas_mongo.png" width="500"/>
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/atlas_mongo.png" width="400"/>
 
 Connection string will look something like this (your user name (`dreamlone`), password (`mydreamlonepassword`) and
 cluster name (`clusterdreamlone`) will be different):
@@ -109,7 +109,7 @@ Terminal output:
 
 Now is a good time to check if the data was saved correctly: 
 
-<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/mongo_collection.png" width="800"/>
+<img src="https://raw.githubusercontent.com/wiredhut/wiredflow/main/docs/media/mongo_collection.png" width="1000"/>
 
 As can be seen from the screenshot above, we actually saved all the data into the right collection. 
 Congratulations, you have now learned how to connect to MongoDB using wiredflow and use MongoDB storage in ETL process.

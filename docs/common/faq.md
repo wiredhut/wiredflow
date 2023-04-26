@@ -13,8 +13,8 @@ Start with list of key features which help to determine is wiredflow suitable fo
 - easy to use - almost the same as any regular python library
 - suitable for creating both classic ETL pipelines (batch processing) and real-time services 
   (continuous streaming workflows)
-- ability to construct complex services with both streaming and batch-processing logic
-- has an internal scheduler
+- ability to construct complex services with both streaming and batch-processing logic in the same service (simultaneously)
+- has an internal scheduler - so there is no need to configure scheduler through crontab (but it is possible if you want to use external one)
 - out of box integration with HTTP and MQTT protocol
 - native ability to save data into files (for local development and MVP) and databases for more production solutions
 - highly customizable

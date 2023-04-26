@@ -56,9 +56,9 @@ Thus, some of the key parameters that can significantly affect the behavior of a
 
 - `configuration` - name of HTTP client realization to use or custom implementation. Possible variants: 
 
-  - `get` - use HTTP GET method (by default)
-  - `post` - use HTTP POST method
-  - custom implementation through functions. See [Customization](7_customization.md) section for more information
+    - `get` - use HTTP GET method (by default)
+    - `post` - use HTTP POST method
+    - custom implementation through functions. See [Customization](7_customization.md) section for more information
 
 - `source` - endpoint URL to apply request
 - `headers` - dictionary with headers for request. In this dictionary you can put credentials for initialization for example

@@ -1,7 +1,7 @@
 # Scalability issues
 
 Wiredflow is a lightweight tool for fast development and services launching. 
-However, a developed prototype often becomes a full-fledged 
+However, a developed prototype may become a full-fledged 
 production solution. In this case it may be necessary to scale the service. 
 This document comes with instructions and guidelines to solve such an issues. 
 Wiredflow may well be massively scalable!
